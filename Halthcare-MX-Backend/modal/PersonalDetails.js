@@ -13,8 +13,16 @@ const personalDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    validate: {
+      validator: async function (value) {
+        const emailExists = await mongoose.models.PersonalDetails.findOne({
+          email: value,
+        });
+        return !emailExists;
+      },
+      message: "Email already exists",
+    },
   },
-
   country: {
     type: String,
     required: true,

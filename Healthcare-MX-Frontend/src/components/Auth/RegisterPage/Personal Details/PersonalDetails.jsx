@@ -12,6 +12,8 @@ import {
   Typography,
   Button,
   useMediaQuery,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { styled } from "@mui/system";
@@ -51,6 +53,8 @@ const PersonalDetails = ({
   const [lastName, setLastName] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -89,6 +93,35 @@ const PersonalDetails = ({
     }
   };
 
+  // const onSubmit = async (data) => {
+  //   const personalDetails = {
+  //     firstName: data.firstName,
+  //     lastName: data.lastName,
+  //     email: data.email,
+  //     country:data.country,
+  //     profession:data.profession,
+  //     medicalNo:data.Medical
+  //   };
+  //   const isValid = await trigger();
+  //   if (isValid) {
+  //     axios
+  //       .post("http://127.0.0.1:3000/api/personalDetails", personalDetails)
+  //       .then((response) => {
+  //         console.log("Response:", response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //         setSnackbarMessage(error.messaage);
+  //         setSnackbarOpen(true);
+  //       });
+
+  //     navigate("/professional");
+  //     setActiveStep(activeStep + 1);
+  //   } else {
+  //     alert("Validation Failed");
+  //   }
+  // };
+
   const onSubmit = async (data) => {
     const personalDetails = {
       firstName: data.firstName,
@@ -98,24 +131,29 @@ const PersonalDetails = ({
       profession: data.profession,
       medicalNo: data.Medical,
     };
+
     const isValid = await trigger();
     if (isValid) {
-      axios
-        .post("http://127.0.0.1:3000/api/personalDetails", personalDetails)
-        .then((response) => {
-          console.log("Response:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-      navigate("/professional");
-      setActiveStep(activeStep + 1);
-    } else {
-      alert("Validation Failed");
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:3000/api/personalDetails",
+          personalDetails
+        );
+        console.log("Response:", response.data);
+        navigate("/professional");
+        setActiveStep(activeStep + 1);
+      } catch (error) {
+        console.error("Error:", error);
+        setSnackbarMessage(
+          error.response.data.message ===
+            "PersonalDetails validation failed: email: Email already exists"
+            ? "Email  already exists"
+            : error.message
+        );
+        setSnackbarOpen(true);
+      }
     }
   };
-
   const handleCountryChange = (event, value) => {
     setCountry(value);
   };
@@ -443,6 +481,18 @@ const PersonalDetails = ({
             Continue
           </Button>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <SnackbarContent
+            message={snackbarMessage}
+            onClose={() => setSnackbarOpen(false)}
+            sx={{ backgroundColor: "error.main" }}
+          />
+        </Snackbar>
       </form>
     </Box>
   );
