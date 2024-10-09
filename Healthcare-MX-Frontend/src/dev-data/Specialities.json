@@ -1,0 +1,91 @@
+{
+  "specialities": [
+    {
+      "doctors": [
+        "Cardiologist",
+
+        "Dermatologist",
+
+        "Endocrinologist",
+
+        "Gastroenterologist",
+
+        "Hematologist",
+
+        "Oncologist",
+
+        "Nephrologist",
+
+        "Neurologist",
+
+        "Pulmonologist",
+
+        "Rheumatologist",
+
+        "Orthopedic Surgeon",
+
+        "Ophthalmologist",
+
+        "Otolaryngologist (ENT Specialist)",
+
+        "Urologist",
+
+        "Pediatrician",
+
+        "Geriatrician",
+
+        "Gynecologist/Obstetrician (OB/GYN)",
+
+        "Psychiatrist",
+
+        "Anesthesiologist",
+
+        "Allergist/Immunologist",
+
+        "Radiologist",
+
+        "Pathologist",
+
+        "Infectious Disease Specialist",
+
+        "Surgeon",
+
+        "Emergency Medicine Physician"
+      ]
+    },
+
+    {
+      "nurses": [
+        "Pediatrics",
+
+        "Geriatrics",
+
+        "Emergency Nursing",
+
+        "Critical Care Nursing",
+
+        "Oncology Nursing",
+
+        "Mental Health Nursing",
+
+        "Obstetric and Gynecologic Nursing",
+
+        "Cardiac Nursing",
+
+        "Neonatal Nursing",
+
+        "Palliative and Hospice Care",
+
+        "Surgical Nursing",
+
+        "Community Health Nursing",
+
+        "School Nursing",
+
+        "Informatics Nursing",
+
+        "Research Nursing"
+      ]
+    }
+  ]
+}
