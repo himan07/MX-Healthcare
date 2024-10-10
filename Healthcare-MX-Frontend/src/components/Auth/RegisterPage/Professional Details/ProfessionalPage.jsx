@@ -35,9 +35,14 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const ProfessionalPage = ({ activeStep, setActiveStep, profession, country }) => {
+const ProfessionalPage = ({
+  activeStep,
+  setActiveStep,
+  profession,
+  country,
+}) => {
   console.log("profession: ", profession);
-  console.log("country: ",country )
+  console.log("country: ", country);
   const [speciality, setSpeciality] = useState("");
   const [err, setErr] = useState("");
 
@@ -118,10 +123,10 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession, country }) =>
   };
 
   const getStates = () => {
-    if(country.country === "India"){
-      return states.data.India
+    if (country.country === "India") {
+      return states.data.India;
     }
-  }
+  };
 
   return (
     <Box
