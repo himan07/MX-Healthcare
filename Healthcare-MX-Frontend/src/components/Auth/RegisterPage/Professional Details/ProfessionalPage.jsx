@@ -74,15 +74,21 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
     setActiveStep(activeStep - 1);
   };
 
-  const handleCountryChange = (event, value) => {
-    setCountry(value);
-  };
-
   const getOptions = () => {
     if (profession.profession === "Doctor/HCP") {
-      return specialities.specialities.flatMap((item) => item.doctors);
+      return specialities.data.doctors;
     } else if (profession.profession === "Nursing") {
-      return specialities.specialities.flatMap((item) => item.nurses);
+      return specialities.data.nurses;
+    } else if (profession.profession === "Lab Tech (Radio)") {
+      return specialities.data.labTech;
+    } else if (profession.profession === "Non Clinical HCP") {
+      return specialities.data.nonClinicalHcp;
+    } else if (profession.profession === "Pharmacy") {
+      return specialities.data.pharmacySpecialities;
+    } else if (profession.profession === "Public Health") {
+      return specialities.data.publicHealthSpecialities;
+    } else if (profession.profession === "Medical Student") {
+      return specialities.data.medicalSpecialities;
     }
     return [];
   };
@@ -109,9 +115,8 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
               disablePortal={false}
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
-              options={options}
-              getOptionLabel={(option) => options || "Unknown"}
-              onChange={handleCountryChange}
+              options={getOptions()}
+              getOptionLabel={(option) => option || "Unknown"}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -122,6 +127,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
               )}
               sx={{ mb: 2 }}
             />
+
             <Box>
               <CustomFileUploader />
             </Box>
@@ -166,7 +172,6 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={countries.map((item) => item.country)}
-              onChange={handleCountryChange}
               renderInput={(params) => (
                 <TextField
                   {...params}

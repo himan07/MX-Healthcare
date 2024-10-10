@@ -194,7 +194,7 @@ const PersonalDetails = ({
                 {err.response.data.message ===
                 "PersonalDetails validation failed: email: Email already exists" ? (
                   <>
-                    Email is already exist in the database.{" "}
+                    Email  already exists.{" "}
                     <Link
                       to="/professional"
                       style={{ color: "red", textDecoration: "underline" }}
