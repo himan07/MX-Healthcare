@@ -147,7 +147,7 @@ const PersonalDetails = ({
         setSnackbarMessage(
           error.response.data.message ===
             "PersonalDetails validation failed: email: Email already exists"
-            ? "Email  already exists"
+            ? "Email is already present in database"
             : error.message
         );
         setSnackbarOpen(true);
