@@ -8,12 +8,13 @@ import {
   Grid,
   Button,
   useMediaQuery,
+  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/system";
 import countries from "../../../../dev-data/CountyData.json";
 import specialities from "../../../../dev-data/Specialities.json";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SendIcon from "@mui/icons-material/Send";
 import CustomFileUploader from "../../../../CustomeFileUploader";
@@ -37,6 +38,8 @@ const StyledPaper = styled(Paper)({
 const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
   console.log("profession: ", profession);
   const [speciality, setSpeciality] = useState("");
+  const [err, setErr] = useState("");
+
   const navigate = useNavigate();
 
   // Handling keyboard actions
@@ -66,7 +69,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     const professionalInfo = {
       specialty: speciality,
       image: data.image,
@@ -80,11 +83,12 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
         "http://127.0.0.1:3000/api/professionalDetails",
         professionalInfo
       );
-      console.log(response)
+      console.log(response);
       navigate("/contactPage");
       setActiveStep(activeStep + 1);
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setErr(error);
     }
   };
 
@@ -142,7 +146,6 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
                   variant="outlined"
                   inputRef={organisationNameRef}
                 />
-              
               )}
               sx={{ mb: 2 }}
             />
@@ -150,7 +153,6 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
             <Box>
               <CustomFileUploader />
             </Box>
-
             <TextField
               variant="outlined"
               fullWidth
@@ -184,6 +186,36 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
                 handleKeyDown(e, officialEmailRef, practiceStateRef)
               }
             />
+            {err ? (
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "18px",
+                  color: "red",
+                  pt: 2,
+                  pb: 2,
+                  mt: -3,
+                  textAlign: "left",
+                }}
+              >
+                {err.response.data.message ===
+                "ProfessionalDetails validation failed: specialty: Path `specialty` is required., officialEmail: Email already exists" ? (
+                  <>
+                    Email already exists.{" "}
+                    <Link
+                      to="/contactPage"
+                      style={{ color: "red", textDecoration: "underline" }}
+                    >
+                      Click here to complete your profile
+                    </Link>
+                  </>
+                ) : (
+                  err.message
+                )}
+              </Typography>
+            ) : (
+              ""
+            )}
 
             <Autocomplete
               fullWidth

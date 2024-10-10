@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ProfessionalDetailsSchema = new mongoose.Schema({
     specialty: {
         type: String,
@@ -17,7 +16,14 @@ const ProfessionalDetailsSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true, 
-        match: /.+\@.+\..+/ 
+        match: /.+\@.+\..+/ ,
+        validate: {
+            validator: async function (value) {
+                const emailExists = await ProfessionalDetails.findOne({ officialEmail: value });
+                return !emailExists; 
+            },
+            message: "Email already exists",
+        },
     },
     state: {
         type: String,
@@ -26,7 +32,7 @@ const ProfessionalDetailsSchema = new mongoose.Schema({
     yearsOfPractice: {
         type: Number,
         required: true,
-        min: 0 
+        min: 0,
     }
 });
 

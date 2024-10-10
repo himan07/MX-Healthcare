@@ -178,7 +178,6 @@ const PersonalDetails = ({
               sx={{ mb: 2 }}
               onKeyDown={(e) => handleKeyDown(e, emailRef, confirmEmailRef)}
             />
-            {console.log("this is error: ", err)}
             {err ? (
               <Typography
                 variant="body1"
