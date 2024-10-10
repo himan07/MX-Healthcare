@@ -5,23 +5,18 @@ import {
   Autocomplete,
   Paper,
   Popper,
-  Tooltip,
-  IconButton,
   FormControlLabel,
   Checkbox,
   Typography,
   Button,
   useMediaQuery,
-  Snackbar,
-  SnackbarContent,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { styled } from "@mui/system";
 import countries from "../../../../dev-data/CountyData.json";
 import professions from "../../../../dev-data/Profession.json";
-import InfoIcon from "@mui/icons-material/Info";
 import SendIcon from "@mui/icons-material/Send";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../../assets/css/PersonalDetails.css";
 import axios from "axios";
 
@@ -48,13 +43,8 @@ const PersonalDetails = ({
   profession,
   email,
 }) => {
-  const [country, setCountry] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [err, setErr] = useState("");
 
   const navigate = useNavigate();
 
@@ -93,35 +83,6 @@ const PersonalDetails = ({
     }
   };
 
-  // const onSubmit = async (data) => {
-  //   const personalDetails = {
-  //     firstName: data.firstName,
-  //     lastName: data.lastName,
-  //     email: data.email,
-  //     country:data.country,
-  //     profession:data.profession,
-  //     medicalNo:data.Medical
-  //   };
-  //   const isValid = await trigger();
-  //   if (isValid) {
-  //     axios
-  //       .post("http://127.0.0.1:3000/api/personalDetails", personalDetails)
-  //       .then((response) => {
-  //         console.log("Response:", response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //         setSnackbarMessage(error.messaage);
-  //         setSnackbarOpen(true);
-  //       });
-
-  //     navigate("/professional");
-  //     setActiveStep(activeStep + 1);
-  //   } else {
-  //     alert("Validation Failed");
-  //   }
-  // };
-
   const onSubmit = async (data) => {
     const personalDetails = {
       firstName: data.firstName,
@@ -133,6 +94,7 @@ const PersonalDetails = ({
     };
 
     const isValid = await trigger();
+
     if (isValid) {
       try {
         const response = await axios.post(
@@ -143,31 +105,13 @@ const PersonalDetails = ({
         navigate("/professional");
         setActiveStep(activeStep + 1);
       } catch (error) {
-        console.error("Error:", error);
-        setSnackbarMessage(
-          error.response.data.message ===
-            "PersonalDetails validation failed: email: Email already exists"
-            ? "Email is already present in database"
-            : error.message
-        );
-        setSnackbarOpen(true);
+        setErr(error);
       }
     }
-  };
-  const handleCountryChange = (event, value) => {
-    setCountry(value);
   };
 
   const handleProfessionChange = (event, value) => {
     setProfession(value);
-  };
-
-  const truncateText = (text, wordLimit) => {
-    const words = text.split(" ");
-    if (words.length > wordLimit) {
-      return words.slice(0, wordLimit).join(" ") + "...";
-    }
-    return text;
   };
 
   return (
@@ -186,7 +130,6 @@ const PersonalDetails = ({
               className="form-input"
               sx={{ mb: 2 }}
               onKeyDown={(e) => handleKeyDown(e, firstNameRef, lastNameRef)}
-              onChange={(e) => setFirstName(e.target.value)}
             />
             <TextField
               inputRef={passwordRef}
@@ -235,13 +178,44 @@ const PersonalDetails = ({
               sx={{ mb: 2 }}
               onKeyDown={(e) => handleKeyDown(e, emailRef, confirmEmailRef)}
             />
+            {console.log("this is error: ", err)}
+            {err ? (
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "18px",
+                  color: "red",
+                  pt: 2,
+                  pb: 2,
+                  mt: -3,
+                  textAlign: "left",
+                }}
+              >
+                {err.response.data.message ===
+                "PersonalDetails validation failed: email: Email already exists" ? (
+                  <>
+                    Email is already exist in the database.{" "}
+                    <Link
+                      to="/professional"
+                      style={{ color: "red", textDecoration: "underline" }}
+                    >
+                      Click here to complete your profile
+                    </Link>
+                  </>
+                ) : (
+                  err.message
+                )}
+              </Typography>
+            ) : (
+              ""
+            )}
+
             <Autocomplete
               fullWidth
               disablePortal={false}
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={countries.map((item) => item.country)}
-              onChange={handleCountryChange}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -270,7 +244,6 @@ const PersonalDetails = ({
               className="form-input"
               sx={{ mb: 2 }}
               onKeyDown={(e) => handleKeyDown(e, lastNameRef, passwordRef)}
-              onChange={(e) => setLastName(e.target.value)}
             />
             <TextField
               inputRef={confirmPasswordRef}
@@ -307,7 +280,6 @@ const PersonalDetails = ({
               className="form-input"
               sx={{ mb: 2 }}
               onKeyDown={(e) => handleKeyDown(e, confirmEmailRef, countryRef)}
-              onChange={(e) => setConfirmEmail(e.target.value)}
             />
             <Autocomplete
               fullWidth
@@ -317,20 +289,6 @@ const PersonalDetails = ({
               onChange={handleProfessionChange}
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
-              renderOption={(props, option) => (
-                <li {...props}>
-                  <span className="truncate-text">
-                    {truncateText(option.profession, 10)}
-                  </span>
-                  {option.profession.split(" ").length > 10 && (
-                    <Tooltip title={option.profession}>
-                      <IconButton size="small" sx={{ ml: 1, color: "#1359a0" }}>
-                        <InfoIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </li>
-              )}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -440,7 +398,6 @@ const PersonalDetails = ({
               {errors.termsAgreement.message}
             </Typography>
           )}
-
           <Controller
             name="ageConfirmation"
             control={control}
@@ -481,19 +438,16 @@ const PersonalDetails = ({
             Continue
           </Button>
         </Box>
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={() => setSnackbarOpen(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <SnackbarContent
-            message={snackbarMessage}
-            onClose={() => setSnackbarOpen(false)}
-            sx={{ backgroundColor: "error.main" }}
-          />
-        </Snackbar>
       </form>
+      <Typography variant="body1" sx={{ color: "blue", p: 3, textAlign:"center", fontSize:"17px" }}>
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          style={{ color: "blue", textDecoration: "underline" }}
+        >
+          Click here to login
+        </Link>
+      </Typography>
     </Box>
   );
 };
