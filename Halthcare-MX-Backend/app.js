@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const app = express();
 const cors = require("cors")
 const personalRouter  = require("./routes/PersonalDetails")
+const professionalRouter = require('./routes/ProfessionalDetails')
 
 app.use(cors());
 
@@ -18,5 +19,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/personalDetails", personalRouter)
+app.use("/api/professionalDetails", professionalRouter)
 
 module.exports = app;

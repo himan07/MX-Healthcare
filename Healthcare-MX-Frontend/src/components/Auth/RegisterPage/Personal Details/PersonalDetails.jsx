@@ -439,7 +439,7 @@ const PersonalDetails = ({
           </Button>
         </Box>
       </form>
-      <Typography variant="body1" sx={{ color: "blue", p: 3, textAlign:"center", fontSize:"17px" }}>
+      <Typography variant="body1" sx={{ color: "blue", p: 3,mt:2, textAlign:"center", fontSize:"17px" }}>
         Already have an account?{" "}
         <Link
           to="/login"

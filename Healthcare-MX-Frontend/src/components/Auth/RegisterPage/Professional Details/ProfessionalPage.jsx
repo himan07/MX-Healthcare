@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SendIcon from "@mui/icons-material/Send";
 import CustomFileUploader from "../../../../CustomeFileUploader";
+import axios from "axios";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -35,7 +36,7 @@ const StyledPaper = styled(Paper)({
 
 const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
   console.log("profession: ", profession);
-  const [country, setCountry] = useState("");
+  const [speciality, setSpeciality] = useState("");
   const navigate = useNavigate();
 
   // Handling keyboard actions
@@ -64,9 +65,27 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
 
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const onSubmit = (data) => {
-    navigate("/contactPage");
-    setActiveStep(activeStep + 1);
+  const onSubmit = async (data) => {
+    console.log(data)
+    const professionalInfo = {
+      specialty: speciality,
+      image: data.image,
+      nameOfOrganization: data.organisation,
+      officialEmail: data.email,
+      state: data.state,
+      yearsOfPractice: data.experience,
+    };
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:3000/api/professionalDetails",
+        professionalInfo
+      );
+      console.log(response)
+      navigate("/contactPage");
+      setActiveStep(activeStep + 1);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleBack = () => {
@@ -93,8 +112,6 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
     return [];
   };
 
-  const options = getOptions();
-
   return (
     <Box
       sx={{
@@ -116,6 +133,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={getOptions()}
+              onChange={(e) => setSpeciality(e.target.value)}
               getOptionLabel={(option) => option || "Unknown"}
               renderInput={(params) => (
                 <TextField
@@ -124,6 +142,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
                   variant="outlined"
                   inputRef={organisationNameRef}
                 />
+              
               )}
               sx={{ mb: 2 }}
             />
