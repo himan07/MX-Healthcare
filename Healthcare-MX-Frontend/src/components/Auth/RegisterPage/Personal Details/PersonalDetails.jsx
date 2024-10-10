@@ -42,6 +42,7 @@ const PersonalDetails = ({
   setProfession,
   profession,
   email,
+  setCountry,
 }) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -193,7 +194,7 @@ const PersonalDetails = ({
                 {err.response.data.message ===
                 "PersonalDetails validation failed: email: Email already exists" ? (
                   <>
-                    Email  already exists.{" "}
+                    Email already exists.{" "}
                     <Link
                       to="/professional"
                       style={{ color: "red", textDecoration: "underline" }}
@@ -215,6 +216,7 @@ const PersonalDetails = ({
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={countries.map((item) => item.country)}
+              onChange={(e) => setCountry(e.target.value)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -438,7 +440,16 @@ const PersonalDetails = ({
           </Button>
         </Box>
       </form>
-      <Typography variant="body1" sx={{ color: "blue", p: 3,mt:2, textAlign:"center", fontSize:"17px" }}>
+      <Typography
+        variant="body1"
+        sx={{
+          color: "blue",
+          p: 3,
+          mt: 2,
+          textAlign: "center",
+          fontSize: "17px",
+        }}
+      >
         Already have an account?{" "}
         <Link
           to="/login"

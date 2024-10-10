@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/system";
-import countries from "../../../../dev-data/CountyData.json";
+import states from "../../../../dev-data/states.json";
 import specialities from "../../../../dev-data/Specialities.json";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -35,8 +35,9 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
+const ProfessionalPage = ({ activeStep, setActiveStep, profession, country }) => {
   console.log("profession: ", profession);
+  console.log("country: ",country )
   const [speciality, setSpeciality] = useState("");
   const [err, setErr] = useState("");
 
@@ -115,6 +116,12 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
     }
     return [];
   };
+
+  const getStates = () => {
+    if(country.country === "India"){
+      return states.data.India
+    }
+  }
 
   return (
     <Box
@@ -222,7 +229,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep, profession }) => {
               disablePortal={false}
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
-              options={countries.map((item) => item.country)}
+              options={getStates()}
               renderInput={(params) => (
                 <TextField
                   {...params}

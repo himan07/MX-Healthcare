@@ -29,6 +29,7 @@ const Registration = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
+  const [country, setCountry] = useState("")
 
   useEffect(() => {
     const path = location.pathname;
@@ -89,6 +90,7 @@ const Registration = () => {
                   setProfession={setProfession}
                   profession={profession}
                   email={email}
+                  setCountry = {setCountry}
                 />
               }
             />
@@ -99,6 +101,7 @@ const Registration = () => {
                   activeStep={activeStep}
                   setActiveStep={handleStepChange}
                   profession={profession}
+                  country={country}
                 />
               }
             />
