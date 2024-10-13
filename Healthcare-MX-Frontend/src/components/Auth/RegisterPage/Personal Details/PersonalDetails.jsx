@@ -191,7 +191,7 @@ const PersonalDetails = ({
                   textAlign: "left",
                 }}
               >
-                {err.response.data.message ===
+                {err.response?.data?.message ===
                 "PersonalDetails validation failed: email: Email already exists" ? (
                   <>
                     Email already exists.{" "}

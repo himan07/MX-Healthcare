@@ -1,9 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-const cors = require("cors")
-const personalRouter  = require("./routes/PersonalDetails")
-const professionalRouter = require('./routes/ProfessionalDetails')
+const cors = require("cors");
+const personalRouter = require("./routes/PersonalDetails");
+const professionalRouter = require("./routes/ProfessionalDetails");
+const ImageRouter = require("./routes/uploadImage");
 
 app.use(cors());
 
@@ -18,7 +19,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/personalDetails", personalRouter)
-app.use("/api/professionalDetails", professionalRouter)
+app.use("/api/personalDetails", personalRouter);
+app.use("/api/professionalDetails", professionalRouter);
+app.use("/api/uploadImage", ImageRouter);
 
 module.exports = app;
