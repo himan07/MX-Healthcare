@@ -70,7 +70,7 @@ exports.uploadImage = (req, res) => {
       if (existingCertificate) {
         return res.status(400).json({
           status: "fail",
-          message: "Certificate with this number already exists",
+          message: "This certificate number is already in use.",
         });
       }
 

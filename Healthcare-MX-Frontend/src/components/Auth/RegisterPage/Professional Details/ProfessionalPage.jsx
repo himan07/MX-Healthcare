@@ -124,7 +124,7 @@ const ProfessionalPage = ({
 
   const getStates = () => {
     if (country.country === "India") {
-      return states.data.India;
+      return states?.data?.India;
     }
   };
 
