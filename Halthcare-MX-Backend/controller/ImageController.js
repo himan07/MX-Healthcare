@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
-const tesseract = require("tesseract.js"); 
+const tesseract = require("tesseract.js");
 const Image = require("../modal/ImageUpload");
 
 // Storage configuration for Multer
@@ -47,10 +47,15 @@ exports.uploadImage = (req, res) => {
         });
       }
 
-      const imagePath = path.join(__dirname, `../Public/Images/${req.file.filename}`);
+      const imagePath = path.join(
+        __dirname,
+        `../Public/Images/${req.file.filename}`
+      );
 
-      const { data: { text } } = await tesseract.recognize(imagePath, 'eng');
-      
+      const {
+        data: { text },
+      } = await tesseract.recognize(imagePath, "eng");
+
       const certificateNumberMatch = text.match(/Certificate No\s*:\s*(\S+)/);
 
       if (!certificateNumberMatch) {
@@ -59,7 +64,7 @@ exports.uploadImage = (req, res) => {
           message: "Could not find a valid certificate number in the image",
         });
       }
-      const certificateNumber = certificateNumberMatch[1];;
+      const certificateNumber = certificateNumberMatch[1];
 
       const existingCertificate = await Image.findOne({ certificateNumber });
       if (existingCertificate) {
@@ -69,7 +74,9 @@ exports.uploadImage = (req, res) => {
         });
       }
 
-      const imageUrl = `${req.protocol}://${req.get("host")}/Public/Images/${req.file.filename}`;
+      const imageUrl = `${req.protocol}://${req.get("host")}/Public/Images/${
+        req.file.filename
+      }`;
 
       const Images = await Image.create({ imageUrl, certificateNumber });
 
