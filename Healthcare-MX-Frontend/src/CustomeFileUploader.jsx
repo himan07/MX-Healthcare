@@ -13,7 +13,7 @@ import axios from "axios";
 const CustomeFileUploader = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState(null);
+  const [err, setErr] = useState(null);
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -28,7 +28,7 @@ const CustomeFileUploader = () => {
     formData.append("image", file);
 
     setUploading(true);
-    setError(null);
+    setErr(null);
 
     try {
       const response = await axios.post(
@@ -44,8 +44,7 @@ const CustomeFileUploader = () => {
       alert("File uploaded successfully!");
       setFile(null);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      setError("File upload failed. Please try again.");
+      setErr(error);
     } finally {
       setUploading(false);
     }
@@ -97,9 +96,9 @@ const CustomeFileUploader = () => {
           </Grid>
         )}
 
-        {error && (
+        {err && (
           <Typography color="error" sx={{ mt: 2 }}>
-            {error}
+            {err.response.data.message}
           </Typography>
         )}
 

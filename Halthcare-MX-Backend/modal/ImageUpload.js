@@ -1,9 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const imageSchema = new mongoose.Schema({
-  imageUrl: String
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  certificateNumber: {
+    type: String,
+    required: true,
+  },
 });
 
-const Image = mongoose.model('image', imageSchema);
+const Image = mongoose.model("image", imageSchema);
 
 module.exports = Image;
