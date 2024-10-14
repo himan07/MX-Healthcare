@@ -8,10 +8,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
 
 const CustomeFileUploader = () => {
-  const [file, setFile] = useState(null); 
+  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(null);
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -19,13 +21,34 @@ const CustomeFileUploader = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
     setUploading(true);
-    setTimeout(() => {
+    setError(null);
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:3000/api/uploadImage",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File uploaded successfully:", response.data);
       alert("File uploaded successfully!");
-      setFile(null); 
+      setFile(null);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setError("File upload failed. Please try again.");
+    } finally {
       setUploading(false);
-    }, 1000);
+    }
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -66,15 +89,18 @@ const CustomeFileUploader = () => {
                 }}
               >
                 <Typography>{file.name}</Typography>
-                <Button
-                  color="secondary"
-                  onClick={() => setFile(null)} 
-                >
+                <Button color="secondary" onClick={() => setFile(null)}>
                   Remove
                 </Button>
               </Paper>
             </Grid>
           </Grid>
+        )}
+
+        {error && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
         )}
 
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2 }}>
