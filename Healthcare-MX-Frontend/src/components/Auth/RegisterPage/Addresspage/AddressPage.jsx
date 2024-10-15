@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/system";
+import axios from "axios"; 
 import countries from "../../../../dev-data/CountyData.json";
 
 const StyledPopper = styled(Popper)({
@@ -30,7 +31,7 @@ const StyledPaper = styled(Paper)({
 
 const AddressPage = () => {
   const [country, setCountry] = useState("");
-  const [state, setState] = useState("");  
+  const [state, setState] = useState("");
 
   const addressRef = useRef(null);
   const cityRef = useRef(null);
@@ -58,8 +59,21 @@ const AddressPage = () => {
 
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const onSubmit = (data) => {
-    console.log("Form Data Submitted:", data);
+  const onSubmit = async (data) => {
+    data.country = country;
+    data.state = state;
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:3000/api/address",
+        data
+      );
+      console.log("Form Data Submitted:", response.data);
+      alert("Address saved successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to submit the address");
+    }
   };
 
   const handleCountryChange = (event, value) => {

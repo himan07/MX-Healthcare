@@ -8,91 +8,91 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
-const IdentityPage = () => {
-  const [files, setFiles] = useState([]);
-  const [uploading, setUploading] = useState(false);
+const CustomeFileUploader = () => {
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
 
   const onDrop = (acceptedFiles) => {
-    const filteredFiles = acceptedFiles.filter((file) => {
-      if (files.find((f) => f.name === file.name)) {
-        alert(`File ${file.name} is already added!`);
-        return false;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        alert(`File ${file.name} exceeds the 5MB limit.`);
-        return false;
-      }
-      return true;
-    });
-    setFiles((prev) => [...prev, ...filteredFiles]);
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("identity", file);
+
     setUploading(true);
-    setTimeout(() => {
-      alert("Files uploaded successfully!");
+    setErr(null);
 
-      setFiles([]);
-      setUploading(false);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:3000/api/uploadIdentity",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("File uploaded successfully");
       navigate("/address");
-    }, 1000);
+      setUploadedFileName(file.name);
+      setFile(null);
+    } catch (error) {
+      setErr(error);
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    disabled: uploading,
-    accept: {
-      "image/*": [".jpeg", ".png", ".jpg", ".gif", ".bmp"],
-      "application/pdf": [".pdf"],
-    },
-    maxSize: MAX_FILE_SIZE,
+    maxFiles: 1,
   });
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center", 
-        alignItems: "center", 
-        height: "calc(100vh - 210px)",
-      }}
-    >
-      <Paper elevation={2} sx={{ p: 4, mb: 0, mt: 4 }}>
-        <Typography variant="h6" align="left" gutterBottom>
-          Upload Your Identity
-        </Typography>
-        <Box
-          {...getRootProps()}
-          sx={{
-            border: "2px dashed #1359a0",
-            p: 6,
-            mb: 4,
-            textAlign: "center",
-            cursor: "pointer",
-            backgroundColor: isDragActive ? "#f0f0f0" : "transparent",
-            pointerEvents: uploading ? "none" : "auto",
-          }}
-        >
-          <input {...getInputProps()} />
-          <Typography>
-            {isDragActive
-              ? "Drop files here..."
-              : "Drag & drop files here, or click to select files"}
+    <Box sx={{ width: "80%", mx: "auto", mt: 2 }}>
+      {uploadedFileName ? (
+        <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", mt: 0.5, color: "#1359a0" }}
+          >
+            Uploaded file: {uploadedFileName}
           </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Only images (jpeg, png, jpg, gif, bmp) and PDFs are allowed. Max
-            size: 5MB
+        </Paper>
+      ) : (
+        <Paper elevation={2} sx={{ p: 1, px: 2, mb: 2 }}>
+          <Typography variant="h6" align="left" sx={{ pb: 2 }} gutterBottom>
+            Upload your Identity
           </Typography>
-        </Box>
-        {files.length > 0 && (
-          <Grid container spacing={1} sx={{ mt: 2 }}>
-            {files.map((file) => (
-              <Grid item xs={12} key={file.name}>
+
+          <Box
+            {...getRootProps()}
+            sx={{
+              border: "2px dashed #1359a0",
+              p: 2,
+              mb: 2,
+              textAlign: "center",
+              cursor: "pointer",
+            }}
+          >
+            <input {...getInputProps()} />
+            <Typography>Drag & drop a file here, or click to upload</Typography>
+          </Box>
+
+          {file && (
+            <Grid container spacing={1} sx={{ mt: 2 }}>
+              <Grid item xs={12}>
                 <Paper
                   sx={{
                     p: 1,
@@ -101,32 +101,36 @@ const IdentityPage = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography noWrap>{file.name}</Typography>
-                  <Button
-                    color="secondary"
-                    onClick={() =>
-                      setFiles((prev) => prev.filter((f) => f !== file))
-                    }
-                  >
+                  <Typography>{file.name}</Typography>
+                  <Button color="secondary" onClick={() => setFile(null)}>
                     Remove
                   </Button>
                 </Paper>
               </Grid>
-            ))}
-          </Grid>
-        )}
-        <Button
-          variant="contained"
-          onClick={handleUpload}
-          disabled={files.length === 0 || uploading}
-          sx={{ mt: 2, mb: 4, width: "100%", backgroundColor: "#1359a0" }}
-          size="large"
-        >
-          {uploading ? <CircularProgress size={24} /> : "Upload"}
-        </Button>
-      </Paper>
+            </Grid>
+          )}
+
+          {err && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {err.response?.data?.message || "Upload failed"}
+            </Typography>
+          )}
+
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleUpload}
+              disabled={!file || uploading}
+              sx={{ width: "60%", backgroundColor: "#1359a0" }}
+              size="medium"
+            >
+              {uploading ? <CircularProgress size={24} /> : "Upload"}
+            </Button>
+          </Box>
+        </Paper>
+      )}
     </Box>
   );
 };
 
-export default IdentityPage;
+export default CustomeFileUploader;

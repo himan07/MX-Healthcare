@@ -10,30 +10,69 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../../../firebase";
+
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 const ContactPage = ({ activeStep, setActiveStep }) => {
   const [getOtp, setGetOtp] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState(null);
 
   const email = localStorage.getItem("userEmail");
-
   const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!getOtp) {
-      console.log("Mobile Number Submitted:", data.mobile);
-      setGetOtp(true);
+      sendOtp(data.mobile);
     } else {
-      console.log("OTP Submitted:", data.otp);
-      handleVerifyOtp();
+      verifyOtp(data.otp);
     }
+  };
+
+  const sendOtp = (mobile) => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible", 
+          callback: (response) => {
+            console.log("reCAPTCHA solved:", response);
+          },
+          'expired-callback': () => {
+            console.log("reCAPTCHA expired. Please solve it again.");
+          },
+        },
+        auth
+      );
+    }
+
+    const appVerifier = window.recaptchaVerifier;
+    const phoneNumber = `+91${mobile}`;  
+  
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      .then((confirmation) => {
+        setConfirmationResult(confirmation);
+        setGetOtp(true);
+        console.log("OTP sent successfully");
+      })
+      .catch((error) => {
+        console.error("Error during signInWithPhoneNumber:", error);
+      });
+  };
+  
+
+  const verifyOtp = (otp) => {
+    confirmationResult
+      .confirm(otp)
+      .then((result) => {
+        console.log("OTP verified successfully", result.user);
+        handleVerifyOtp();
+      })
+      .catch((error) => {
+        console.log("Error verifying OTP:", error);
+      });
   };
 
   const handleVerifyOtp = () => {
@@ -94,6 +133,7 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                       helperText={errors.mobile ? errors.mobile.message : ""}
                       sx={{ mb: 2 }}
                     />
+                   <div id="recaptcha-container"></div>
                   </>
                 )}
 

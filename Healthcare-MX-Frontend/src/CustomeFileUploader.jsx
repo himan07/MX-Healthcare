@@ -14,6 +14,7 @@ const CustomeFileUploader = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null); 
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -41,8 +42,8 @@ const CustomeFileUploader = () => {
         }
       );
       console.log("File uploaded successfully:", response.data);
-      alert("File uploaded successfully!");
-      setFile(null);
+      setUploadedFileName(file.name); 
+      setFile(null); 
     } catch (error) {
       setErr(error);
     } finally {
@@ -57,63 +58,71 @@ const CustomeFileUploader = () => {
 
   return (
     <Box sx={{ width: "100%", mx: "auto", mt: 2 }}>
-      <Paper elevation={2} sx={{ p: 1, px: 2, mb: 2 }}>
-        <Typography variant="h6" align="left" sx={{ pb: 2 }} gutterBottom>
-          Upload your medical certificate
+      {uploadedFileName ? (
+         <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
+        <Typography variant="h6" sx={{ textAlign: "center", mt: 0.5, color:"#1359a0" }}>
+          Uploaded file:   {uploadedFileName}
         </Typography>
-
-        <Box
-          {...getRootProps()}
-          sx={{
-            border: "2px dashed #1359a0",
-            p: 2,
-            mb: 2,
-            textAlign: "center",
-            cursor: "pointer",
-          }}
-        >
-          <input {...getInputProps()} />
-          <Typography>Drag & drop a file here, or click to upload</Typography>
-        </Box>
-
-        {file && (
-          <Grid container spacing={1} sx={{ mt: 2 }}>
-            <Grid item xs={12}>
-              <Paper
-                sx={{
-                  p: 1,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Typography>{file.name}</Typography>
-                <Button color="secondary" onClick={() => setFile(null)}>
-                  Remove
-                </Button>
-              </Paper>
-            </Grid>
-          </Grid>
-        )}
-
-        {err && (
-          <Typography color="error" sx={{ mt: 2 }}>
-            {err.response.data.message}
+        </Paper>
+      ) : (
+        <Paper elevation={2} sx={{ p: 1, px: 2, mb: 2 }}>
+          <Typography variant="h6" align="left" sx={{ pb: 2 }} gutterBottom>
+            Upload your medical certificate
           </Typography>
-        )}
 
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2 }}>
-          <Button
-            variant="contained"
-            onClick={handleUpload}
-            disabled={!file || uploading}
-            sx={{ width: "60%", backgroundColor: "#1359a0" }}
-            size="medium"
+          <Box
+            {...getRootProps()}
+            sx={{
+              border: "2px dashed #1359a0",
+              p: 2,
+              mb: 2,
+              textAlign: "center",
+              cursor: "pointer",
+            }}
           >
-            {uploading ? <CircularProgress size={24} /> : "Upload"}
-          </Button>
-        </Box>
-      </Paper>
+            <input {...getInputProps()} />
+            <Typography>Drag & drop a file here, or click to upload</Typography>
+          </Box>
+
+          {file && (
+            <Grid container spacing={1} sx={{ mt: 2 }}>
+              <Grid item xs={12}>
+                <Paper
+                  sx={{
+                    p: 1,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography>{file.name}</Typography>
+                  <Button color="secondary" onClick={() => setFile(null)}>
+                    Remove
+                  </Button>
+                </Paper>
+              </Grid>
+            </Grid>
+          )}
+
+          {err && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {err.response?.data?.message || "Upload failed"}
+            </Typography>
+          )}
+
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleUpload}
+              disabled={!file || uploading}
+              sx={{ width: "60%", backgroundColor: "#1359a0" }}
+              size="medium"
+            >
+              {uploading ? <CircularProgress size={24} /> : "Upload"}
+            </Button>
+          </Box>
+        </Paper>
+      )}
     </Box>
   );
 };
