@@ -56,10 +56,10 @@ exports.uploadIdentity = (req, res) => {
 
       const identityPattern = /(?:\d[\s-]*){11,}/g;
       const IdentityInformation = text.match(identityPattern);
-      const IdentityInfo = IdentityInformation.map(digits => digits.replace(/\s+/g, '').trim());
-      console.log("longDigits: ",IdentityInfo)
-      
-
+      const IdentityInfo = IdentityInformation.map((digits) =>
+        digits.replace(/\s+/g, "").trim()
+      );
+      console.log("longDigits: ", IdentityInfo);
 
       if (!IdentityInformation) {
         return res.status(400).json({
@@ -68,8 +68,6 @@ exports.uploadIdentity = (req, res) => {
         });
       }
       const IdentityInfoNumber = IdentityInfo[0];
-      console.log("IdentityInfoNumber: ", IdentityInfoNumber);
-      
 
       const existingIdentity = await Identity.findOne({ IdentityInfoNumber });
       if (existingIdentity) {
