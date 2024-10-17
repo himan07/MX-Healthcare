@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/system";
-import axios from "axios"; 
+import axios from "axios";
 import countries from "../../../../dev-data/CountyData.json";
 
 const StyledPopper = styled(Popper)({
@@ -80,10 +80,6 @@ const AddressPage = () => {
     setCountry(value);
   };
 
-  const handleStateChange = (event, value) => {
-    setState(value);
-  };
-
   return (
     <Box
       sx={{
@@ -128,28 +124,19 @@ const AddressPage = () => {
               onKeyDown={(e) => handleKeyDown(e, cityRef, stateRef)}
             />
 
-            <Autocomplete
+            <TextField
+              variant="outlined"
               fullWidth
-              disablePortal={false}
-              PopperComponent={(props) => <StyledPopper {...props} />}
-              PaperComponent={(props) => <StyledPaper {...props} />}
-              options={countries.map((item) => item.country)}
-              getOptionLabel={(option) => option || ""}
-              onChange={handleStateChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  inputRef={stateRef}
-                  label="State"
-                  variant="outlined"
-                  error={!!errors.state}
-                  helperText={errors.state ? errors.state.message : ""}
-                  onKeyDown={(e) => handleKeyDown(e, stateRef, countyRef)}
-                />
-              )}
+              inputRef={cityRef}
+              label="State"
+              {...register("state", {
+                required: "State is required",
+              })}
+              error={!!errors.state}
+              helperText={errors.state ? errors.state.message : ""}
               sx={{ mb: 2 }}
+              onKeyDown={(e) => handleKeyDown(e, stateRef, countyRef)}
             />
-
             <Autocomplete
               fullWidth
               disablePortal={false}
