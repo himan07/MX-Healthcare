@@ -35,14 +35,9 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const ProfessionalPage = ({
-  activeStep,
-  setActiveStep,
-  profession,
-  country,
-}) => {
-  console.log("profession: ", profession);
-  console.log("country: ", country);
+const ProfessionalPage = ({ activeStep, setActiveStep }) => {
+  const profession = localStorage.getItem("profession");
+  const country = localStorage.getItem("country");
   const [speciality, setSpeciality] = useState("");
   const [err, setErr] = useState("");
 
@@ -104,27 +99,67 @@ const ProfessionalPage = ({
   };
 
   const getOptions = () => {
-    if (profession.profession === "Doctor/HCP") {
+    if (profession === "Doctor/HCP") {
       return specialities.data.doctors;
-    } else if (profession.profession === "Nursing") {
+    } else if (profession === "Nursing") {
       return specialities.data.nurses;
-    } else if (profession.profession === "Lab Tech (Radio)") {
+    } else if (profession === "Lab Tech (Radio)") {
       return specialities.data.labTech;
-    } else if (profession.profession === "Non Clinical HCP") {
+    } else if (profession === "Non Clinical HCP") {
       return specialities.data.nonClinicalHcp;
-    } else if (profession.profession === "Pharmacy") {
+    } else if (profession === "Pharmacy") {
       return specialities.data.pharmacySpecialities;
-    } else if (profession.profession === "Public Health") {
+    } else if (profession === "Public Health") {
       return specialities.data.publicHealthSpecialities;
-    } else if (profession.profession === "Medical Student") {
+    } else if (profession === "Medical Student") {
       return specialities.data.medicalSpecialities;
     }
     return [];
   };
 
+  console.log("country.country", country);
+
   const getStates = () => {
-    if (country.country === "India") {
+    if (country === "India") {
       return states?.data?.India;
+    } else if (country === "United States") {
+      return states?.data?.us;
+    } else if (country === "Germany") {
+      return states?.data?.Germany;
+    } else if (country === "Switzerland") {
+      return states?.data?.Switzerland;
+    } else if (country === "Singapore") {
+      return states?.data?.singapore;
+    } else if (country === "Japan") {
+      return states?.data?.japan;
+    } else if (country === "United Kingdom") {
+      return states?.data?.uk;
+    } else if (country === "France") {
+      return states?.data?.France;
+    } else if (country === "Canada") {
+      return states?.data?.Canada;
+    } else if (country === "South Korea") {
+      return states?.data?.SouthKorea;
+    } else if (country === "China") {
+      return states?.data?.china;
+    } else if (country === "Israel") {
+      return states?.data?.Israel;
+    } else if (country === "Australia") {
+      return states?.data?.Australia;
+    } else if (country === "Netherlands") {
+      return states?.data?.Netherlands;
+    } else if (country === "Sweden") {
+      return states?.data?.sweden;
+    } else if (country === "Italy") {
+      return states?.data?.Italy;
+    } else if (country === "Belgium") {
+      return states?.data?.belgium;
+    } else if (country === "Brazil") {
+      return states?.data?.brazil;
+    } else if (country === "Thailand") {
+      return states?.data?.Thiland;
+    } else if (country === "Mexico") {
+      return states?.data?.mexico;
     }
   };
 
@@ -211,7 +246,7 @@ const ProfessionalPage = ({
                 }}
               >
                 {err.response.data.message ===
-                "ProfessionalDetails validation failed: specialty: Path `specialty` is required., officialEmail: Email already exists" ? (
+                "ProfessionalDetails validation failed: officialEmail: Email already exists" ? (
                   <>
                     Email already exists.{" "}
                     <Link
@@ -222,7 +257,7 @@ const ProfessionalPage = ({
                     </Link>
                   </>
                 ) : (
-                  err.message
+                  err.response.data.message
                 )}
               </Typography>
             ) : (

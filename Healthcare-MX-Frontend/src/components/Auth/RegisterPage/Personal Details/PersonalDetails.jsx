@@ -40,7 +40,6 @@ const PersonalDetails = ({
   setActiveStep,
   setEmail,
   setProfession,
-  profession,
   email,
   setCountry,
 }) => {
@@ -60,6 +59,7 @@ const PersonalDetails = ({
   } = useForm();
 
   const isMobile = useMediaQuery("(max-width:600px)");
+  const profession = localStorage.getItem("profession")
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -216,7 +216,9 @@ const PersonalDetails = ({
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={countries.map((item) => item.country)}
-              onChange={(e) => setCountry(e.target.value)}
+              onChange={(event, value) => {
+                localStorage.setItem("country", value);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -287,7 +289,11 @@ const PersonalDetails = ({
               disablePortal={true}
               options={professions}
               getOptionLabel={(option) => option.profession}
-              onChange={handleProfessionChange}
+              onChange={(event, value) => {
+                if (value) {
+                  localStorage.setItem("profession", value.profession);
+                }
+              }}
               PopperComponent={(props) => <StyledPopper {...props} />}
               PaperComponent={(props) => <StyledPaper {...props} />}
               renderInput={(params) => (

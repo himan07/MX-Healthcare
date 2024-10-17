@@ -38,6 +38,6 @@ const personalDetailSchema = new mongoose.Schema({
   },
 });
 
-const Profession = mongoose.model("PersonalDetails", personalDetailSchema);
+const PersonalDetail = mongoose.model("PersonalDetails", personalDetailSchema);
 
-module.exports = Profession;
+module.exports = PersonalDetail;

@@ -3,6 +3,7 @@ const fs = require("fs");
 const multer = require("multer");
 const tesseract = require("tesseract.js");
 const Image = require("../modal/ImageUpload");
+const PersonalDetail = require("../modal/PersonalDetails");
 
 // Storage configuration for Multer
 const storage = multer.diskStorage({
@@ -65,12 +66,24 @@ exports.uploadImage = (req, res) => {
         });
       }
       const certificateNumber = certificateNumberMatch[1];
+      const personalDetail = await PersonalDetail.findOne({
+        medicalNo: certificateNumber,
+      });
+
+      console.log("personalDetailMedicalNo:", personalDetail.medicalNo);
 
       const existingCertificate = await Image.findOne({ certificateNumber });
       if (existingCertificate) {
         return res.status(400).json({
           status: "fail",
           message: "This certificate number is already in use.",
+        });
+      }
+
+      if (personalDetail.medicalNo !== certificateNumber) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Certificate does not match!",
         });
       }
 

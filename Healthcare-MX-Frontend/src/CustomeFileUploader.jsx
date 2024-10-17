@@ -14,7 +14,7 @@ const CustomeFileUploader = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState(null);
-  const [uploadedFileName, setUploadedFileName] = useState(null); 
+  const [uploadedFileName, setUploadedFileName] = useState(null);
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -41,11 +41,11 @@ const CustomeFileUploader = () => {
           },
         }
       );
-      console.log("File uploaded successfully:", response.data);
-      setUploadedFileName(file.name); 
-      setFile(null); 
+      setUploadedFileName(file.name);
+      setFile(null);
     } catch (error) {
       setErr(error);
+      console.log(error);
     } finally {
       setUploading(false);
     }
@@ -59,10 +59,13 @@ const CustomeFileUploader = () => {
   return (
     <Box sx={{ width: "100%", mx: "auto", mt: 2 }}>
       {uploadedFileName ? (
-         <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
-        <Typography variant="h6" sx={{ textAlign: "center", mt: 0.5, color:"#1359a0" }}>
-          Uploaded file:   {uploadedFileName}
-        </Typography>
+        <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", mt: 0.5, color: "#1359a0" }}
+          >
+            Uploaded file: {uploadedFileName}
+          </Typography>
         </Paper>
       ) : (
         <Paper elevation={2} sx={{ p: 1, px: 2, mb: 2 }}>
@@ -106,7 +109,10 @@ const CustomeFileUploader = () => {
 
           {err && (
             <Typography color="error" sx={{ mt: 2 }}>
-              {err.response?.data?.message || "Upload failed"}
+              {err.response?.data?.message ===
+              "Cannot read properties of null (reading 'medicalNo')"
+                ? "The provided certificate number does not correspond to any personal details."
+                : err.response?.data?.message}
             </Typography>
           )}
 
