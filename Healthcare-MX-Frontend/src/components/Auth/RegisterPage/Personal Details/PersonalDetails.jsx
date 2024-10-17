@@ -41,7 +41,6 @@ const PersonalDetails = ({
   setEmail,
   setProfession,
   email,
-  setCountry,
 }) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -111,9 +110,6 @@ const PersonalDetails = ({
     }
   };
 
-  const handleProfessionChange = (event, value) => {
-    setProfession(value);
-  };
 
   return (
     <Box className={`form-container ${isMobile ? "mobile" : ""}`}>
