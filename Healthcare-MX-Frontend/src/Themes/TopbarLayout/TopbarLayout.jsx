@@ -36,7 +36,7 @@ const TopbarLayout = () => {
               flexGrow: 1,
             }}
           >
-           XCEL MED CONNECT - World Wide Healthcare Experts Panel
+          World Wide Healthcare Experts Panel
           </Typography>
         </Toolbar>
       </AppBar>
