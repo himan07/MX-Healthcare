@@ -20,7 +20,7 @@ const Login = () => {
       width="80%"
       margin="auto"
     >
-      <Box display="flex" width="100%" height="80%">
+      <Box display="flex" width="100%" height="80%" boxShadow={3}>
         <Box
           width="50%"
           display="flex"
@@ -38,7 +38,7 @@ const Login = () => {
           />
         </Box>
 
-        <Card sx={{ boxShadow: 5, padding: 2, width: "50%" }}>
+        <Card sx={{ boxShadow: 0, padding: 2, width: "50%" }}>
           <CardContent>
             <Typography variant="h5" component="h2" align="center" gutterBottom>
               Log Into Your Account
