@@ -121,7 +121,7 @@ const CustomeFileUploader = () => {
               variant="contained"
               onClick={handleUpload}
               disabled={!file || uploading}
-              sx={{ width: "60%", backgroundColor: "#1359a0" }}
+              sx={{ width: "60%", backgroundColor: "#02003d" }}
               size="medium"
             >
               {uploading ? <CircularProgress size={24} /> : "Upload"}

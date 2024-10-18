@@ -112,7 +112,21 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                       variant="outlined"
                       fullWidth
                       value={email}
-                      sx={{ mb: 2, mt: 3 }}
+                      sx={{
+                        mb: 2,
+                        mt:3,
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: '#02003d', 
+                          },
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#02003d', 
+                          '&.Mui-focused': {
+                            color: 'none', 
+                          },
+                        },
+                      }}
                       InputProps={{
                         readOnly: true,
                       }}
@@ -131,7 +145,20 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                       })}
                       error={!!errors.mobile}
                       helperText={errors.mobile ? errors.mobile.message : ""}
-                      sx={{ mb: 2 }}
+                      sx={{
+                        mb: 2,
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: '#02003d', 
+                          },
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#02003d', 
+                          '&.Mui-focused': {
+                            color: 'none', 
+                          },
+                        },
+                      }}
                     />
                    <div id="recaptcha-container"></div>
                   </>
@@ -151,7 +178,21 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                     })}
                     error={!!errors.otp}
                     helperText={errors.otp ? errors.otp.message : ""}
-                    sx={{ mb: 2, mt: 3 }}
+                    sx={{
+                      mb: 2,
+                      mt:3,
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: '#02003d', 
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: '#02003d', 
+                        '&.Mui-focused': {
+                          color: 'none', 
+                        },
+                      },
+                    }}
                   />
                 )}
               </Grid>
@@ -164,7 +205,7 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                 type="submit"
                 fullWidth
                 sx={{
-                  backgroundColor: "#1359a0",
+                  backgroundColor: "#02003d",
                   mt: 2,
                   height: "40px",
                   px: 3,

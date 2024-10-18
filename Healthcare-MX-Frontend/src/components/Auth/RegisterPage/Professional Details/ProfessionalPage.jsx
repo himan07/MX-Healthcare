@@ -194,7 +194,20 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
                   inputRef={organisationNameRef}
                 />
               )}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
             />
 
             <Box>
@@ -212,7 +225,20 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               helperText={
                 errors.organisation ? errors.organisation.message : ""
               }
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) =>
                 handleKeyDown(e, organisationNameRef, officialEmailRef)
               }
@@ -228,7 +254,20 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               })}
               error={!!errors.email}
               helperText={errors.email ? errors.email.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) =>
                 handleKeyDown(e, officialEmailRef, practiceStateRef)
               }
@@ -278,7 +317,20 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
                   inputRef={practiceStateRef}
                 />
               )}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) =>
                 handleKeyDown(e, practiceStateRef, practiceyearRef)
               }
@@ -295,7 +347,20 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               })}
               error={!!errors.experience}
               helperText={errors.experience ? errors.experience.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, practiceyearRef, null)}
             />
           </Grid>
@@ -319,7 +384,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
             variant="contained"
             size="small"
             sx={{
-              backgroundColor: "#1359a0",
+              backgroundColor: "#02003d",
               mt: 2,
               height: "45px",
             }}

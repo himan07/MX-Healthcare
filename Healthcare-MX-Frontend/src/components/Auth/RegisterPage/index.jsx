@@ -75,7 +75,7 @@ const Registration = () => {
 
   return (
     <>
-    <img
+    {/* <img
         src={logo}
         alt="Logo"
         style={{
@@ -86,7 +86,7 @@ const Registration = () => {
           borderRadius:"10px"
 
         }}
-      />
+      /> */}
  
     <Box className={classes.root}>
       

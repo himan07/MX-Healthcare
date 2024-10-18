@@ -125,7 +125,20 @@ const PersonalDetails = ({
               error={!!errors.firstName}
               helperText={errors.firstName ? errors.firstName.message : ""}
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, firstNameRef, lastNameRef)}
             />
             <TextField
@@ -146,7 +159,20 @@ const PersonalDetails = ({
               error={!!errors.password}
               helperText={errors.password ? errors.password.message : ""}
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onChange={(e) => {
                 setPassword(e.target.value);
                 clearErrors("password");
@@ -172,7 +198,20 @@ const PersonalDetails = ({
               error={!!errors.email}
               helperText={errors.email ? errors.email.message : ""}
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, emailRef, confirmEmailRef)}
             />
             {err ? (
@@ -228,7 +267,20 @@ const PersonalDetails = ({
                 />
               )}
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
             />
           </Box>
           <Box sx={{ flex: 1 }}>
@@ -241,7 +293,20 @@ const PersonalDetails = ({
               error={!!errors.lastName}
               helperText={errors.lastName ? errors.lastName.message : ""}
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, lastNameRef, passwordRef)}
             />
             <TextField
@@ -260,7 +325,20 @@ const PersonalDetails = ({
                 errors.confirmPassword ? errors.confirmPassword.message : ""
               }
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, confirmPasswordRef, emailRef)}
             />
             <TextField
@@ -277,7 +355,20 @@ const PersonalDetails = ({
                 errors.confirmEmail ? errors.confirmEmail.message : ""
               }
               className="form-input"
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, confirmEmailRef, countryRef)}
             />
             <Autocomplete
@@ -306,7 +397,20 @@ const PersonalDetails = ({
                   }
                   inputRef={professionRef}
                   className="form-input"
-                  sx={{ mb: 2 }}
+                  sx={{
+                    mb: 2,
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#02003d', 
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#02003d', 
+                      '&.Mui-focused': {
+                        color: 'none', 
+                      },
+                    },
+                  }}
                   onKeyDown={(e) =>
                     handleKeyDown(e, professionRef, crtificateNoRef)
                   }
@@ -325,7 +429,21 @@ const PersonalDetails = ({
             })}
             error={!!errors.Medical}
             helperText={errors.Medical ? errors.Medical.message : ""}
-            sx={{ mb: 2, mt: -2 }}
+            sx={{
+              mb: 2,
+              mt:-2,
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#02003d', 
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: '#02003d', 
+                '&.Mui-focused': {
+                  color: 'none', 
+                },
+              },
+            }}
             inputRef={crtificateNoRef}
             onKeyDown={(e) => handleKeyDown(e, crtificateNoRef, marketResearch)}
           />
@@ -437,6 +555,7 @@ const PersonalDetails = ({
             type="submit"
             className="submit-button"
             endIcon={<SendIcon />}
+            style={{backgroundColor:"#02003d"}}
           >
             Continue
           </Button>

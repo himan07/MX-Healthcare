@@ -60,7 +60,17 @@ const CustomeFileUploader = () => {
   });
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", mt: 2 }}>
+    <Box
+      sx={{
+        maxWidth: "100%",
+        width: "100%",
+        height: "calc(100vh - 230px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 2,
+      }}
+    >
       {uploadedFileName ? (
         <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
           <Typography
@@ -71,7 +81,7 @@ const CustomeFileUploader = () => {
           </Typography>
         </Paper>
       ) : (
-        <Paper elevation={2} sx={{ p: 1, px: 2, mb: 2 }}>
+        <Paper elevation={2} sx={{ p: 1, p: 4, mb: 2, width: "100%" }}>
           <Typography variant="h6" align="left" sx={{ pb: 2 }} gutterBottom>
             Upload your Identity
           </Typography>
@@ -121,7 +131,7 @@ const CustomeFileUploader = () => {
               variant="contained"
               onClick={handleUpload}
               disabled={!file || uploading}
-              sx={{ width: "60%", backgroundColor: "#1359a0" }}
+              sx={{ width: "60%", backgroundColor: "#02003d" }}
               size="medium"
             >
               {uploading ? <CircularProgress size={24} /> : "Upload"}

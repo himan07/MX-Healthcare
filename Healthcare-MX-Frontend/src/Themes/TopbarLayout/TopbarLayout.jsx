@@ -12,7 +12,7 @@ const TopbarLayout = () => {
               src={Logo} 
               alt="Logo" 
               style={{ 
-                height: "80px", 
+                height: "90px", 
                 width: "auto", 
                 maxWidth: "200px",
                 borderRadius: "5px" 

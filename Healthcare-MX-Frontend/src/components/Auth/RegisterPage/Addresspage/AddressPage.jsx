@@ -106,7 +106,20 @@ const AddressPage = () => {
               })}
               error={!!errors.address}
               helperText={errors.address ? errors.address.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, addressRef, cityRef)}
             />
 
@@ -120,7 +133,20 @@ const AddressPage = () => {
               })}
               error={!!errors.city}
               helperText={errors.city ? errors.city.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, cityRef, stateRef)}
             />
 
@@ -134,7 +160,20 @@ const AddressPage = () => {
               })}
               error={!!errors.state}
               helperText={errors.state ? errors.state.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               onKeyDown={(e) => handleKeyDown(e, stateRef, countyRef)}
             />
             <Autocomplete
@@ -156,7 +195,20 @@ const AddressPage = () => {
                   onKeyDown={(e) => handleKeyDown(e, countyRef, zipcodeRef)}
                 />
               )}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
             />
 
             <TextField
@@ -168,7 +220,20 @@ const AddressPage = () => {
               })}
               error={!!errors.zip}
               helperText={errors.zip ? errors.zip.message : ""}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
               inputRef={zipcodeRef}
               onKeyDown={(e) => handleKeyDown(e, zipcodeRef, null)}
             />
@@ -180,7 +245,7 @@ const AddressPage = () => {
             variant="contained"
             size="small"
             sx={{
-              backgroundColor: "#1359a0",
+              backgroundColor: "#02003d",
               mt: 3,
               height: "45px",
               px: 5,
