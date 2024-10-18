@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 259.64 180.5">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 29px;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-3 {
+        font-family: BricolageGrotesque-Bold, 'Bricolage Grotesque';
+        font-variation-settings: 'opsz' 14, 'wght' 700, 'wdth' 100;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        font-family: BricolageGrotesque-SemiBold, 'Bricolage Grotesque';
+        font-size: 7.63px;
+        font-variation-settings: 'opsz' 14, 'wght' 600, 'wdth' 100;
+        font-weight: 600;
+      }
+
+      .cls-8 {
+        letter-spacing: 0em;
+      }
+
+      .cls-9 {
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        letter-spacing: 0em;
+      }
+
+      .cls-11 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        letter-spacing: 0em;
+      }
+
+      .cls-13 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-14 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-15 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        font-size: 24px;
+      }
+
+      .cls-16 {
+        letter-spacing: 0em;
+      }
+
+      .cls-17 {
+        letter-spacing: 0em;
+      }
+
+      .cls-18 {
+        letter-spacing: 0em;
+      }
+
+      .cls-19 {
+        fill: none;
+        stroke: #f4f5f5;
+        stroke-width: .57px;
+      }
+
+      .cls-20 {
+        letter-spacing: .06em;
+      }
+
+      .cls-21 {
+        letter-spacing: .02em;
+      }
+
+      .cls-22 {
+        letter-spacing: 0em;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="36.11" y1="78.22" x2="92.5" y2="78.22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#006db2"/>
+      <stop offset="1" stop-color="#9ed199"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="94.5" y1="79.89" x2="128.74" y2="79.89" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="71.76" y1="78.22" x2="128.74" y2="78.22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#35706d"/>
+      <stop offset=".99" stop-color="#b0d79b"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="102.08" y1="48.98" x2="121.16" y2="48.98" xlink:href="#linear-gradient-3"/>
+  </defs>
+  <g>
+    <path class="cls-7" d="M67.8,109.91v-17.07h-17.07c-8.08,0-14.62-6.55-14.62-14.62h0c0-8.08,6.55-14.62,14.62-14.62h17.07v-17.07c0-8.08,6.55-14.62,14.62-14.62h9.17c-2.27,1.82-5.34,4.53-8.5,8.07-3.63,4.06-6.64,8.4-8.95,12.89-1.8,3.49-3.17,7.09-4.11,10.73-.58,2.26-1,4.55-1.24,6.85-.78,7.33.16,14.85,2.81,22.4.43,1.23.91,2.46,1.43,3.68,3.92,9.26,10.47,18.67,19.48,28.01h-10.07c-8.08,0-14.62-6.55-14.62-14.62Z"/>
+    <path class="cls-6" d="M128.74,66.93v11.28c0,8.08-6.55,14.62-14.62,14.62h-19.61l2.54-5.66c4.98-9.36,15.62-16.16,31.69-20.25Z"/>
+    <path class="cls-5" d="M128.74,63.6c-16.37,4.03-26.14,10.45-31.69,17.65-2.88,3.73-4.63,7.68-5.58,11.6-3.87,16,5.58,31.69,5.58,31.69-11.55-11.43-18.41-22.04-22.01-31.69-4.14-11.09-3.97-20.9-1.65-29.25,5.59-20.15,23.67-31.69,23.67-31.69v20.86c0,5.98,4.85,10.83,10.83,10.83h20.86Z"/>
+    <circle class="cls-4" cx="111.62" cy="48.98" r="9.54"/>
+  </g>
+  <text class="cls-1" transform="translate(139.21 62.93)"><tspan class="cls-15" x="0" y="0">X</tspan><tspan class="cls-12" x="19.05" y="0">CEL</tspan><tspan class="cls-20"><tspan x="0" y="28.73">MED</tspan></tspan></text>
+  <g>
+    <g>
+      <line class="cls-19" x1="65.32" y1="136.04" x2="53.44" y2="136.04"/>
+      <line class="cls-19" x1="214.74" y1="136.04" x2="202.85" y2="136.04"/>
+    </g>
+    <text class="cls-2" transform="translate(66.82 138.65)"><tspan class="cls-13" x="0" y="0">W</tspan><tspan x="7.22" y="0">orldwide H</tspan><tspan class="cls-10" x="46.83" y="0">e</tspan><tspan x="51.24" y="0">a</tspan><tspan class="cls-9" x="55.63" y="0">l</tspan><tspan class="cls-11" x="57.68" y="0">th</tspan><tspan class="cls-22" x="65.37" y="0">c</tspan><tspan x="69.69" y="0">a</tspan><tspan class="cls-16" x="74.08" y="0">r</tspan><tspan x="77.26" y="0">e </tspan><tspan class="cls-10" x="83.47" y="0">E</tspan><tspan x="88.14" y="0">x</tspan><tspan class="cls-8" x="92.34" y="0">p</tspan><tspan x="97.14" y="0">e</tspan><tspan class="cls-21" x="101.53" y="0">r</tspan><tspan x="104.91" y="0">ts </tspan><tspan class="cls-17" x="113.81" y="0">P</tspan><tspan x="118.62" y="0">anel</tspan></text>
+  </g>
+  <text class="cls-3" transform="translate(95.36 117.86)"><tspan x="0" y="0">CONN</tspan><tspan class="cls-14" x="70.85" y="0">E</tspan><tspan class="cls-18" x="85.39" y="0">C</tspan><tspan x="101.66" y="0">T</tspan></text>
+</svg>

@@ -1,13 +1,13 @@
 import * as React from "react";
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
-import Logo from "../../assets/images/XcelMed.png";
+import Logo from "../../assets/images/XcelMed2.svg";
 
 const TopbarLayout = () => {
   return (
     <Box sx={{ flexGrow: 1, mb: 4 }}>
       <AppBar
         position="sticky"
-        sx={{ backgroundColor: "#02003d", boxShadow: "none" }}
+        sx={{ backgroundColor: "#02003d", boxShadow: "none", height:"80px" }}
       >
         <Toolbar
           sx={{
@@ -21,9 +21,8 @@ const TopbarLayout = () => {
               src={Logo}
               alt="Logo"
               style={{
-                height: "90px",
+                height: "100px",
                 width: "auto",
-                maxWidth: "200px",
                 borderRadius: "5px",
               }}
             />
@@ -37,7 +36,7 @@ const TopbarLayout = () => {
               flexGrow: 1,
             }}
           >
-            World Wide Healthcare Experts Panel
+           XCEL MED CONNECT - World Wide Healthcare Experts Panel
           </Typography>
         </Toolbar>
       </AppBar>

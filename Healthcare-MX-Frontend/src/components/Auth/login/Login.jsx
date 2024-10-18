@@ -7,6 +7,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import logo from "../../../assets/images/XcelMed1.png";
 
 const Login = () => {
   return (
@@ -16,77 +17,96 @@ const Login = () => {
       alignItems="center"
       padding="20px"
       minHeight="80vh"
-      width = "100%"
+      width="80%"
       margin="auto"
     >
-      <Card sx={{ boxShadow: 5, padding: 2, width:"45%"  }}>
-        <CardContent>
-          <Typography variant="h5" component="h2" align="center" gutterBottom>
-          Log Into Your Account
-          </Typography>
+      <Box display="flex" width="100%" height="80%">
+        <Box
+          width="50%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgcolor="#02003d"
+        >
+          <img
+            src={logo}
+            alt="image is not found"
+            style={{
+              height: "80%",
+              width: "80%",
+            }}
+          />
+        </Box>
 
-          <Box component="form" noValidate autoComplete="off" mt={2}>
-            <TextField
-              label="Email"
-              size="large"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              required
-              sx={{
-                mb: 2,
-                mt:3,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
-                  },
-                },
-              }}
-            />
+        <Card sx={{ boxShadow: 5, padding: 2, width: "50%" }}>
+          <CardContent>
+            <Typography variant="h5" component="h2" align="center" gutterBottom>
+              Log Into Your Account
+            </Typography>
 
-            <TextField
-              label="Password"
-              size="largex"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              type="password"
-              required
-              sx={{
-                mb: 2,
-                mt:3,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+            <Box component="form" noValidate autoComplete="off" mt={2}>
+              <TextField
+                label="Email"
+                size="large"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
+                sx={{
+                  mb: 2,
+                  mt: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#02003d",
+                    },
                   },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                  "& .MuiInputLabel-root": {
+                    color: "#02003d",
+                    "&.Mui-focused": {
+                      color: "none",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
 
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ marginTop: 6 , p:1.5, backgroundColor:"#02003d"}}
-              size="large"
-            >
-              Login
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+              <TextField
+                label="Password"
+                size="large"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="password"
+                required
+                sx={{
+                  mb: 2,
+                  mt: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#02003d",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#02003d",
+                    "&.Mui-focused": {
+                      color: "none",
+                    },
+                  },
+                }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ marginTop: 6, p: 1.5, backgroundColor: "#02003d" }}
+                size="large"
+              >
+                Login
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
     </Box>
   );
 };
