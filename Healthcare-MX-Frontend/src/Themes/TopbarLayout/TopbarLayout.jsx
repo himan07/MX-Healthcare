@@ -1,17 +1,24 @@
 import * as React from 'react';
-import { AppBar, Box, Button, Toolbar } from '@mui/material';
-import Logo from "../../assets/images/XGP.png"
+import { AppBar, Box, Toolbar } from '@mui/material';
+import Logo from "../../assets/images/XcelMed.png";
 
 const TopbarLayout = () => {
   return (
     <Box sx={{ flexGrow: 1, mb: 4 }}> 
-      <AppBar position="sticky" sx={{ backgroundColor: '#fff', boxShadow: 'none' }}>
+      <AppBar position="sticky" sx={{ backgroundColor: '#02003d', boxShadow: 'none' }}>
         <Toolbar>
-          {/* <Typography variant="h6" color="black" component="div" sx={{ flexGrow: 1 }}>
-            Market-Xcel XGP
-          </Typography> */}
-          <img src={Logo} style={{height:"70px", padding:"10px 0px 10px 0px" }}/>
-          <Button color="inherit">Login</Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={Logo} 
+              alt="Logo" 
+              style={{ 
+                height: "80px", 
+                width: "auto", 
+                maxWidth: "200px",
+                borderRadius: "5px" 
+              }}
+            />
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

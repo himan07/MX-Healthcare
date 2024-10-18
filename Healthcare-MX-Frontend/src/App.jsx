@@ -7,7 +7,6 @@ import Login from "./components/Auth/login/Login";
 const App = () => {
   return (
     <>
-      <TopbarLayout />
       <Router>
         <Routes>
           <Route path="/*" element={<Registration />} />

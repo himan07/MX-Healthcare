@@ -8,6 +8,7 @@ import { makeStyles } from "@mui/styles";
 import ContactPage from "./ContactPage/ContactPage";
 import IdentityPage from "./IdentityPage/IdentityPage";
 import AddressPage from "./Addresspage/AddressPage";
+import logo from "../../../assets/images/XcelMed.png";
 
 const useStyles = makeStyles({
   root: {
@@ -29,7 +30,7 @@ const Registration = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
-  const [country, setCountry] = useState("")
+  const [country, setCountry] = useState("");
 
   useEffect(() => {
     const path = location.pathname;
@@ -73,7 +74,22 @@ const Registration = () => {
   };
 
   return (
+    <>
+    <img
+        src={logo}
+        alt="Logo"
+        style={{
+          height: "90px",
+          width: "auto",
+          maxWidth: "200px",
+          margin:"10px 60px",
+          borderRadius:"10px"
+
+        }}
+      />
+ 
     <Box className={classes.root}>
+      
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <CustomStepper activeStep={activeStep} />
@@ -90,7 +106,7 @@ const Registration = () => {
                   setProfession={setProfession}
                   profession={profession}
                   email={email}
-                  setCountry = {setCountry}
+                  setCountry={setCountry}
                 />
               }
             />
@@ -137,6 +153,7 @@ const Registration = () => {
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 
