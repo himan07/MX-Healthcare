@@ -33,7 +33,21 @@ const Login = () => {
               fullWidth
               margin="normal"
               required
-              sx={{mb:2}}
+              sx={{
+                mb: 2,
+                mt:3,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
             />
 
             <TextField
@@ -44,13 +58,28 @@ const Login = () => {
               margin="normal"
               type="password"
               required
+              sx={{
+                mb: 2,
+                mt:3,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#02003d', 
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#02003d', 
+                  '&.Mui-focused': {
+                    color: 'none', 
+                  },
+                },
+              }}
             />
 
             <Button
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ marginTop: 6 , p:1.5, backgroundColor:"#1359a0"}}
+              sx={{ marginTop: 6 , p:1.5, backgroundColor:"#02003d"}}
               size="large"
             >
               Login

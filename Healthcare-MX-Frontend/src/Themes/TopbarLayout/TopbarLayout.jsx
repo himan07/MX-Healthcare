@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { AppBar, Box, Toolbar } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import Logo from "../../assets/images/XcelMed.png";
 
 const TopbarLayout = () => {
   return (
     <Box sx={{ flexGrow: 1, mb: 4 }}> 
       <AppBar position="sticky" sx={{ backgroundColor: '#02003d', boxShadow: 'none' }}>
-        <Toolbar>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img 
               src={Logo} 
               alt="Logo" 
@@ -19,9 +19,20 @@ const TopbarLayout = () => {
               }}
             />
           </Box>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: 'white', 
+              fontWeight: 'bold', 
+              textAlign: 'center', 
+              flexGrow: 1 
+            }}
+          >
+            XCEL MED CONNECT
+          </Typography>
         </Toolbar>
       </AppBar>
-    </Box>
+    </Box> 
   );
 }
 
