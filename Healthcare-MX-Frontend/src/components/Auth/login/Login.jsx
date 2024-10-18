@@ -16,7 +16,7 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
       padding="20px"
-      minHeight="80vh"
+      minHeight="83vh"
       width="80%"
       margin="auto"
     >

@@ -8,7 +8,6 @@ import { makeStyles } from "@mui/styles";
 import ContactPage from "./ContactPage/ContactPage";
 import IdentityPage from "./IdentityPage/IdentityPage";
 import AddressPage from "./Addresspage/AddressPage";
-import logo from "../../../assets/images/XcelMed.png";
 
 const useStyles = makeStyles({
   root: {
