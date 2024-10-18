@@ -1,39 +1,48 @@
-import * as React from 'react';
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import * as React from "react";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import Logo from "../../assets/images/XcelMed.png";
 
 const TopbarLayout = () => {
   return (
-    <Box sx={{ flexGrow: 1, mb: 4 }}> 
-      <AppBar position="sticky" sx={{ backgroundColor: '#02003d', boxShadow: 'none' }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <img 
-              src={Logo} 
-              alt="Logo" 
-              style={{ 
-                height: "90px", 
-                width: "auto", 
+    <Box sx={{ flexGrow: 1, mb: 4 }}>
+      <AppBar
+        position="sticky"
+        sx={{ backgroundColor: "#02003d", boxShadow: "none" }}
+      >
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={Logo}
+              alt="Logo"
+              style={{
+                height: "90px",
+                width: "auto",
                 maxWidth: "200px",
-                borderRadius: "5px" 
+                borderRadius: "5px",
               }}
             />
           </Box>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              color: 'white', 
-              fontWeight: 'bold', 
-              textAlign: 'center', 
-              flexGrow: 1 
+          <Typography
+            variant="h6"
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              textAlign: "center",
+              flexGrow: 1,
             }}
           >
-            XCEL MED CONNECT
+            World Wide Healthcare Experts Panel
           </Typography>
         </Toolbar>
       </AppBar>
-    </Box> 
+    </Box>
   );
-}
+};
 
 export default TopbarLayout;

@@ -41,7 +41,7 @@ const CustomeFileUploader = () => {
           },
         }
       );
-      alert("File uploaded successfully!!")
+      alert("File uploaded successfully!!");
       setUploadedFileName(file.name);
       setFile(null);
     } catch (error) {

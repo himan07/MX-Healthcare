@@ -60,13 +60,25 @@ const AddressPage = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const onSubmit = async (data) => {
+    console.log(data)
     data.country = country;
     data.state = state;
+
+    const addressModal = {
+      address: data.address,
+      city: data.city,
+      state: data.email,
+      country: data.country,
+      profession: data.profession,
+      medicalNo: data.Medical,
+    };
+
+
 
     try {
       const response = await axios.post(
         "http://127.0.0.1:3000/api/address",
-        data
+        addressModal
       );
       console.log("Form Data Submitted:", response.data);
       alert("Address saved successfully!");
@@ -155,6 +167,7 @@ const AddressPage = () => {
               fullWidth
               inputRef={cityRef}
               label="State"
+              onChange={(e) => setState(e.target.value)}
               {...register("state", {
                 required: "State is required",
               })}
