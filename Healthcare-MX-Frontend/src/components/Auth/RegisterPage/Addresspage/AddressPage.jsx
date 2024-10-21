@@ -60,20 +60,17 @@ const AddressPage = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     data.country = country;
     data.state = state;
 
     const addressModal = {
       address: data.address,
       city: data.city,
-      state: data.email,
+      state: data.state,
       country: data.country,
-      profession: data.profession,
-      medicalNo: data.Medical,
+      zip: data.zip,
     };
-
-
 
     try {
       const response = await axios.post(
@@ -86,10 +83,6 @@ const AddressPage = () => {
       console.error("Error submitting form:", error);
       alert("Failed to submit the address");
     }
-  };
-
-  const handleCountryChange = (event, value) => {
-    setCountry(value);
   };
 
   return (
@@ -120,15 +113,15 @@ const AddressPage = () => {
               helperText={errors.address ? errors.address.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -147,15 +140,15 @@ const AddressPage = () => {
               helperText={errors.city ? errors.city.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -175,15 +168,15 @@ const AddressPage = () => {
               helperText={errors.state ? errors.state.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -196,7 +189,7 @@ const AddressPage = () => {
               PaperComponent={(props) => <StyledPaper {...props} />}
               options={countries.map((item) => item.country)}
               getOptionLabel={(option) => option || ""}
-              onChange={handleCountryChange}
+              onChange={(e) => setCountry(e.target.value)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -210,15 +203,15 @@ const AddressPage = () => {
               )}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -235,15 +228,15 @@ const AddressPage = () => {
               helperText={errors.zip ? errors.zip.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}

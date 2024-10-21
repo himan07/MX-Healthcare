@@ -39,7 +39,6 @@ const PersonalDetails = ({
   activeStep,
   setActiveStep,
   setEmail,
-  setProfession,
   email,
 }) => {
   const [password, setPassword] = useState("");
@@ -58,7 +57,7 @@ const PersonalDetails = ({
   } = useForm();
 
   const isMobile = useMediaQuery("(max-width:600px)");
-  const profession = localStorage.getItem("profession")
+  const profession = localStorage.getItem("profession");
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -67,6 +66,7 @@ const PersonalDetails = ({
   const emailRef = useRef(null);
   const confirmEmailRef = useRef(null);
   const countryRef = useRef(null);
+  const mobileRef = useRef(null);
   const professionRef = useRef(null);
   const crtificateNoRef = useRef(null);
   const marketResearch = useRef(null);
@@ -84,11 +84,13 @@ const PersonalDetails = ({
   };
 
   const onSubmit = async (data) => {
+    console.log("data: ", data);
     const personalDetails = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       country: data.country,
+      mobileNo: Number(data.mobileno),
       profession: data.profession,
       medicalNo: data.Medical,
     };
@@ -110,7 +112,6 @@ const PersonalDetails = ({
     }
   };
 
-
   return (
     <Box className={`form-container ${isMobile ? "mobile" : ""}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -127,15 +128,15 @@ const PersonalDetails = ({
               className="form-input"
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -161,15 +162,15 @@ const PersonalDetails = ({
               className="form-input"
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -200,15 +201,15 @@ const PersonalDetails = ({
               className="form-input"
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -245,131 +246,32 @@ const PersonalDetails = ({
               ""
             )}
 
-            <Autocomplete
-              fullWidth
-              disablePortal={false}
-              PopperComponent={(props) => <StyledPopper {...props} />}
-              PaperComponent={(props) => <StyledPaper {...props} />}
-              options={countries.map((item) => item.country)}
-              onChange={(event, value) => {
-                localStorage.setItem("country", value);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Country"
-                  variant="outlined"
-                  {...register("country", { required: "Country is required" })}
-                  error={!!errors.country}
-                  helperText={errors.country ? errors.country.message : ""}
-                  inputRef={countryRef}
-                  onKeyDown={(e) => handleKeyDown(e, countryRef, professionRef)}
-                />
-              )}
-              className="form-input"
-              sx={{
-                mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
-                  },
-                },
-              }}
-            />
-          </Box>
-          <Box sx={{ flex: 1 }}>
             <TextField
-              inputRef={lastNameRef}
+              inputRef={mobileRef}
               variant="outlined"
               fullWidth
-              label="Last Name"
-              {...register("lastName", { required: "Last Name is required" })}
-              error={!!errors.lastName}
-              helperText={errors.lastName ? errors.lastName.message : ""}
-              className="form-input"
-              sx={{
-                mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
-                  },
-                },
-              }}
-              onKeyDown={(e) => handleKeyDown(e, lastNameRef, passwordRef)}
-            />
-            <TextField
-              inputRef={confirmPasswordRef}
-              variant="outlined"
-              fullWidth
-              label="Confirm Password"
-              type="password"
-              {...register("confirmPassword", {
-                required: "Confirm password is required",
-                validate: (value) =>
-                  value === password || "Passwords do not match",
+              label="Mobile Number"
+              {...register("mobileno", {
+                required: "Mobile Number is required",
               })}
-              error={!!errors.confirmPassword}
-              helperText={
-                errors.confirmPassword ? errors.confirmPassword.message : ""
-              }
+              error={!!errors.mobileno}
+              helperText={errors.mobileno ? errors.mobileno.message : ""}
               className="form-input"
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
-                  },
-                },
-              }}
-              onKeyDown={(e) => handleKeyDown(e, confirmPasswordRef, emailRef)}
-            />
-            <TextField
-              inputRef={confirmEmailRef}
-              variant="outlined"
-              fullWidth
-              label="Confirm Email"
-              {...register("confirmEmail", {
-                required: "Confirm email is required",
-                validate: (value) => value === email || "Email do not match",
-              })}
-              error={!!errors.confirmEmail}
-              helperText={
-                errors.confirmEmail ? errors.confirmEmail.message : ""
-              }
-              className="form-input"
-              sx={{
-                mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
-              onKeyDown={(e) => handleKeyDown(e, confirmEmailRef, countryRef)}
+              onKeyDown={(e) => handleKeyDown(e, mobileRef, countryRef)}
             />
             <Autocomplete
               fullWidth
@@ -399,15 +301,15 @@ const PersonalDetails = ({
                   className="form-input"
                   sx={{
                     mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: '#02003d', 
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#02003d",
                       },
                     },
-                    '& .MuiInputLabel-root': {
-                      color: '#02003d', 
-                      '&.Mui-focused': {
-                        color: 'none', 
+                    "& .MuiInputLabel-root": {
+                      color: "#02003d",
+                      "&.Mui-focused": {
+                        color: "none",
                       },
                     },
                   }}
@@ -418,38 +320,161 @@ const PersonalDetails = ({
               )}
             />
           </Box>
+          <Box sx={{ flex: 1 }}>
+            <TextField
+              inputRef={lastNameRef}
+              variant="outlined"
+              fullWidth
+              label="Last Name"
+              {...register("lastName", { required: "Last Name is required" })}
+              error={!!errors.lastName}
+              helperText={errors.lastName ? errors.lastName.message : ""}
+              className="form-input"
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
+                  },
+                },
+              }}
+              onKeyDown={(e) => handleKeyDown(e, lastNameRef, passwordRef)}
+            />
+            <TextField
+              inputRef={confirmPasswordRef}
+              variant="outlined"
+              fullWidth
+              label="Confirm Password"
+              type="password"
+              {...register("confirmPassword", {
+                required: "Confirm password is required",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
+              })}
+              error={!!errors.confirmPassword}
+              helperText={
+                errors.confirmPassword ? errors.confirmPassword.message : ""
+              }
+              className="form-input"
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
+                  },
+                },
+              }}
+              onKeyDown={(e) => handleKeyDown(e, confirmPasswordRef, emailRef)}
+            />
+            <TextField
+              inputRef={confirmEmailRef}
+              variant="outlined"
+              fullWidth
+              label="Confirm Email"
+              {...register("confirmEmail", {
+                required: "Confirm email is required",
+                validate: (value) => value === email || "Email do not match",
+              })}
+              error={!!errors.confirmEmail}
+              helperText={
+                errors.confirmEmail ? errors.confirmEmail.message : ""
+              }
+              className="form-input"
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
+                  },
+                },
+              }}
+              onKeyDown={(e) => handleKeyDown(e, confirmEmailRef, mobileRef)}
+            />
+            <Autocomplete
+              fullWidth
+              disablePortal={false}
+              PopperComponent={(props) => <StyledPopper {...props} />}
+              PaperComponent={(props) => <StyledPaper {...props} />}
+              options={countries.map((item) => item.country)}
+              onChange={(event, value) => {
+                localStorage.setItem("country", value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Country"
+                  variant="outlined"
+                  {...register("country", { required: "Country is required" })}
+                  error={!!errors.country}
+                  helperText={errors.country ? errors.country.message : ""}
+                  inputRef={countryRef}
+                  onKeyDown={(e) => handleKeyDown(e, countryRef, professionRef)}
+                />
+              )}
+              className="form-input"
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
+                  },
+                },
+              }}
+            />
+            <TextField
+              variant="outlined"
+              fullWidth
+              label="Enter Your Medical License/Certification Number"
+              {...register("Medical", {
+                required: "Medical Certificate is required",
+              })}
+              error={!!errors.Medical}
+              helperText={errors.Medical ? errors.Medical.message : ""}
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
+                  },
+                },
+              }}
+              inputRef={crtificateNoRef}
+              onKeyDown={(e) =>
+                handleKeyDown(e, crtificateNoRef, marketResearch)
+              }
+            />
+          </Box>
         </Box>
-        {profession ? (
-          <TextField
-            variant="outlined"
-            fullWidth
-            label="Enter Your Medical License/Certification Number"
-            {...register("Medical", {
-              required: "Medical Certificate is required",
-            })}
-            error={!!errors.Medical}
-            helperText={errors.Medical ? errors.Medical.message : ""}
-            sx={{
-              mb: 2,
-              mt:-2,
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#02003d', 
-                },
-              },
-              '& .MuiInputLabel-root': {
-                color: '#02003d', 
-                '&.Mui-focused': {
-                  color: 'none', 
-                },
-              },
-            }}
-            inputRef={crtificateNoRef}
-            onKeyDown={(e) => handleKeyDown(e, crtificateNoRef, marketResearch)}
-          />
-        ) : (
-          ""
-        )}
 
         <Box sx={{ mb: 3 }}>
           <Controller
@@ -555,7 +580,7 @@ const PersonalDetails = ({
             type="submit"
             className="submit-button"
             endIcon={<SendIcon />}
-            style={{backgroundColor:"#02003d"}}
+            style={{ backgroundColor: "#02003d" }}
           >
             Continue
           </Button>

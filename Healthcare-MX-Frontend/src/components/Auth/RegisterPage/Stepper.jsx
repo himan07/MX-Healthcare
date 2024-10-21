@@ -6,7 +6,6 @@ const steps = [
   "Personal Details",
   "Professional Details",
   "Contact Details",
-  "Identity",
   "Address",
 ];
 

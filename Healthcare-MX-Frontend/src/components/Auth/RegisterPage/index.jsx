@@ -40,11 +40,11 @@ const Registration = () => {
       case "/contactPage":
         setActiveStep(2);
         break;
-      case "/identity":
-        setActiveStep(3);
-        break;
+      // case "/identity":
+      //   setActiveStep(3);
+      //   break;
       case "/address":
-        setActiveStep(4);
+        setActiveStep(3);
         break;
       default:
         setActiveStep(0);
@@ -61,9 +61,9 @@ const Registration = () => {
       case 2:
         navigate("/contactPage");
         break;
-      case 3:
-        navigate("/identity");
-        break;
+      // case 3:
+      //   navigate("/identity");
+      //   break;
       case 4:
         navigate("/address");
         break;
@@ -130,15 +130,7 @@ const Registration = () => {
                 />
               }
             />
-            <Route
-              path="/identity"
-              element={
-                <IdentityPage
-                  activeStep={activeStep}
-                  setActiveStep={handleStepChange}
-                />
-              }
-            />
+      
             <Route
               path="/address"
               element={
