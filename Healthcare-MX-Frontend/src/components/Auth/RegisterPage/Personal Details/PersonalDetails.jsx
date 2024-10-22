@@ -53,7 +53,7 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const profession = localStorage.getItem("profession");
-  const country  =localStorage.getItem("country")
+  const country = localStorage.getItem("country");
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
