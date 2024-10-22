@@ -20,7 +20,11 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
 
   const email = localStorage.getItem("userEmail");
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const onSubmit = async (data) => {
@@ -36,11 +40,11 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
       window.recaptchaVerifier = new RecaptchaVerifier(
         "recaptcha-container",
         {
-          size: "invisible", 
+          size: "invisible",
           callback: (response) => {
             console.log("reCAPTCHA solved:", response);
           },
-          'expired-callback': () => {
+          "expired-callback": () => {
             console.log("reCAPTCHA expired. Please solve it again.");
           },
         },
@@ -49,8 +53,8 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
     }
 
     const appVerifier = window.recaptchaVerifier;
-    const phoneNumber = `+91${mobile}`;  
-  
+    const phoneNumber = `+91${mobile}`;
+
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmation) => {
         setConfirmationResult(confirmation);
@@ -61,7 +65,6 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
         console.error("Error during signInWithPhoneNumber:", error);
       });
   };
-  
 
   const verifyOtp = (otp) => {
     confirmationResult
@@ -114,16 +117,16 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                       value={email}
                       sx={{
                         mb: 2,
-                        mt:3,
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: '#02003d', 
+                        mt: 3,
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#02003d",
                           },
                         },
-                        '& .MuiInputLabel-root': {
-                          color: '#02003d', 
-                          '&.Mui-focused': {
-                            color: 'none', 
+                        "& .MuiInputLabel-root": {
+                          color: "#02003d",
+                          "&.Mui-focused": {
+                            color: "none",
                           },
                         },
                       }}
@@ -147,20 +150,20 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                       helperText={errors.mobile ? errors.mobile.message : ""}
                       sx={{
                         mb: 2,
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: '#02003d', 
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#02003d",
                           },
                         },
-                        '& .MuiInputLabel-root': {
-                          color: '#02003d', 
-                          '&.Mui-focused': {
-                            color: 'none', 
+                        "& .MuiInputLabel-root": {
+                          color: "#02003d",
+                          "&.Mui-focused": {
+                            color: "none",
                           },
                         },
                       }}
                     />
-                   <div id="recaptcha-container"></div>
+                    <div id="recaptcha-container"></div>
                   </>
                 )}
 
@@ -180,16 +183,16 @@ const ContactPage = ({ activeStep, setActiveStep }) => {
                     helperText={errors.otp ? errors.otp.message : ""}
                     sx={{
                       mb: 2,
-                      mt:3,
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#02003d', 
+                      mt: 3,
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "#02003d",
                         },
                       },
-                      '& .MuiInputLabel-root': {
-                        color: '#02003d', 
-                        '&.Mui-focused': {
-                          color: 'none', 
+                      "& .MuiInputLabel-root": {
+                        color: "#02003d",
+                        "&.Mui-focused": {
+                          color: "none",
                         },
                       },
                     }}
