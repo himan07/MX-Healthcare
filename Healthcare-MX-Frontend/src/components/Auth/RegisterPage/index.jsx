@@ -6,7 +6,6 @@ import PersonalDetails from "./Personal Details/PersonalDetails";
 import ProfessionalPage from "./Professional Details/ProfessionalPage";
 import { makeStyles } from "@mui/styles";
 import ContactPage from "./ContactPage/ContactPage";
-import IdentityPage from "./IdentityPage/IdentityPage";
 import AddressPage from "./Addresspage/AddressPage";
 
 const useStyles = makeStyles({
@@ -40,9 +39,6 @@ const Registration = () => {
       case "/contactPage":
         setActiveStep(2);
         break;
-      // case "/identity":
-      //   setActiveStep(3);
-      //   break;
       case "/address":
         setActiveStep(3);
         break;
@@ -61,9 +57,6 @@ const Registration = () => {
       case 2:
         navigate("/contactPage");
         break;
-      // case 3:
-      //   navigate("/identity");
-      //   break;
       case 4:
         navigate("/address");
         break;
@@ -74,19 +67,6 @@ const Registration = () => {
 
   return (
     <>
-    {/* <img
-        src={logo}
-        alt="Logo"
-        style={{
-          height: "90px",
-          width: "auto",
-          maxWidth: "200px",
-          margin:"10px 60px",
-          borderRadius:"10px"
-
-        }}
-      /> */}
- 
     <Box className={classes.root}>
       
       <Grid container spacing={2}>
