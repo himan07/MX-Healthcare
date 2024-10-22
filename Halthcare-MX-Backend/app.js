@@ -5,7 +5,6 @@ const cors = require("cors");
 const personalRouter = require("./routes/PersonalDetails");
 const professionalRouter = require("./routes/ProfessionalDetails");
 const ImageRouter = require("./routes/uploadImage");
-const IdentityDetails = require("./routes/IdentityDetails");
 const addressRoutes = require("./routes/addressRoutes");
 
 app.use(cors());
@@ -24,7 +23,6 @@ app.use((req, res, next) => {
 app.use("/api/personalDetails", personalRouter);
 app.use("/api/professionalDetails", professionalRouter);
 app.use("/api/uploadImage", ImageRouter);
-app.use("/api/uploadIdentity", IdentityDetails);
 app.use("/api/address", addressRoutes);
 
 module.exports = app;
