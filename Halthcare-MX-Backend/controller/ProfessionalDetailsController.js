@@ -8,6 +8,7 @@ exports.createProfessionalDetails = async (req, res) => {
     const professionalDetailsSchema = {
       ...req.body,
       uuid:personalDetail.uuid, 
+      uniqueId:personalDetail.uniqueId
     };
 
 

@@ -14,6 +14,11 @@ const imageSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  uniqueId: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 const Image = mongoose.model("image", imageSchema);

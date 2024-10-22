@@ -6,6 +6,7 @@ import PersonalDetails from "./Personal Details/PersonalDetails";
 import ProfessionalPage from "./Professional Details/ProfessionalPage";
 import { makeStyles } from "@mui/styles";
 import ContactPage from "./ContactPage/ContactPage";
+import IdentityPage from "./IdentityPage/IdentityPage";
 import AddressPage from "./Addresspage/AddressPage";
 
 const useStyles = makeStyles({
@@ -67,6 +68,8 @@ const Registration = () => {
 
   return (
     <>
+  
+ 
     <Box className={classes.root}>
       
       <Grid container spacing={2}>

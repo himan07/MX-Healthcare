@@ -41,6 +41,11 @@ const ProfessionalDetailsSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  uniqueId: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 const ProfessionalDetails = mongoose.model(

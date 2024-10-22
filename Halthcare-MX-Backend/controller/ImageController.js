@@ -5,7 +5,6 @@ const tesseract = require("tesseract.js");
 const Image = require("../modal/ImageUpload");
 const PersonalDetail = require("../modal/PersonalDetails");
 
-// Storage configuration for Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "../Public/Images");
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// Multer configuration for file upload
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -32,12 +30,12 @@ exports.uploadImage = (req, res) => {
       if (err instanceof multer.MulterError) {
         return res.status(400).json({
           status: "fail",
-          message: err.message,
+          message: "Error uploading the image. Please try again.",
         });
       } else if (err) {
         return res.status(500).json({
           status: "error",
-          message: "Error uploading image",
+          message: "An unexpected error occurred during image upload.",
         });
       }
 
@@ -57,7 +55,9 @@ exports.uploadImage = (req, res) => {
         data: { text },
       } = await tesseract.recognize(imagePath, "eng");
 
-      const certificateNumberMatch = text.match(/Certificate No\s*:\s*(\S+)/);
+      const certificateNumberMatch = text.match(
+        /(?:Certificate No\.?|Cert\. No\.?|Certificate number|Cert number|Registration no|Reg no)\s*\.?\s*(\S+)/i
+      );
 
       if (!certificateNumberMatch) {
         return res.status(400).json({
@@ -65,14 +65,33 @@ exports.uploadImage = (req, res) => {
           message: "Could not find a valid certificate number in the image",
         });
       }
-      const certificateNumber = certificateNumberMatch[1];
-      const personalDetail = await PersonalDetail.findOne({
-        medicalNo: certificateNumber,
-      });
 
-      const uuid = personalDetail.uuid;     
+      const certificateNumber = certificateNumberMatch[1]
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .trim();
 
+      const personalDetails = await PersonalDetail.find();
 
+      const matchedDetail = personalDetails.find(
+        (detail) => detail.medicalNo === certificateNumber
+      );
+
+      if (!matchedDetail) {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "The certificate number does not correspond to any existing personal details in our records!",
+        });
+      }
+
+      const uuid = matchedDetail.uuid;
+      const uniqueId = matchedDetail.uniqueId;
+      if (!uuid) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Could not find any UUID for the matched personal details.",
+        });
+      }
 
       const existingCertificate = await Image.findOne({ certificateNumber });
       if (existingCertificate) {
@@ -82,20 +101,16 @@ exports.uploadImage = (req, res) => {
         });
       }
 
-      if (personalDetail.medicalNo !== certificateNumber) {
-        return res.status(400).json({
-          status: "fail",
-          message: "Certificate does not match!",
-        });
-      }
-
       const imageUrl = `${req.protocol}://${req.get("host")}/Public/Images/${
         req.file.filename
       }`;
 
-
-      const Images = await Image.create({ imageUrl, certificateNumber, uuid });
-
+      const Images = await Image.create({
+        imageUrl,
+        certificateNumber,
+        uuid,
+        uniqueId,
+      });
       res.status(201).json({
         status: "success",
         data: {
@@ -105,7 +120,7 @@ exports.uploadImage = (req, res) => {
     } catch (error) {
       res.status(500).json({
         status: "error",
-        message: error.message,
+        message: "An unexpected error occurred. Please try again later.",
       });
     }
   });
