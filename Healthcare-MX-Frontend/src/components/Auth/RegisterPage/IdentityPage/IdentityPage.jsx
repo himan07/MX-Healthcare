@@ -81,7 +81,7 @@ const CustomeFileUploader = () => {
           </Typography>
         </Paper>
       ) : (
-        <Paper elevation={2} sx={{ p: 1, p: 4, mb: 2, width: "100%" }}>
+        <Paper elevation={2} sx={{ p: 4, mb: 2, width: "100%" }}>
           <Typography variant="h6" align="left" sx={{ pb: 2 }} gutterBottom>
             Upload your Identity
           </Typography>

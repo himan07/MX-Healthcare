@@ -35,12 +35,7 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const PersonalDetails = ({
-  activeStep,
-  setActiveStep,
-  setEmail,
-  email,
-}) => {
+const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
 
@@ -227,8 +222,7 @@ const PersonalDetails = ({
                   textAlign: "left",
                 }}
               >
-                {err.response?.data?.message ===
-                "PersonalDetails validation failed: email: Email already exists" ? (
+                {err.response?.data?.message.length > 0 ? (
                   <>
                     Email already exists.{" "}
                     <Link

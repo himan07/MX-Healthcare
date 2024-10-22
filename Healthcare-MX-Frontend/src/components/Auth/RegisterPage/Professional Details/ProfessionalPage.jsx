@@ -196,15 +196,15 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               )}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -227,15 +227,15 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               }
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -256,15 +256,15 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               helperText={errors.email ? errors.email.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -284,8 +284,7 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
                   textAlign: "left",
                 }}
               >
-                {err.response.data.message ===
-                "ProfessionalDetails validation failed: officialEmail: Email already exists" ? (
+                {err.response.data.message.length > 0 ? (
                   <>
                     Email already exists.{" "}
                     <Link
@@ -319,15 +318,15 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               )}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
@@ -349,15 +348,15 @@ const ProfessionalPage = ({ activeStep, setActiveStep }) => {
               helperText={errors.experience ? errors.experience.message : ""}
               sx={{
                 mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#02003d', 
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#02003d",
                   },
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#02003d', 
-                  '&.Mui-focused': {
-                    color: 'none', 
+                "& .MuiInputLabel-root": {
+                  color: "#02003d",
+                  "&.Mui-focused": {
+                    color: "none",
                   },
                 },
               }}
