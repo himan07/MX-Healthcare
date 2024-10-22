@@ -28,7 +28,7 @@ const personalDetailSchema = new mongoose.Schema({
     required: true,
   },
   mobileNo: {
-    type: Number,
+    type: String,
     required: true,
   },
   profession: {
