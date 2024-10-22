@@ -1,8 +1,14 @@
 const address = require("../modal/addressModal");
+const PersonalDetail = require("../modal/PersonalDetails");
 
 exports.addressController = async (req, res) => {
   try {
-    const addresssdata = await address.create(req.body);
+    const personalDetail = await PersonalDetail.findOne();
+    const addressSchema = {
+      ...req.body,
+      uuid: personalDetail.uuid,
+    };
+    const addresssdata = await address.create(addressSchema);
     res.status(201).json({
       status: "success",
       data: {

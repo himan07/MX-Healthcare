@@ -21,6 +21,11 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  uuid: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 const address = mongoose.model("address", addressSchema);

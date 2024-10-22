@@ -9,6 +9,11 @@ const imageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  uuid: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 const Image = mongoose.model("image", imageSchema);

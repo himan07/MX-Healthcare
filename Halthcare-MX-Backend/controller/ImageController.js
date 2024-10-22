@@ -70,7 +70,9 @@ exports.uploadImage = (req, res) => {
         medicalNo: certificateNumber,
       });
 
-      console.log("personalDetailMedicalNo:", personalDetail.medicalNo);
+      const uuid = personalDetail.uuid;     
+
+
 
       const existingCertificate = await Image.findOne({ certificateNumber });
       if (existingCertificate) {
@@ -91,7 +93,8 @@ exports.uploadImage = (req, res) => {
         req.file.filename
       }`;
 
-      const Images = await Image.create({ imageUrl, certificateNumber });
+
+      const Images = await Image.create({ imageUrl, certificateNumber, uuid });
 
       res.status(201).json({
         status: "success",

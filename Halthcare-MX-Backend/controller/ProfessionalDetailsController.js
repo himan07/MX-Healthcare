@@ -1,8 +1,17 @@
 const ProfessionalDetails = require("../modal/ProfessionalDetails");
+const PersonalDetail = require("../modal/PersonalDetails");
 
 exports.createProfessionalDetails = async (req, res) => {
   try {
-    const professionalDetails = await ProfessionalDetails.create(req.body);
+    const personalDetail = await PersonalDetail.findOne();
+
+    const professionalDetailsSchema = {
+      ...req.body,
+      uuid:personalDetail.uuid, 
+    };
+
+
+    const professionalDetails = await ProfessionalDetails.create(professionalDetailsSchema);
     res.status(201).json({
       status: "success",
       data: {

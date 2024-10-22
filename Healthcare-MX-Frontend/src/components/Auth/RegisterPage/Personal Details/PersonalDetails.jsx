@@ -53,6 +53,7 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const profession = localStorage.getItem("profession");
+  const country  =localStorage.getItem("country")
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -84,9 +85,9 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      country: data.country,
+      country: country,
       mobileNo: Number(data.mobileno),
-      profession: data.profession,
+      profession: profession,
       medicalNo: data.Medical,
     };
 
@@ -284,13 +285,6 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
                   {...params}
                   label="Profession"
                   variant="outlined"
-                  {...register("profession", {
-                    required: "Profession is required",
-                  })}
-                  error={!!errors.profession}
-                  helperText={
-                    errors.profession ? errors.profession.message : ""
-                  }
                   inputRef={professionRef}
                   className="form-input"
                   sx={{
@@ -416,9 +410,6 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
                   {...params}
                   label="Country"
                   variant="outlined"
-                  {...register("country", { required: "Country is required" })}
-                  error={!!errors.country}
-                  helperText={errors.country ? errors.country.message : ""}
                   inputRef={countryRef}
                   onKeyDown={(e) => handleKeyDown(e, countryRef, professionRef)}
                 />

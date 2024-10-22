@@ -27,7 +27,7 @@ const personalDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  mobileNo:{
+  mobileNo: {
     type: Number,
     required: true,
   },
@@ -39,6 +39,11 @@ const personalDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  uuid: {
+    type: String,
+    unique: true,
+    required: true,
   },
 });
 
