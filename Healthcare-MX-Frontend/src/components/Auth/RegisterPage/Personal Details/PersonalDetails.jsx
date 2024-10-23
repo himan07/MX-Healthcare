@@ -223,7 +223,7 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
                   textAlign: "left",
                 }}
               >
-                {err.response?.data?.message.length > 0 ? (
+                {err.response?.data?.message === "Email already exists" ? (
                   <>
                     Email already exists.{" "}
                     <Link

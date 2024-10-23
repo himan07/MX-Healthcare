@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Box,
   TextField,
@@ -9,7 +9,7 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { styled } from "@mui/system";
 import axios from "axios";
 import countries from "../../../../dev-data/CountyData.json";
@@ -30,9 +30,6 @@ const StyledPaper = styled(Paper)({
 });
 
 const AddressPage = () => {
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
-
   const addressRef = useRef(null);
   const cityRef = useRef(null);
   const stateRef = useRef(null);
@@ -55,14 +52,13 @@ const AddressPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm();
 
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const onSubmit = async (data) => {
-    console.log(data);
-    data.country = country;
-    data.state = state;
+    console.log(data, "Addressdata");
 
     const addressModal = {
       address: data.address,
@@ -158,9 +154,8 @@ const AddressPage = () => {
             <TextField
               variant="outlined"
               fullWidth
-              inputRef={cityRef}
+              inputRef={stateRef} 
               label="State"
-              onChange={(e) => setState(e.target.value)}
               {...register("state", {
                 required: "State is required",
               })}
@@ -182,39 +177,49 @@ const AddressPage = () => {
               }}
               onKeyDown={(e) => handleKeyDown(e, stateRef, countyRef)}
             />
-            <Autocomplete
-              fullWidth
-              disablePortal={false}
-              PopperComponent={(props) => <StyledPopper {...props} />}
-              PaperComponent={(props) => <StyledPaper {...props} />}
-              options={countries.map((item) => item.country)}
-              getOptionLabel={(option) => option || ""}
-              onChange={(e) => setCountry(e.target.value)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Country"
-                  variant="outlined"
-                  error={!!errors.country}
-                  helperText={errors.country ? errors.country.message : ""}
-                  inputRef={countyRef}
-                  onKeyDown={(e) => handleKeyDown(e, countyRef, zipcodeRef)}
+
+            {/* Country Autocomplete */}
+            <Controller
+              name="country"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Country is required" }}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  fullWidth
+                  options={countries.map((item) => item.country)}
+                  getOptionLabel={(option) => option || ""}
+                  onChange={(_, value) => field.onChange(value)}
+                  PopperComponent={(props) => <StyledPopper {...props} />}
+                  PaperComponent={(props) => <StyledPaper {...props} />}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Country"
+                      variant="outlined"
+                      error={!!errors.country}
+                      helperText={errors.country ? errors.country.message : ""}
+                      inputRef={countyRef}
+                      onKeyDown={(e) => handleKeyDown(e, countyRef, zipcodeRef)}
+                    />
+                  )}
+                  sx={{
+                    mb: 2,
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#02003d",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#02003d",
+                      "&.Mui-focused": {
+                        color: "none",
+                      },
+                    },
+                  }}
                 />
               )}
-              sx={{
-                mb: 2,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#02003d",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#02003d",
-                  "&.Mui-focused": {
-                    color: "none",
-                  },
-                },
-              }}
             />
 
             <TextField

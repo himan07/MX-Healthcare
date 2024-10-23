@@ -1,7 +1,6 @@
 const PersonalDetail = require("../modal/PersonalDetails");
 const { v4: uuidv4 } = require("uuid");
 
-
 const countryCodes = {
   "United States": "US",
   Germany: "DE",
@@ -27,6 +26,14 @@ const countryCodes = {
 
 exports.createPersonalDetails = async (req, res) => {
   try {
+    const emailExists = await PersonalDetail.findOne({ email: req.body.email });
+    if (emailExists) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Email already exists",
+      });
+    }
+
     const generateNumericUUID = () => {
       return Math.floor(10000 + Math.random() * 90000);
     };
@@ -35,13 +42,14 @@ exports.createPersonalDetails = async (req, res) => {
     const countryCode = countryCodes[country] || "XX";
     const randomId = generateNumericUUID();
     const uuid = `MXD${countryCode}${uuidv4()}`;
-    const uniqueId = `MXD${countryCode}${randomId}`
+    const uniqueId = `MXD${countryCode}${randomId}`;
 
     const personalDetailsData = {
       ...req.body,
       uuid,
       uniqueId,
     };
+
     const personalDetails = await PersonalDetail.create(personalDetailsData);
     res.status(201).json({
       status: "success",
@@ -51,7 +59,7 @@ exports.createPersonalDetails = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      status: res.status,
+      status: "error",
       message: error.message,
     });
   }

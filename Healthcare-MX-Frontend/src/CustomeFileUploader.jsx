@@ -26,7 +26,7 @@ const CustomeFileUploader = () => {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append("certificates", file);
 
     setUploading(true);
     setErr(null);

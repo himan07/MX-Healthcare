@@ -21,6 +21,6 @@ const imageSchema = new mongoose.Schema({
   },
 });
 
-const Image = mongoose.model("image", imageSchema);
+const Image = mongoose.model("certificates", imageSchema);
 
 module.exports = Image;

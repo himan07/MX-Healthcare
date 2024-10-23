@@ -26,6 +26,11 @@ const addressSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  uniqueId: {
+    type: String,
+    unique: true,
+    required: true,
+  },
 });
 
 const address = mongoose.model("address", addressSchema);

@@ -7,6 +7,7 @@ exports.addressController = async (req, res) => {
     const addressSchema = {
       ...req.body,
       uuid: personalDetail.uuid,
+      uniqueId:personalDetail.uniqueId
     };
     const addresssdata = await address.create(addressSchema);
     res.status(201).json({
