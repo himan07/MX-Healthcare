@@ -22,7 +22,7 @@ const TopbarLayout = ({ setDrawerOpen }) => {
             color="inherit"
             aria-label="menu"
             onClick={() => setDrawerOpen(true)}
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, cursor: "pointer" }}
           >
             <Menu />
           </IconButton>

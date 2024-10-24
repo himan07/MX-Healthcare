@@ -21,7 +21,7 @@ const TileCard = ({
       background: background,
       color: "white",
       borderRadius: 4,
-      minHeight: 180,
+      minHeight: 200,
     }}
   >
     <CardContent>
@@ -63,6 +63,7 @@ const Dashboard = () => {
         backgroundColor: "#f5f5f5",
         borderRadius: 8,
         boxShadow: 2,
+        height: "calc(100vh - 140px)",
       }}
     >
       <Typography
