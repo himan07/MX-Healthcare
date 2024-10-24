@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "mx-healthcare",
   storageBucket: "mx-healthcare.appspot.com",
   messagingSenderId: "1072730906845",
-  appId: "1:1072730906845:web:44fb7aed92c3d49d9a7b34",
+  appId: "1:1072730906845:web:44fb7aed92c3d49d9a7b34"
 };
 
 const app = initializeApp(firebaseConfig);
