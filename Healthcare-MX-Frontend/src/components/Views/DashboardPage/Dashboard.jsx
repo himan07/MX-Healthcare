@@ -57,13 +57,12 @@ const Dashboard = () => {
   return (
     <Box
       sx={{
-        maxWidth: 1200,
         p: 4,
-        mx: "auto",
+        mx: 4,
         mt: 0,
         backgroundColor: "#f5f5f5",
         borderRadius: 8,
-        boxShadow: 3,
+        boxShadow: 2,
       }}
     >
       <Typography
