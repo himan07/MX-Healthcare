@@ -7,12 +7,13 @@ exports.createProfessionalDetails = async (req, res) => {
 
     const professionalDetailsSchema = {
       ...req.body,
-      uuid:personalDetail.uuid, 
-      uniqueId:personalDetail.uniqueId
+      uuid: personalDetail.uuid,
+      uniqueId: personalDetail.uniqueId,
     };
 
-
-    const professionalDetails = await ProfessionalDetails.create(professionalDetailsSchema);
+    const professionalDetails = await ProfessionalDetails.create(
+      professionalDetailsSchema
+    );
     res.status(201).json({
       status: "success",
       data: {

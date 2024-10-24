@@ -1,6 +1,6 @@
 import * as React from "react";
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
-import Logo from "../../assets/images/XcelMed2.svg";
+import Logo from "../../../../assets/images/XcelMed2.svg";
 
 const TopbarLayout = () => {
   return (

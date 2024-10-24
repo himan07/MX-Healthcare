@@ -34,29 +34,31 @@ exports.createPersonalDetails = async (req, res) => {
       });
     }
 
-    const generateNumericUUID = () => {
-      return Math.floor(10000 + Math.random() * 90000);
-    };
+    if (!emailExists) {
+      const generateNumericUUID = () => {
+        return Math.floor(10000 + Math.random() * 90000);
+      };
 
-    const country = req.body.country || "XX";
-    const countryCode = countryCodes[country] || "XX";
-    const randomId = generateNumericUUID();
-    const uuid = `MXD${countryCode}${uuidv4()}`;
-    const uniqueId = `MXD${countryCode}${randomId}`;
+      const country = req.body.country || "XX";
+      const countryCode = countryCodes[country] || "XX";
+      const randomId = generateNumericUUID();
+      const uuid = `MXD${countryCode}${uuidv4()}`;
+      const uniqueId = `MXD${countryCode}${randomId}`;
 
-    const personalDetailsData = {
-      ...req.body,
-      uuid,
-      uniqueId,
-    };
+      const personalDetailsData = {
+        ...req.body,
+        uuid,
+        uniqueId,
+      };
 
-    const personalDetails = await PersonalDetail.create(personalDetailsData);
-    res.status(201).json({
-      status: "success",
-      data: {
-        personalDetails,
-      },
-    });
+      const personalDetails = await PersonalDetail.create(personalDetailsData);
+      res.status(201).json({
+        status: "success",
+        data: {
+          personalDetails,
+        },
+      });
+    }
   } catch (error) {
     res.status(500).json({
       status: "error",

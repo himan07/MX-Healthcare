@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Registration from "./components/Auth/RegisterPage";
-import TopbarLayout from "./Themes/TopbarLayout/TopbarLayout";
 import Login from "./components/Auth/login/Login";
+import TopbarLayout from "./components/Views/Themes/TopbarLayout/TopbarLayout";
 
 const App = () => {
   return (
