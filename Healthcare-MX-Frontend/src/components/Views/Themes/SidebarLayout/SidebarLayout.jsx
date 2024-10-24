@@ -41,16 +41,11 @@ const SidebarMenuItem = ({ text, icon }) => (
   </ListItem>
 );
 
-const SideBarLayout = () => {
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
-
-  const toggleDrawer = (open) => (event) => {
-    setDrawerOpen(open);
-  };
+const SideBarLayout = ({setDrawerOpen, isDrawerOpen}) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <Toolbar>
+      {/* <Toolbar>
         <IconButton
           sx={{
             backgroundColor: "#02003d",
@@ -60,21 +55,22 @@ const SideBarLayout = () => {
             borderRadius: 2,
             padding: 0,
             marginTop: -5,
+            marginLeft: -0.2,
             "&:hover": {
               backgroundColor: "#02003d",
             },
           }}
           aria-label="menu"
-          onClick={toggleDrawer(true)}
+          onClick={() => setDrawerOpen(!isDrawerOpen)}
         >
           <Menu />
         </IconButton>
-      </Toolbar>
+      </Toolbar> */}
 
       <Drawer
         anchor="left"
         open={isDrawerOpen}
-        onClose={toggleDrawer(false)}
+        onClose={()=> setDrawerOpen(!isDrawerOpen)}
         sx={{
           [`& .MuiDrawer-paper`]: {
             width: 250,

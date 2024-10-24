@@ -1,13 +1,14 @@
 import * as React from "react";
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
+import { Menu } from "@mui/icons-material";
 import Logo from "../../../../assets/images/XcelMed2.svg";
 
-const TopbarLayout = () => {
+const TopbarLayout = ({ setDrawerOpen }) => {
   return (
     <Box sx={{ flexGrow: 1, mb: 4 }}>
       <AppBar
         position="sticky"
-        sx={{ backgroundColor: "#02003d", boxShadow: "none", height:"80px" }}
+        sx={{ backgroundColor: "#02003d", boxShadow: "none", height: "80px" }}
       >
         <Toolbar
           sx={{
@@ -16,17 +17,29 @@ const TopbarLayout = () => {
             alignItems: "center",
           }}
         >
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => setDrawerOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            <Menu />
+          </IconButton>
+
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img
               src={Logo}
               alt="Logo"
               style={{
-                height: "100px",
+                height: "90px",
                 width: "auto",
                 borderRadius: "5px",
               }}
             />
           </Box>
+
+          {/* Title */}
           <Typography
             variant="h6"
             sx={{
@@ -34,9 +47,10 @@ const TopbarLayout = () => {
               fontWeight: "bold",
               textAlign: "center",
               flexGrow: 1,
+              ml: 2,
             }}
           >
-          World Wide Healthcare Experts Panel
+            World Wide Healthcare Experts Panel
           </Typography>
         </Toolbar>
       </AppBar>
