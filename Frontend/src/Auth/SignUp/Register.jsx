@@ -16,13 +16,12 @@ import { useForm, Controller } from "react-hook-form";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import PhoneInput from "react-phone-input-2";
+import { MuiTelInput } from "mui-tel-input";
 import "react-phone-input-2/lib/style.css";
 import "../../assets/css/register.css";
 import professions from "./dev-data/Profession.json";
 import { styled } from "@mui/system";
 import CustomeFileUploader from "./CustomeFileUploader";
-import SendIcon from "@mui/icons-material/Send";
 import { NavLink } from "react-router-dom";
 
 const StyledPopper = styled(Popper)({
@@ -55,6 +54,8 @@ const useStyles = makeStyles({
 const Register = () => {
   const classes = useStyles();
   const [error, setError] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const {
     register,
@@ -68,12 +69,13 @@ const Register = () => {
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
+  const genderRef = useRef(null);
+  const ageRef = useRef(null);
+  const emailRef = useRef(null);
+  const mobileRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const emailRef = useRef(null);
-  const confirmEmailRef = useRef(null);
-  const countryRef = useRef(null);
-  const mobileRef = useRef(null);
+  const zipcodeRef = useRef(null);
   const professionRef = useRef(null);
   const crtificateNoRef = useRef(null);
   const marketResearch = useRef(null);
@@ -84,10 +86,14 @@ const Register = () => {
       if (nextRef) {
         nextRef.current.focus();
       } else {
-        // onSubmit();
-        // currentRef.current.form.submit();
+        onSubmit();
+        currentRef.current.form.submit();
       }
     }
+  };
+
+  const onSubmit = async (data) => {
+    console.log("data: ", data);
   };
 
   const genderOptions = [
@@ -98,7 +104,13 @@ const Register = () => {
 
   return (
     <Box className={classes.root}>
-      <form>
+      <Typography
+        variant="h5"
+        sx={{ textAlign: "left", pb: 3, fontWeight: "bold" }}
+      >
+        Register to Unlock Benefits
+      </Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
@@ -151,7 +163,7 @@ const Register = () => {
                 },
               },
             }}
-            onKeyDown={(e) => handleKeyDown(e, lastNameRef, passwordRef)}
+            onKeyDown={(e) => handleKeyDown(e, lastNameRef, genderRef)}
           />
         </Box>
         <Box
@@ -166,6 +178,7 @@ const Register = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
+                inputRef={genderRef}
                 label="Select Gender"
                 variant="outlined"
                 sx={{
@@ -181,6 +194,7 @@ const Register = () => {
                     },
                   },
                 }}
+                onKeyDown={(e) => handleKeyDown(e, genderRef, ageRef)}
               />
             )}
             isOptionEqualToValue={(option, value) =>
@@ -190,12 +204,18 @@ const Register = () => {
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Date of Birth"
+              label="Date of Birth (DD/MM/YYYY)"
+              value={selectedDate}
+              onChange={(newValue) => {
+                setSelectedDate(newValue);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  placeholder="DD/MM/YYYY"
                   fullWidth
                   variant="outlined"
+                  inputRef={ageRef}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
@@ -209,6 +229,7 @@ const Register = () => {
                       },
                     },
                   }}
+                  onKeyDown={(e) => handleKeyDown(e, ageRef, emailRef)}
                 />
               )}
               minDate={new Date("1900-01-01")}
@@ -222,9 +243,9 @@ const Register = () => {
           mb={2}
           gap={2}
         >
-          <Box flexGrow={1}>
+          <Box flexGrow={1} flexBasis="0">
             <TextField
-              inputRef={firstNameRef}
+              inputRef={emailRef}
               variant="outlined"
               fullWidth
               label="Email"
@@ -232,7 +253,6 @@ const Register = () => {
               {...register("email", { required: "Email is required" })}
               error={!!errors.email}
               helperText={errors.email ? errors.email.message : ""}
-              className="form-input"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -246,7 +266,7 @@ const Register = () => {
                   },
                 },
               }}
-              onKeyDown={(e) => handleKeyDown(e, firstNameRef, lastNameRef)}
+              onKeyDown={(e) => handleKeyDown(e, emailRef, mobileRef)}
             />
             <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
               <Link href="#" underline="hover" color="#02003d" variant="body2">
@@ -254,19 +274,19 @@ const Register = () => {
               </Link>
             </Box>
           </Box>
-          <Box flexGrow={1}>
-            <PhoneInput
-              className="phone-input"
-              country={"in"}
+          <Box flexGrow={1} flexBasis="0">
+            <MuiTelInput
+              defaultCountry="IN"
               placeholder="Enter your mobile number"
-              inputStyle={{
+              inputRef={mobileRef}
+              value={phonenumber}
+              onChange={setPhonenumber}
+              onKeyDown={(e) => handleKeyDown(e, mobileRef, passwordRef)}
+              style={{
                 width: "100%",
+                height: "56px",
                 borderRadius: "4px",
                 border: "1px solid #02003d",
-                height: "56px",
-                padding: "16.5px 14px",
-                fontSize: "1rem",
-                outline: "none",
                 color: "#000",
               }}
             />
@@ -277,6 +297,7 @@ const Register = () => {
             </Box>
           </Box>
         </Box>
+
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
@@ -317,7 +338,7 @@ const Register = () => {
             onKeyDown={(e) => handleKeyDown(e, passwordRef, confirmPasswordRef)}
           />
           <TextField
-            inputRef={passwordRef}
+            inputRef={confirmPasswordRef}
             variant="outlined"
             fullWidth
             label="Confirm Password"
@@ -360,7 +381,7 @@ const Register = () => {
         >
           <Box sx={{ width: "100%" }}>
             <TextField
-              inputRef={firstNameRef}
+              inputRef={zipcodeRef}
               variant="outlined"
               fullWidth
               label="Zip Code"
@@ -382,7 +403,7 @@ const Register = () => {
                   },
                 },
               }}
-              onKeyDown={(e) => handleKeyDown(e, firstNameRef, lastNameRef)}
+              onKeyDown={(e) => handleKeyDown(e, zipcodeRef, professionRef)}
             />
           </Box>
           <Box display="flex" sx={{ width: "100%" }}>
@@ -551,11 +572,11 @@ const Register = () => {
               />
             )}
           />
-          {/* {errors.termsAgreement && (
+          {errors.termsAgreement && (
             <Typography color="error" sx={{ fontSize: "0.8rem" }}>
               {errors.termsAgreement.message}
             </Typography>
-          )} */}
+          )}
           <Controller
             name="ageConfirmation"
             control={control}
@@ -579,7 +600,10 @@ const Register = () => {
           )}
         </Box>
 
-        <Box className="submit-section">
+        <Box
+          className="submit-section"
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
           <Typography className="submit-info">
             You will be asked to provide a photo ID for identity verification.
             If you do not wish to provide this during registration, you can
@@ -588,13 +612,13 @@ const Register = () => {
           </Typography>
           <Button
             variant="contained"
-            size="small"
+            size="large"
             type="submit"
             className="submit-button"
-            endIcon={<SendIcon />}
             style={{ backgroundColor: "#02003d" }}
+            sx={{ width: "15%", m: "auto", mt: 2 }}
           >
-            Continue
+            Register
           </Button>
         </Box>
         <NavLink to="/login" style={{ textDecoration: "none" }}>
