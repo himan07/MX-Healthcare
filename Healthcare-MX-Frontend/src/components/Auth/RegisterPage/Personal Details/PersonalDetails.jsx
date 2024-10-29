@@ -35,8 +35,7 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
-  const [password, setPassword] = useState("");
+const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email , password, setPassword}) => {
   const [err, setErr] = useState("");
 
   const navigate = useNavigate();
@@ -108,6 +107,7 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
     }
   };
 
+
   return (
     <Box className={`form-container ${isMobile ? "mobile" : ""}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -174,6 +174,8 @@ const PersonalDetails = ({ activeStep, setActiveStep, setEmail, email }) => {
                 setPassword(e.target.value);
                 clearErrors("password");
                 setValue("password", e.target.value);
+                localStorage.setItem("password", e.target.value)
+
               }}
               onKeyDown={(e) =>
                 handleKeyDown(e, passwordRef, confirmPasswordRef)

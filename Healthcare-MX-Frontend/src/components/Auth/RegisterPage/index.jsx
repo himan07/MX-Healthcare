@@ -24,11 +24,15 @@ const Registration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   const [activeStep, setActiveStep] = useState(0);
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
   const [country, setCountry] = useState("");
+  const [password, setPassword] = useState('')
+
+
 
   useEffect(() => {
     const path = location.pathname;
@@ -88,6 +92,8 @@ const Registration = () => {
                   profession={profession}
                   email={email}
                   setCountry={setCountry}
+                  setPassword={setPassword}
+                  password={password}
                 />
               }
             />
@@ -119,6 +125,7 @@ const Registration = () => {
                 <AddressPage
                   activeStep={activeStep}
                   setActiveStep={handleStepChange}
+                  password={password}
                 />
               }
             />

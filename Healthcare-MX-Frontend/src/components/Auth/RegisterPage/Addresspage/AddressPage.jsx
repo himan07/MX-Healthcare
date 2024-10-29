@@ -13,6 +13,7 @@ import { useForm, Controller } from "react-hook-form";
 import { styled } from "@mui/system";
 import axios from "axios";
 import countries from "../../../../dev-data/CountyData.json";
+import { createUser } from "../../AuthContext/Auth";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -35,6 +36,10 @@ const AddressPage = () => {
   const stateRef = useRef(null);
   const countyRef = useRef(null);
   const zipcodeRef = useRef(null);
+  const email = localStorage.getItem("userEmail")
+  const password = localStorage.getItem("password")
+
+  console.log("password: ",password)
 
   const handleKeyDown = (e, currentRef, nextRef) => {
     if (e.key === "Enter") {
@@ -79,6 +84,8 @@ const AddressPage = () => {
       console.error("Error submitting form:", error);
       alert("Failed to submit the address");
     }
+
+    await createUser(email, password)
   };
 
   return (
@@ -154,7 +161,7 @@ const AddressPage = () => {
             <TextField
               variant="outlined"
               fullWidth
-              inputRef={stateRef} 
+              inputRef={stateRef}
               label="State"
               {...register("state", {
                 required: "State is required",

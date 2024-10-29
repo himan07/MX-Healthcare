@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Registration from "./components/Auth/RegisterPage";
-import Login from "./components/Auth/login/Login";
 import TopbarLayout from "./components/Views/Themes/TopbarLayout/TopbarLayout";
 import HomeLayout from "./components/Views";
+import Login from "./components/Auth/login/Login";
 
 const App = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import Logo from "../../../../assets/images/XcelMed2.svg";
+import Logo from "../../../assets/images/xcelMed2.svg";
 
 const TopbarLayout = ({ setDrawerOpen }) => {
   return (
@@ -17,7 +17,7 @@ const TopbarLayout = ({ setDrawerOpen }) => {
             alignItems: "center",
           }}
         >
-          <IconButton
+          {/* <IconButton
             edge="start"
             color="inherit"
             aria-label="menu"
@@ -25,7 +25,7 @@ const TopbarLayout = ({ setDrawerOpen }) => {
             sx={{ mr: 2, cursor: "pointer" }}
           >
             <Menu />
-          </IconButton>
+          </IconButton> */}
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img
@@ -38,8 +38,6 @@ const TopbarLayout = ({ setDrawerOpen }) => {
               }}
             />
           </Box>
-
-          {/* Title */}
           <Typography
             variant="h6"
             sx={{
