@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Autocomplete,
@@ -11,6 +11,7 @@ import {
   Popper,
   Paper,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -23,6 +24,12 @@ import professions from "./dev-data/Profession.json";
 import { styled } from "@mui/system";
 import CustomeFileUploader from "./CustomeFileUploader";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import { auth } from "../config/firebase.config";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -52,10 +59,11 @@ const useStyles = makeStyles({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
-  const [error, setError] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -80,6 +88,12 @@ const Register = () => {
   const crtificateNoRef = useRef(null);
   const marketResearch = useRef(null);
 
+  const genderOptions = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Other", value: "other" },
+  ];
+
   const handleKeyDown = (e, currentRef, nextRef) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -93,14 +107,39 @@ const Register = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("data: ", data);
+    let email = data.email;
+    let password = data.password;
+    setLoading(true);
+    await createUserWithEmailAndPassword(auth, email, password).then(
+      async (users) => {
+        const user = users.user;
+        await sendEmailVerification(user);
+      }
+    );
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   };
 
-  const genderOptions = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Other", value: "other" },
-  ];
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userCred) => {
+      console.log("userCred: ", userCred);
+      if (userCred) {
+        const { emailVerified } = userCred;
+        if (!emailVerified) {
+          alert(
+            "Registration successful! Please check your email for verification."
+          );
+          navigate("/login");
+          // setTimeout(() => {
+          //   navigate("/login");
+          // }, 2000);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   return (
     <Box className={classes.root}>
@@ -181,6 +220,9 @@ const Register = () => {
                 inputRef={genderRef}
                 label="Select Gender"
                 variant="outlined"
+                {...register("gender", { required: "Gender is required" })}
+                error={!!errors.gender}
+                helperText={errors.gender ? errors.gender.message : ""}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
@@ -268,11 +310,6 @@ const Register = () => {
               }}
               onKeyDown={(e) => handleKeyDown(e, emailRef, mobileRef)}
             />
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-              <Link href="#" underline="hover" color="#02003d" variant="body2">
-                Verify Email
-              </Link>
-            </Box>
           </Box>
           <Box flexGrow={1} flexBasis="0">
             <MuiTelInput
@@ -290,11 +327,6 @@ const Register = () => {
                 color: "#000",
               }}
             />
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-              <Link href="#" underline="hover" color="#02003d" variant="body2">
-                Verify Mobile
-              </Link>
-            </Box>
           </Box>
         </Box>
 
@@ -342,7 +374,7 @@ const Register = () => {
             variant="outlined"
             fullWidth
             label="Confirm Password"
-            type="confirmpassword"
+            type="password"
             {...register("confirmpassword", {
               required: "Password is required",
               pattern: {
@@ -457,6 +489,11 @@ const Register = () => {
                 label="Profession"
                 variant="outlined"
                 inputRef={professionRef}
+                {...register("profession", {
+                  required: "Profession is required",
+                })}
+                error={!!errors.profession}
+                helperText={errors.profession ? errors.profession.message : ""}
                 className="form-input"
                 sx={{
                   mb: 2,
@@ -618,7 +655,7 @@ const Register = () => {
             style={{ backgroundColor: "#02003d" }}
             sx={{ width: "15%", m: "auto", mt: 2 }}
           >
-            Register
+            {loading ? <CircularProgress size={24} /> : "Register"}
           </Button>
         </Box>
         <NavLink to="/login" style={{ textDecoration: "none" }}>

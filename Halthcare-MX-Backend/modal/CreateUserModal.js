@@ -1,7 +1,6 @@
-
 const mongoose = require("mongoose");
 
-const personalDetailSchema = new mongoose.Schema({
+const CreateUserSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -10,24 +9,42 @@ const personalDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  email: {
+  gender: {
     type: String,
     required: true,
     unique: true,
   },
-  country: {
+  age: {
+    type: Number,
+    required: true,
+  },
+  email: {
     type: String,
     required: true,
   },
   mobileNo: {
-    type: String,
+    type: Number,
     required: true,
   },
+  zipcode: {
+    type: Number,
+    required: true,
+  },
+  pushNotification: {
+    type: Boolean,
+    required: false,
+  },
+
   profession: {
     type: String,
     required: true,
   },
-  medicalNo: {
+  medicalCertificateNo: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  certificateUrl: {
     type: String,
     required: true,
     unique: true,
@@ -37,13 +54,8 @@ const personalDetailSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  uniqueId: {
-    type: String,
-    unique: true,
-    required: true,
-  },
 });
 
-const PersonalDetail = mongoose.model("PersonalDetails", personalDetailSchema);
+const CreateUser = mongoose.model("PersonalDetails", CreateUserSchema);
 
-module.exports = PersonalDetail;
+module.exports = CreateUser;
