@@ -4,7 +4,6 @@ import {
   Autocomplete,
   Box,
   TextField,
-  Link,
   FormControlLabel,
   Checkbox,
   Typography,
@@ -12,6 +11,11 @@ import {
   Paper,
   Button,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Divider,
+  DialogActions,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -30,6 +34,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../config/firebase.config";
+import OtpInput from "react-otp-input";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -64,14 +69,14 @@ const Register = () => {
   const [phonenumber, setPhonenumber] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [verify, setVerify] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
-    clearErrors,
-    trigger,
     control,
   } = useForm();
 
@@ -123,7 +128,6 @@ const Register = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userCred) => {
-      console.log("userCred: ", userCred);
       if (userCred) {
         const { emailVerified } = userCred;
         if (!emailVerified) {
@@ -131,9 +135,6 @@ const Register = () => {
             "Registration successful! Please check your email for verification."
           );
           navigate("/login");
-          // setTimeout(() => {
-          //   navigate("/login");
-          // }, 2000);
         }
       }
     });
@@ -214,6 +215,11 @@ const Register = () => {
           <Autocomplete
             options={genderOptions}
             getOptionLabel={(option) => option.label}
+            renderOption={(props, option) => (
+              <li {...props} key={option.value}>
+                {option.label}
+              </li>
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -244,6 +250,7 @@ const Register = () => {
             }
             fullWidth
           />
+
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Date of Birth (DD/MM/YYYY)"
@@ -312,21 +319,51 @@ const Register = () => {
             />
           </Box>
           <Box flexGrow={1} flexBasis="0">
-            <MuiTelInput
-              defaultCountry="IN"
-              placeholder="Enter your mobile number"
-              inputRef={mobileRef}
-              value={phonenumber}
-              onChange={setPhonenumber}
-              onKeyDown={(e) => handleKeyDown(e, mobileRef, passwordRef)}
-              style={{
-                width: "100%",
-                height: "56px",
-                borderRadius: "4px",
-                border: "1px solid #02003d",
-                color: "#000",
-              }}
-            />
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <MuiTelInput
+                defaultCountry="IN"
+                placeholder="Enter your mobile number"
+                inputRef={mobileRef}
+                value={phonenumber}
+                onChange={setPhonenumber}
+                onKeyDown={(e) => handleKeyDown(e, mobileRef, passwordRef)}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  borderRadius: "4px",
+                  border: "1px solid #02003d",
+                  color: "#000",
+                }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                style={{
+                  backgroundColor: verify ? "#ddd" : "#4caf50",
+                  textTransform: "capitalize",
+                  borderRadius: "10px",
+                  fontSize: "1rem",
+                  width: "15%",
+                  height: "40px",
+                  margin: "8px 0px",
+                }}
+                onClick={(e) => setOpenDialog(true)}
+                disabled={verify}
+              >
+                {!verify ? "Verify" : verify ? "Verified" : ""}
+              </Button>
+            </Box>
+            {verify === false && phonenumber.length >= 12 ? (
+              <Typography
+                variant="body1"
+                sx={{ color: "red", fontSize: "14px" }}
+              >
+                To complete your registration, please verify your mobile number
+                !
+              </Typography>
+            ) : (
+              ""
+            )}
           </Box>
         </Box>
 
@@ -481,8 +518,15 @@ const Register = () => {
                 localStorage.setItem("profession", value.profession);
               }
             }}
-            PopperComponent={(props) => <StyledPopper {...props} />}
-            PaperComponent={(props) => <StyledPaper {...props} />}
+            PopperComponent={(props) => (
+              <StyledPopper {...props} key="popper" />
+            )}
+            PaperComponent={(props) => <StyledPaper {...props} key="paper" />}
+            renderOption={(props, option) => (
+              <li {...props} key={option.profession}>
+                {option.profession}
+              </li>
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -515,6 +559,7 @@ const Register = () => {
               />
             )}
           />
+
           <TextField
             variant="outlined"
             fullWidth
@@ -546,7 +591,7 @@ const Register = () => {
           <CustomeFileUploader />
         </Box>
 
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 3, display: "grid" }}>
           <Controller
             name="marketResearch"
             control={control}
@@ -652,8 +697,9 @@ const Register = () => {
             size="large"
             type="submit"
             className="submit-button"
-            style={{ backgroundColor: "#02003d" }}
+            style={{ backgroundColor: verify === false ? "#ddd" : "#02003d" }}
             sx={{ width: "15%", m: "auto", mt: 2 }}
+            disabled={verify === false}
           >
             {loading ? <CircularProgress size={24} /> : "Register"}
           </Button>
@@ -670,13 +716,69 @@ const Register = () => {
               cursor: "pointer",
             }}
           >
-            Already have an account?{" "}
+            <span style={{ color: "black" }}>Already have an account?</span>{" "}
             <span style={{ textDecoration: "underline" }}>
               Click here to login
             </span>
           </Typography>
         </NavLink>
       </form>
+      <Box>
+        <Dialog
+          open={openDialog}
+          sx={{ padding: "10px" }}
+          onClose={(e) => setOpenDialog(false)}
+        >
+          <DialogTitle>Please Enter OTP</DialogTitle>
+          <Divider />
+          <DialogContent sx={{ padding: "30px" }}>
+            <OtpInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span> &nbsp;&nbsp;</span>}
+              renderInput={(props) => (
+                <TextField
+                  {...props}
+                  focused
+                  style={{
+                    width: "55px",
+                    height: "55px",
+                    fontSize: "1.5rem",
+                    textAlign: "center",
+                    margin: "0 5px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                  }}
+                />
+              )}
+            />
+          </DialogContent>
+          <Divider />
+          <DialogActions sx={{ padding: "10px" }}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#C70039" }}
+              onClick={() => {
+                setVerify(false);
+                setOpenDialog(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#02003d" }}
+              onClick={(e) => {
+                setVerify(true);
+                setOpenDialog(false);
+              }}
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </Box>
   );
 };

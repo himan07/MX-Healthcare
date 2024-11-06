@@ -15,7 +15,6 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/verification' element={<VerificationMessageCard />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          
         </Routes>
       </Router>
   )
