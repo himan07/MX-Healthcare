@@ -35,6 +35,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../config/firebase.config";
 import OtpInput from "react-otp-input";
+import axios from "axios";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -72,12 +73,14 @@ const Register = () => {
   const [verify, setVerify] = useState(false);
   const [otp, setOtp] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [setErr, err] = useState("");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    trigger,
   } = useForm();
 
   const firstNameRef = useRef(null);
@@ -112,19 +115,50 @@ const Register = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data);
     let email = data.email;
     let password = data.password;
     setLoading(true);
-    await createUserWithEmailAndPassword(auth, email, password).then(
-      async (users) => {
-        const user = users.user;
-        await sendEmailVerification(user);
+  
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await sendEmailVerification(user);
+  
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+  
+      const isValid = await trigger();
+      const createUserSchema = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        gender: data.gender,
+        age: selectedDate,
+        email: data.email,
+        mobileNo: Number(phonenumber),
+        zipcode: Number(data.zip),
+        profession: data.profession,
+        medicalCertificateNo: data.Medical,
+        notification:{
+          sms:data.sms,
+          whatsApp:data.WhatsApp
+        }
+      };
+  
+      if (isValid) {
+        const response = await axios.post(
+          "http://127.0.0.1:3000/api/createUser",
+          createUserSchema
+        );
+        console.log(response);
       }
-    );
-    setTimeout(() => {
+    } catch (error) {
+      setErr(error);
       setLoading(false);
-    }, 2000);
+    }
   };
+  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userCred) => {
@@ -479,27 +513,37 @@ const Register = () => {
             <Typography variant="body1" sx={{ color: "#02003d", mr: 2, mt: 2 }}>
               Push Notifications:
             </Typography>
-            <FormControlLabel
-              control={<Checkbox color="primary" />}
-              label="SMS"
-              sx={{
-                color: "#02003d",
-                "& .MuiCheckbox-root": {
-                  padding: "0 9px",
-                },
-              }}
-            />
-
-            <FormControlLabel
-              control={<Checkbox color="primary" />}
-              label="WhatsApp"
-              sx={{
-                color: "#02003d",
-                "& .MuiCheckbox-root": {
-                  padding: "0 9px",
-                },
-              }}
-            />
+            <Controller
+            name="sms"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Checkbox {...field} checked={field.value} />}
+                label={
+                  <Typography className="checkbox-label">
+                   SMS
+                  </Typography>
+                }
+              />
+            )}
+          />
+ <Controller
+            name="WhatsApp"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Checkbox {...field} checked={field.value} />}
+                label={
+                  <Typography className="checkbox-label">
+                   WhatsApp
+                  </Typography>
+                }
+              />
+            )}
+          />
+    
           </Box>
         </Box>
         <Box
@@ -701,7 +745,11 @@ const Register = () => {
             sx={{ width: "15%", m: "auto", mt: 2 }}
             disabled={verify === false}
           >
-            {loading ? <CircularProgress size={24} /> : "Register"}
+            {loading ? (
+              <CircularProgress size={24} style={{ color: "#fff" }} />
+            ) : (
+              "Register"
+            )}
           </Button>
         </Box>
         <NavLink to="/login" style={{ textDecoration: "none" }}>

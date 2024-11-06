@@ -15,7 +15,7 @@ const CreateUserSchema = new mongoose.Schema({
     unique: true,
   },
   age: {
-    type: Number,
+    type: String,
     required: true,
   },
   email: {
@@ -24,17 +24,12 @@ const CreateUserSchema = new mongoose.Schema({
   },
   mobileNo: {
     type: Number,
-    required: true,
+    required: false,
   },
   zipcode: {
     type: Number,
     required: true,
   },
-  pushNotification: {
-    type: Boolean,
-    required: false,
-  },
-
   profession: {
     type: String,
     required: true,
@@ -44,11 +39,21 @@ const CreateUserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  certificateUrl: {
-    type: String,
-    required: true,
-    unique: true,
+  notification: {
+    sms: {
+      type: Boolean,
+      required: false,
+    },
+    whatsApp: {
+      type: Boolean,
+      required: false,
+    },
   },
+  // certificateUrl: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   uuid: {
     type: String,
     unique: true,
@@ -56,6 +61,6 @@ const CreateUserSchema = new mongoose.Schema({
   },
 });
 
-const CreateUser = mongoose.model("PersonalDetails", CreateUserSchema);
+const CreateUser = mongoose.model("Users", CreateUserSchema);
 
 module.exports = CreateUser;
