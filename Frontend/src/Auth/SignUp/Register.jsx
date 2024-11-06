@@ -119,16 +119,20 @@ const Register = () => {
     let email = data.email;
     let password = data.password;
     setLoading(true);
-  
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       await sendEmailVerification(user);
-  
+
       setTimeout(() => {
         setLoading(false);
       }, 2000);
-  
+
       const isValid = await trigger();
       const createUserSchema = {
         firstName: data.firstName,
@@ -140,12 +144,12 @@ const Register = () => {
         zipcode: Number(data.zip),
         profession: data.profession,
         medicalCertificateNo: data.Medical,
-        notification:{
-          sms:data.sms,
-          whatsApp:data.WhatsApp
-        }
+        notification: {
+          sms: data.sms,
+          whatsApp: data.WhatsApp,
+        },
       };
-  
+
       if (isValid) {
         const response = await axios.post(
           "http://127.0.0.1:3000/api/createUser",
@@ -158,7 +162,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userCred) => {
@@ -514,36 +517,31 @@ const Register = () => {
               Push Notifications:
             </Typography>
             <Controller
-            name="sms"
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-              <FormControlLabel
-                control={<Checkbox {...field} checked={field.value} />}
-                label={
-                  <Typography className="checkbox-label">
-                   SMS
-                  </Typography>
-                }
-              />
-            )}
-          />
- <Controller
-            name="WhatsApp"
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-              <FormControlLabel
-                control={<Checkbox {...field} checked={field.value} />}
-                label={
-                  <Typography className="checkbox-label">
-                   WhatsApp
-                  </Typography>
-                }
-              />
-            )}
-          />
-    
+              name="sms"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox {...field} checked={field.value} />}
+                  label={
+                    <Typography className="checkbox-label">SMS</Typography>
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="WhatsApp"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox {...field} checked={field.value} />}
+                  label={
+                    <Typography className="checkbox-label">WhatsApp</Typography>
+                  }
+                />
+              )}
+            />
           </Box>
         </Box>
         <Box
