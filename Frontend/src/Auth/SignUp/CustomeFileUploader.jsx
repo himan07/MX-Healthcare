@@ -15,7 +15,7 @@ const CustomeFileUploader = () => {
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState(null);
-  const email = localStorage.getItem("emailId")
+  const email = localStorage.getItem("emailId");
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -23,48 +23,19 @@ const CustomeFileUploader = () => {
     }
   };
 
-  // const handleUpload = async () => {
-  //   if (!file) return;
-
-  //   const formData = new FormData();
-  //   formData.append("certificates", file);
-  //   formData.append("email", email)
-   
-
-  //   setUploading(true);
-  //   setErr(null);
-
-  //   try {
-  //     const response = await axios.post(
-  //       "http://127.0.0.1:3000/api/uploadImage",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     alert("File uploaded successfully!!");
-  //     setUploadedFileName(file.name);
-  //     setFile(null);
-  //   } catch (error) {
-  //     setErr(error);
-  //     console.log(error);
-  //   } finally {
-  //     setUploading(false);
-  //   }
-  // };
   const handleUpload = async () => {
     if (!file) return;
-  
+
     const formData = new FormData();
     formData.append("certificates", file);
     formData.append("email", email);
-  
+
     setUploading(true);
     setErr(null);
-  
+
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      
       const response = await axios.post(
         "http://127.0.0.1:3000/api/uploadImage",
         formData
@@ -79,10 +50,15 @@ const CustomeFileUploader = () => {
       setUploading(false);
     }
   };
-  
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 1,
+    accept: {
+      "application/pdf": [".pdf"],
+      "image/jpeg": [".jpeg", ".jpg"],
+      "image/png": [".png"],
+    },
   });
 
   return (
@@ -114,6 +90,9 @@ const CustomeFileUploader = () => {
           >
             <input {...getInputProps()} />
             <Typography>Drag & drop a file here, or click to upload</Typography>
+            <Typography variant="caption" display="block" sx={{ color: "gray" }}>
+              (Accepted formats: PDF, JPEG, PNG)
+            </Typography>
           </Box>
 
           {file && (
