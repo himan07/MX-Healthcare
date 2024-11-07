@@ -35,7 +35,7 @@ const CustomeFileUploader = () => {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      
+
       const response = await axios.post(
         "http://127.0.0.1:3000/api/uploadImage",
         formData
@@ -90,7 +90,11 @@ const CustomeFileUploader = () => {
           >
             <input {...getInputProps()} />
             <Typography>Drag & drop a file here, or click to upload</Typography>
-            <Typography variant="caption" display="block" sx={{ color: "gray" }}>
+            <Typography
+              variant="caption"
+              display="block"
+              sx={{ color: "gray" }}
+            >
               (Accepted formats: PDF, JPEG, PNG)
             </Typography>
           </Box>
@@ -129,7 +133,11 @@ const CustomeFileUploader = () => {
               variant="contained"
               onClick={handleUpload}
               disabled={!file || uploading}
-              sx={{ width: "60%", backgroundColor: "#02003d" }}
+              style={{
+                width: "60%",
+                backgroundColor: "#02003d",
+                color: "#fff",
+              }}
               size="medium"
             >
               {uploading ? <CircularProgress size={24} /> : "Upload"}

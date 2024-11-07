@@ -34,6 +34,15 @@ exports.uploadImage = (req, res) => {
       }
 
       const { email } = req.body;
+      const emaiExist = Image.findOne(email);
+
+      if (emaiExist) {
+        return res.status(500).json({
+          status: "fail",
+          message:
+            "A certificate is already associated with this account. Please review your account details or contact support if you need further assistance!",
+        });
+      }
 
       const fileName = `${req.file.originalname}`;
       console.log("fileName: ", fileName);
