@@ -11,7 +11,7 @@ exports.CreateUser = async (req, res) => {
     }
 
     let uuid;
-    
+
     if (!emailExists) {
       const generateNumericUUID = () => {
         return Math.floor(10000 + Math.random() * 90000);
