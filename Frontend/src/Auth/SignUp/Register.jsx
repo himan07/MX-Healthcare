@@ -353,6 +353,7 @@ const Register = () => {
                 },
               }}
               onKeyDown={(e) => handleKeyDown(e, emailRef, mobileRef)}
+              onChange={(e) => localStorage.setItem("emailId", e.target.value)}
             />
           </Box>
           <Box flexGrow={1} flexBasis="0">

@@ -5,18 +5,8 @@ const imageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  certificateNumber: {
+  email: {
     type: String,
-    required: true,
-  },
-  uuid: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  uniqueId: {
-    type: String,
-    unique: true,
     required: true,
   },
 });

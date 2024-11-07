@@ -1,20 +1,26 @@
-const Minio = require('minio');
-require('dotenv').config();
+const Minio = require("minio");
 
 const minioClient = new Minio.Client({
-  endPoint: process.env.MINIO_ENDPOINT,
-  port: parseInt(process.env.MINIO_PORT),
+  endPoint: "127.0.0.1",
+  port: 9000,
   useSSL: false,
-  accessKey: process.env.MINIO_ACCESS_KEY,
-  secretKey: process.env.MINIO_SECRET_KEY,
+  accessKey: "himanshuyadav",
+  secretKey: "#Himan123",
 });
 
-const bucketName = process.env.MINIO_BUCKET;
+const bucketName = "mx-healthcare";
+
 minioClient.bucketExists(bucketName, (err, exists) => {
-  if (err) throw err;
+  if (err) {
+    console.error("Error checking bucket existence:", err);
+    throw err;
+  }
   if (!exists) {
-    minioClient.makeBucket(bucketName, 'us-east-1', err => {
-      if (err) throw err;
+    minioClient.makeBucket(bucketName, "", (makeBucketErr) => {
+      if (makeBucketErr) {
+        console.error("Error creating bucket:", makeBucketErr);
+        throw makeBucketErr;
+      }
       console.log(`Bucket ${bucketName} created.`);
     });
   }
