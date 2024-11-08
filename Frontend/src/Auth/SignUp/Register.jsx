@@ -283,8 +283,9 @@ const Register = () => {
               />
             )}
             isOptionEqualToValue={(option, value) =>
-              option.value === value.value
+              option.value === value?.value
             }
+            onChange={(event, newValue) => setValue("gender", newValue)}
             fullWidth
           />
 
@@ -363,7 +364,7 @@ const Register = () => {
                 placeholder="Enter your mobile number"
                 inputRef={mobileRef}
                 value={phonenumber}
-                onChange={setPhonenumber}
+                onChange={(e) => setPhonenumber(e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e, mobileRef, passwordRef)}
                 style={{
                   width: "100%",
