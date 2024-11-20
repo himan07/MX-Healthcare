@@ -1,10 +1,13 @@
-import React from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useSignUp } from "@clerk/clerk-react";
 
 const Verification = ({ setActiveStep }) => {
+  const { signUp, isLoaded } = useSignUp();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     control,
@@ -19,15 +22,26 @@ const Verification = ({ setActiveStep }) => {
     navigate(-1);
   };
 
-  const onSubmit = async (data) => {
-    console.log("PersonalDetails", data);
-    setActiveStep((prevStep) => prevStep + 1);
-    navigate("/register/professional-details");
+  const handleVerify = async (data) => {
+    if (!isLoaded) return;
+
+    setLoading(true);
+    try {
+      await signUp.attemptEmailAddressVerification({
+        code: data.emailOtp,
+      });
+      setActiveStep((prevStep) => prevStep + 1);
+      navigate("/register/professional-details");
+    } catch (err) {
+      console.error("Verification failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Grid container>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleVerify)}>
         <Box sx={{ mt: 2 }}>
           <Typography variant="body1" sx={{ fontSize: "14px" }}>
             We've sent an OTP to your email (himan9714@gmail.com) and phone
@@ -87,7 +101,11 @@ const Verification = ({ setActiveStep }) => {
                 }}
                 type="submit"
               >
-                Verify
+                {loading ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                ) : (
+                  "Verify"
+                )}
               </Button>
             </Box>
           </Box>

@@ -3,6 +3,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   Grid,
   InputAdornment,
   Paper,
@@ -24,6 +25,7 @@ import { mobileValidation } from "../../../utils/mobileValidation";
 import SelectComponent from "../../../components/Select/Select";
 import { dobValidation } from "../../../utils/dateOfBirthValidation";
 import CheckboxComponent from "../../../components/Checkbox/CheckboxComp";
+import { useSignUp } from "@clerk/clerk-react";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -43,16 +45,17 @@ const StyledPaper = styled(Paper)({
 const PersonalDetails = ({ activeStep, setActiveStep }) => {
   const [phonenumber, setPhonenumber] = useState("");
   const [countryCode, setCountryCode] = useState("");
-  const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibility, setVisibility] = useState(false);
   const navigate = useNavigate();
+  const { signUp, setSession, isLoaded } = useSignUp();
 
   const countries = [
     { value: "+91", label: "🇮🇳 +91" },
     { value: "+1", label: "🇺🇸 +1" },
   ];
-  
+
   const genders = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
@@ -71,15 +74,30 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
     setVisibility(!visibility);
   };
 
-  const onSubmit = async (data) => {
-    console.log("PersonalDetails", data);
-    setActiveStep((prevStep) => prevStep + 1);
-    navigate("/register/verification");
+  const handleRegister = async (data) => {
+    if (!isLoaded) return;
+    setLoading(true);
+  
+    try {
+      const user = await signUp.create({
+        emailAddress: data.email,
+        password: data.password,
+      });
+  
+      await signUp.prepareEmailAddressVerification(user.email);
+      setActiveStep((prevStep) => prevStep + 1);
+      navigate("/register/verification");
+    } catch (error) {
+      console.log("Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <Grid container justifyContent="flex-end" mt={2}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleRegister)}>
         <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <InputField
             placeholder="Email"
@@ -283,8 +301,13 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
                 backgroundColor: "rgba(46, 104, 174, 1)",
               }}
               type="submit"
+              disabled={loading}
             >
-              Register
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Register"
+              )}
             </Button>
           </Box>
         </Box>
