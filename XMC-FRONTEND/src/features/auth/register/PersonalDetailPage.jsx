@@ -28,7 +28,6 @@ import CheckboxComponent from "../../../components/Checkbox/CheckboxComp";
 import { useSignUp } from "@clerk/clerk-react";
 import axios from "axios";
 
-
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
   borderRadius: "8px",
@@ -88,7 +87,6 @@ const PersonalDetails = ({ setActiveStep }) => {
       profession: data.professions,
       privacyPolicy: data.termsAgreement,
     };
-    
 
     if (!isLoaded) return;
     setLoading(true);
