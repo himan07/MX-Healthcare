@@ -2,9 +2,9 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
-const ImageRouter = require("./routes/uploadImage");
-const CreateUser = require("./routes/CreateUserRoutes")
-const getUser = require("./routes/getUser.routes")
+const uploadCertificateRouter = require("./src/routes/uploadcert.routes");
+const CreateUser = require("./src/routes/createuser.routes")
+const getUser = require("./src/routes/getUser.routes")
 
 app.use(cors());
 
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/createUser", CreateUser);
-app.use("/api/uploadImage", ImageRouter);
+app.use("/api/uploadImage", uploadCertificateRouter);
 app.use('/getUsers', getUser)
 
 module.exports = app;

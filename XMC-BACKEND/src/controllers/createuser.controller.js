@@ -1,4 +1,4 @@
-const createUser = require("../modal/CreateUserModal");
+const createUser = require("../models/createuser.model");
 
 exports.CreateUser = async (req, res) => {
   try {

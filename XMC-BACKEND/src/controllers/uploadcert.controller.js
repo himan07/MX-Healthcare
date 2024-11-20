@@ -1,13 +1,13 @@
 const multer = require("multer");
-const minioClient = require("../config/minio");
-const Image = require("../modal/ImageUpload");
+const minioClient = require("../config/minio.config");
+const Image = require("../models/uploadcert.model");
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("certificates");
 
-exports.uploadImage = (req, res) => {
+exports.uploadCertificate = (req, res) => {
   upload(req, res, async function (err) {
     try {
       if (err instanceof multer.MulterError) {

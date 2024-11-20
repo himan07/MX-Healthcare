@@ -1,4 +1,4 @@
-const CreateUser = require("../modal/CreateUserModal");
+const CreateUser = require("../models/createuser.model");
 
 exports.getUserByEmail = async (req, res) => {
   try {

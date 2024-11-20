@@ -1,8 +1,8 @@
 const express = require("express");
-const {uploadImage} = require("../controller/ImageController")
+const {uploadCertificate} = require("../controllers/uploadcert.controller")
 const router = express.Router();
 
 
-router.route("/").post(uploadImage)
+router.route("/").post(uploadCertificate)
 
 module.exports = router;
