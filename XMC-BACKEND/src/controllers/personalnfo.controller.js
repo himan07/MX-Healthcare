@@ -28,7 +28,7 @@ exports.createPersonalInfo = async (req, res) => {
       uuid,
     };
 
-    const personalInfo = await createUser.create(createPersonalInfoData);
+    const personalInfo = await personalInfoModal.create(createPersonalInfoData);
     res.status(201).json({
       status: "success",
       data: {

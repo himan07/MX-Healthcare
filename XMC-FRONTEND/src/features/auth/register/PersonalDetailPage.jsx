@@ -26,6 +26,8 @@ import SelectComponent from "../../../components/Select/Select";
 import { dobValidation } from "../../../utils/dateOfBirthValidation";
 import CheckboxComponent from "../../../components/Checkbox/CheckboxComp";
 import { useSignUp } from "@clerk/clerk-react";
+import axios from "axios";
+
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -42,8 +44,7 @@ const StyledPaper = styled(Paper)({
   fontSize: "16px",
 });
 
-const PersonalDetails = ({ activeStep, setActiveStep }) => {
-  const [phonenumber, setPhonenumber] = useState("");
+const PersonalDetails = ({ setActiveStep }) => {
   const [countryCode, setCountryCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -75,16 +76,31 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
   };
 
   const handleRegister = async (data) => {
+    console.log(data);
+
+    const personalInfoBody = {
+      email: data.email,
+      mobileNumber: Number(`${countryCode}${data.mobile}`),
+      name: `${data.firstName} ${data.lastName}`,
+      gender: data.gender,
+      zipcode: Number(data.zipcode),
+      dateOfBirth: data.dateOfBirth,
+      profession: data.professions,
+      privacyPolicy: data.termsAgreement,
+    };
+    
+
     if (!isLoaded) return;
     setLoading(true);
-  
+
     try {
       const user = await signUp.create({
         emailAddress: data.email,
         password: data.password,
       });
-  
+
       await signUp.prepareEmailAddressVerification(user.email);
+      axios.post("http://127.0.0.1:3000/create-personalInfo", personalInfoBody);
       setActiveStep((prevStep) => prevStep + 1);
       navigate("/register/verification");
     } catch (error) {
@@ -93,7 +109,6 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
       setLoading(false);
     }
   };
-  
 
   return (
     <Grid container justifyContent="flex-end" mt={2}>
@@ -118,8 +133,6 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
             />
             <InputField
               placeholder="Enter your mobile number"
-              value={phonenumber}
-              onChange={(e) => setPhonenumber(e.target.value)}
               register={{ ...register("mobile", mobileValidation(watch)) }}
             />
           </Box>
@@ -215,7 +228,7 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
                   <InputField
                     size="small"
                     {...params}
-                    placeholder="DD/MM/YYYY"
+                    placeholder="Date Of Birth"
                     fullWidth
                     register={{
                       ...register("dateOfBirth", dobValidation(watch)),
