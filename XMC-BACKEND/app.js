@@ -3,8 +3,8 @@ const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
 const uploadCertificateRouter = require("./src/routes/uploadcert.routes");
-const CreateUser = require("./src/routes/createuser.routes")
 const getUser = require("./src/routes/getUser.routes")
+const personalInfo = require("./src/routes/createPersonalnfo.routes")
 
 app.use(cors());
 
@@ -19,8 +19,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/createUser", CreateUser);
 app.use("/api/uploadImage", uploadCertificateRouter);
 app.use('/getUsers', getUser)
+app.use('/create-personalInfo', personalInfo)
 
 module.exports = app;

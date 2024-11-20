@@ -1,4 +1,4 @@
-const CreateUser = require("../models/createuser.model");
+const CreateUser = require("../models/personalnfo.model");
 
 exports.getUserByEmail = async (req, res) => {
   try {
