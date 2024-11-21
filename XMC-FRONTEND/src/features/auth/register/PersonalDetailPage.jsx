@@ -26,7 +26,7 @@ import SelectComponent from "../../../components/Select/Select";
 import { dobValidation } from "../../../utils/dateOfBirthValidation";
 import CheckboxComponent from "../../../components/Checkbox/CheckboxComp";
 import { useSignUp } from "@clerk/clerk-react";
-import axios from "axios";
+import { handleRegister } from "../../../utils/RegisterFn";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -74,12 +74,16 @@ const PersonalDetails = ({ setActiveStep }) => {
     setVisibility(!visibility);
   };
 
-  const handleRegister = async (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const phoneNumber = Number(`${countryCode}${data.mobile}`);
+    if (!phoneNumber) {
+      console.error("Phone number is required");
+      return;
+    }
 
-    const personalInfoBody = {
+    const formData = {
       email: data.email,
-      mobileNumber: Number(`${countryCode}${data.mobile}`),
+      mobileNumber: phoneNumber,
       name: `${data.firstName} ${data.lastName}`,
       gender: data.gender,
       zipcode: Number(data.zipcode),
@@ -88,21 +92,22 @@ const PersonalDetails = ({ setActiveStep }) => {
       privacyPolicy: data.termsAgreement,
     };
 
-    if (!isLoaded) return;
-    setLoading(true);
-
     try {
-      const user = await signUp.create({
-        emailAddress: data.email,
-        password: data.password,
-      });
-
-      await signUp.prepareEmailAddressVerification(user.email);
-      axios.post("http://127.0.0.1:3000/create-personalInfo", personalInfoBody);
-      setActiveStep((prevStep) => prevStep + 1);
-      navigate("/register/verification");
+      setLoading(true);
+      await handleRegister(
+        formData,
+        setLoading,
+        setActiveStep,
+        isLoaded,
+        navigate,
+        signUp,
+        countryCode
+      );
     } catch (error) {
-      console.log("Error:", error);
+      console.error(
+        "Error during registration process:",
+        error.message || error
+      );
     } finally {
       setLoading(false);
     }
@@ -110,7 +115,7 @@ const PersonalDetails = ({ setActiveStep }) => {
 
   return (
     <Grid container justifyContent="flex-end" mt={2}>
-      <form onSubmit={handleSubmit(handleRegister)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <InputField
             placeholder="Email"
