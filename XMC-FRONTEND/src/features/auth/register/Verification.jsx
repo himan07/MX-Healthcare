@@ -3,18 +3,20 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useSignUp } from "@clerk/clerk-react";
+import { useSignUp, useClerk } from "@clerk/clerk-react";
+import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
 
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const userEmail = sessionStorage.getItem("userEmail");
+  const phonenumber = localStorage.getItem("phonenumber")
+
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
 
   const handleBack = () => {
@@ -30,10 +32,26 @@ const Verification = ({ setActiveStep }) => {
       await signUp.attemptEmailAddressVerification({
         code: data.emailOtp,
       });
+      verifyMobileOtp(Number(phonenumber),Number(data.phoneOtp));
       setActiveStep((prevStep) => prevStep + 1);
       navigate("/register/professional-details");
     } catch (err) {
       console.error("Verification failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    const { client } = useClerk();
+    try {
+      setLoading(true);
+      await signUp.prepareEmailAddressVerification(userEmail.email);
+    } catch (error) {
+      console.error(
+        "Error resending verification email:",
+        error.message || error
+      );
     } finally {
       setLoading(false);
     }
@@ -49,7 +67,7 @@ const Verification = ({ setActiveStep }) => {
           </Typography>
           <Box sx={{ mt: 1 }}>
             <Typography variant="body1" sx={{ fontSize: "15px" }}>
-              <a href="/terms-of-use" target="_blank" className="terms-text">
+              <a href="" className="terms-text" onClick={handleResendOtp}>
                 Didn't recieve the code? Resend
               </a>
             </Typography>

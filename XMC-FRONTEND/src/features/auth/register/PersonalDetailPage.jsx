@@ -81,14 +81,18 @@ const PersonalDetails = ({ setActiveStep }) => {
       return;
     }
 
+    localStorage.setItem("phonenumber", phoneNumber)
+
     const formData = {
       email: data.email,
       mobileNumber: phoneNumber,
+      msDn:data.mobile,
       name: `${data.firstName} ${data.lastName}`,
       gender: data.gender,
       zipcode: Number(data.zipcode),
       dateOfBirth: data.dateOfBirth,
       profession: data.professions,
+      password:data.password,
       privacyPolicy: data.termsAgreement,
     };
 

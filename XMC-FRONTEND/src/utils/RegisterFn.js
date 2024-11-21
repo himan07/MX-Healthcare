@@ -11,36 +11,68 @@ const OTP_CONFIG = {
   tempid: "1607100000000233745",
 };
 
+// const handleOtpSend = async (phoneNumber) => {
+//     const messageText =
+//       "Dear User,Your OTP for Token App is %m. This is valid for 10 min, please do not share it with anyone.%0ATeam Market-Xcel";
+  
+//     if (!phoneNumber) {
+//       console.error("Phone number is required");
+//       return false;
+//     }
+  
+//     const params = {
+//       ...OTP_CONFIG,
+//       msisdn: phoneNumber,
+//       msg: messageText, 
+//     };
+  
+//     const queryString = qs.stringify(params);
+  
+//     try {
+//       const response = await axios.get(`/api/OtpApi/otpgenerate?${queryString}`);
+//       if (response.status === 200) {
+//         return true;
+//       } else {
+//         console.error("Failed to send OTP");
+//         return false;
+//       }
+//     } catch (error) {
+//       console.error("Error sending OTP:", error.message || error);
+//       return false;
+//     }
+//   };
+  
 const handleOtpSend = async (phoneNumber) => {
-  const messageText =
-    "Dear User,%0AYour OTP for Token App is %m. This is valid for 10 min, please do not share it with anyone.%0ATeam Market-Xcel";
-
-  if (!phoneNumber) {
-    console.error("Phone number is required");
-    return false;
-  }
-
-  const params = {
-    ...OTP_CONFIG,
-    msisdn: phoneNumber,
-    msg: messageText,
-  };
-
-  const queryString = qs.stringify(params);
-
-  try {
-    const response = await axios.get(`/api/OtpApi/otpgenerate?${queryString}`);
-    if (response.status === 200) {
-      return true;
-    } else {
-      console.error("Failed to send OTP");
+    let messageText ="Dear User,Your OTP for Token App is %m. This is valid for 10 min, please do not share it with anyone.Team Market-Xcel";
+  
+    if (!phoneNumber) {
+      console.error("Phone number is required");
       return false;
     }
-  } catch (error) {
-    console.error("Error sending OTP:", error.message || error);
-    return false;
-  }
-};
+    
+    const params = {
+      ...OTP_CONFIG,
+      msisdn: phoneNumber,
+      msg: messageText,
+    };
+  
+    const queryString = new URLSearchParams(params).toString();
+  
+    try {
+      const response = await axios.get(`/api/OtpApi/otpgenerate?${queryString}`);
+      if (response.status === 200) {
+        return true;
+      } else {
+        console.error("Failed to send OTP");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error.message || error);
+      return false;
+    }
+  };
+  
+  
 
 const handleRegister = async (
   formData,
@@ -48,15 +80,14 @@ const handleRegister = async (
   setActiveStep,
   isLoaded,
   navigate,
-  signUp,
-  countryCode
+  signUp
 ) => {
   if (!isLoaded) return;
 
   setLoading(true);
 
   try {
-    const phoneNumber = formData.mobileNumber;
+    const phoneNumber = formData.msDn;
     const personalInfo = {
       email: formData.email,
       mobileNumber: formData.mobileNumber,
@@ -78,6 +109,8 @@ const handleRegister = async (
         emailAddress: formData.email,
         password: formData.password,
       });
+
+      sessionStorage.setItem("userEmail", user);
 
       await signUp.prepareEmailAddressVerification(user.email);
 
