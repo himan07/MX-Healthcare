@@ -110,7 +110,7 @@ const handleRegister = async (
         password: formData.password,
       });
 
-      sessionStorage.setItem("userEmail", user);
+      sessionStorage.setItem("userEmail", user.emailAddress);
 
       await signUp.prepareEmailAddressVerification(user.email);
 
