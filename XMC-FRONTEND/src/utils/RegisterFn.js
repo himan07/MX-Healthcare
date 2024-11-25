@@ -1,5 +1,4 @@
 import axios from "axios";
-import qs from "qs";
 
 const OTP_CONFIG = {
   username: "Xcelotp",
@@ -10,37 +9,6 @@ const OTP_CONFIG = {
   entityid: "1601100000000017697",
   tempid: "1607100000000233745",
 };
-
-// const handleOtpSend = async (phoneNumber) => {
-//     const messageText =
-//       "Dear User,Your OTP for Token App is %m. This is valid for 10 min, please do not share it with anyone.%0ATeam Market-Xcel";
-  
-//     if (!phoneNumber) {
-//       console.error("Phone number is required");
-//       return false;
-//     }
-  
-//     const params = {
-//       ...OTP_CONFIG,
-//       msisdn: phoneNumber,
-//       msg: messageText, 
-//     };
-  
-//     const queryString = qs.stringify(params);
-  
-//     try {
-//       const response = await axios.get(`/api/OtpApi/otpgenerate?${queryString}`);
-//       if (response.status === 200) {
-//         return true;
-//       } else {
-//         console.error("Failed to send OTP");
-//         return false;
-//       }
-//     } catch (error) {
-//       console.error("Error sending OTP:", error.message || error);
-//       return false;
-//     }
-//   };
   
 const handleOtpSend = async (phoneNumber) => {
     let messageText ="Dear User,Your OTP for Token App is %m. This is valid for 10 min, please do not share it with anyone.Team Market-Xcel";

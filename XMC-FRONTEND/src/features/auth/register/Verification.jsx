@@ -3,16 +3,16 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useSignUp , useSignIn} from "@clerk/clerk-react";
+import { useSignUp, useSignIn } from "@clerk/clerk-react";
 import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
+import axios from "axios";
 
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
-  const {signIn}  = useSignIn()
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const email = sessionStorage.getItem("userEmail");
-  const phonenumber = localStorage.getItem("phonenumber")
+  const phonenumber = localStorage.getItem("phonenumber");
 
   const {
     register,
@@ -33,7 +33,7 @@ const Verification = ({ setActiveStep }) => {
       await signUp.attemptEmailAddressVerification({
         code: data.emailOtp,
       });
-      verifyMobileOtp(Number(phonenumber),Number(data.phoneOtp));
+      verifyMobileOtp(Number(phonenumber), Number(data.phoneOtp));
       setActiveStep((prevStep) => prevStep + 1);
       navigate("/register/professional-details");
     } catch (err) {
@@ -43,21 +43,29 @@ const Verification = ({ setActiveStep }) => {
     }
   };
 
-  const handleResendOtp = async (e) => {
-    e.preventDefault()
+  const handleResendVerification = async (e) => {
+    e.preventDefault();
     try {
-      setLoading(true);
-      await signIn.prepareSignInFactorOne({
-        identifier: email,
-        strategy: 'email_code',
-      });
+      const url = `https://select-swift-42.clerk.accounts.dev/v1/me/email_addresses/${email}/prepare_verification`;
+
+      const response = await axios.post(
+        url,
+        new URLSearchParams({
+          strategy: "email_code",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      console.log("Verification email resent successfully:", response.data);
     } catch (error) {
       console.error(
         "Error resending verification email:",
-        error.message || error
+        error.response?.data || error.message
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -71,7 +79,11 @@ const Verification = ({ setActiveStep }) => {
           </Typography>
           <Box sx={{ mt: 1 }}>
             <Typography variant="body1" sx={{ fontSize: "15px" }}>
-              <a href="" className="terms-text" onClick={(e) => handleResendOtp(e)}>
+              <a
+                href=""
+                className="terms-text"
+                onClick={(e) => handleResendVerification(e)}
+              >
                 Didn't recieve the code? Resend
               </a>
             </Typography>
