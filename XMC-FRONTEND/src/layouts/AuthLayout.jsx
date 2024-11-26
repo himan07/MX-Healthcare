@@ -3,6 +3,7 @@ import { Box, Grid } from "@mui/material";
 import Steps from "../components/Stepper/Stepper";
 import { makeStyles } from "@mui/styles";
 import { useLocation } from "react-router-dom";
+import "../assets/styles/authLayout.css"
 
 const useStyles = makeStyles({
   root: {
@@ -11,7 +12,6 @@ const useStyles = makeStyles({
     borderRadius: "10px",
     maxWidth: "100%",
     width: "30%",
-    height: "auto !important",
     overflowY: "scroll",
     margin: "40px 50px",
   },
@@ -20,6 +20,7 @@ const useStyles = makeStyles({
 const AuthLayout = ({ children }) => {
   const classes = useStyles();
   const location = useLocation();
+  
 
   const storedStep = localStorage.getItem("activeStep");
   const initialStep = storedStep ? parseInt(storedStep, 10) : 0;
@@ -44,9 +45,6 @@ const AuthLayout = ({ children }) => {
       container
       justifyContent={justifyContent}
       alignItems={alignItems}
-      style={{
-        height: "80vh",
-      }}
     >
       <Box className={classes.root}>
         <Steps steps={steps} activeStep={activeStep} />
