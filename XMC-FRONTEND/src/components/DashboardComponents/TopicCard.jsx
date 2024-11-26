@@ -9,7 +9,7 @@ const TopicCard = ({ name, reward, time, rate }) => {
     rate === "High" ? "rgba(255, 246, 213, 1)" : "rgba(213, 255, 226, 1)";
 
   return (
-    <Card sx={{ boxShadow: 0.5, border: "1px solid e0e0e0", borderRadius: 2 }}>
+    <Card sx={{ border: "1px solid e0e0e0", borderRadius: 2 }}>
       <CardContent>
         <Chip
           label={`${rate} disqualification rate`}

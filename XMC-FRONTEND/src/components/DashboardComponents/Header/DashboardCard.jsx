@@ -8,7 +8,7 @@ const DashboardCard = ({ balance, studiesCompleted }) => (
   <Grid container spacing={2} sx={{ marginBottom: 2 }}>
     <Grid item xs={12} md={6}>
       <Card
-        sx={{ boxShadow: 0.5, border: "1px solid e0e0e0", borderRadius: 2, pt:0.5 }}
+        sx={{border: "1px solid e0e0e0", borderRadius: 2, pt:0.5 }}
       >
         <CardContent sx={{display:"flex", justifyContent:"space-between"}}>
           <Box sx={{mt:1}}>
