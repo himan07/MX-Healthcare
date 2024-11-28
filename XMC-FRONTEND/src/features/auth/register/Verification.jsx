@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useSignUp } from "@clerk/clerk-react";
 import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
 import axios from "axios";
+import { handleOtpSend } from "../../../utils/RegisterFn";
 
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
@@ -92,6 +93,7 @@ const Verification = ({ setActiveStep }) => {
       await signUp.prepareEmailAddressVerification({
         strategy: "email_code",
       });
+      await handleOtpSend(userData.mobile);
     } catch (error) {
       console.error(
         "Error resending verification email:",

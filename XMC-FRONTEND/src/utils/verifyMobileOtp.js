@@ -6,18 +6,20 @@ export const verifyMobileOtp = async (phoneNumber, otpCode) => {
     return false;
   }
 
-  const username = 'Xcelotp';
-  const password = '!P3Bg*1s';
+  const VERIFY_CONFIG = {
+    username: "Xcelotp",
+    password: "!P3Bg*1s",
+    
+  };
 
   const params = {
-    username,
-    password,
-    msisdn: phoneNumber,
+    ...VERIFY_CONFIG,
+    msisdn: String(phoneNumber),
     otp: otpCode,
   };
 
   try {
-    const response = await axios.post('/apiOtpApi/checkotp', params);
+    const response = await axios.post('/apiOtpApi/checkotp?', params);
     if (response.status === 200) {
       return true;
     } else {
