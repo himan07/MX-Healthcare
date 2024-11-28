@@ -12,14 +12,15 @@ export const verifyMobileOtp = async (phoneNumber, otpCode) => {
     
   };
 
-  const params = {
-    ...VERIFY_CONFIG,
-    msisdn: String(phoneNumber),
-    otp: otpCode,
-  };
-
   try {
-    const response = await axios.post('/apiOtpApi/checkotp?', params);
+    const queryParams = new URLSearchParams({
+      username: VERIFY_CONFIG.username,
+      password: VERIFY_CONFIG.password,
+      msisdn: String(phoneNumber),
+      otp: otpCode
+    }).toString();
+    
+    const response = await axios.get(`/api/OtpApi/checkotp?${queryParams}`);
     if (response.status === 200) {
       return true;
     } else {

@@ -40,8 +40,9 @@ const Verification = ({ setActiveStep }) => {
         Number(phonenumber),
         Number(data.phoneOtp)
       );
+console.log("mobileVerificationSuccess:", mobileVerificationSuccess.data )
 
-      if (mobileVerificationSuccess) {
+      if (mobileVerificationSuccess===true) {
         const personalInfo = {
           email: userData.email,
           mobileNumber: Number(`${countryCode}${userData.mobile}`),
