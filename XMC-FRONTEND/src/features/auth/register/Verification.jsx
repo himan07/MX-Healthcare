@@ -36,13 +36,12 @@ const Verification = ({ setActiveStep }) => {
     setLoading(true);
 
     try {
-      const mobileVerificationSuccess = await verifyMobileOtp(
+      const mobileVerification = await verifyMobileOtp(
         Number(phonenumber),
         Number(data.phoneOtp)
       );
-console.log("mobileVerificationSuccess:", mobileVerificationSuccess.data )
 
-      if (mobileVerificationSuccess===true) {
+      if (mobileVerification === true) {
         const personalInfo = {
           email: userData.email,
           mobileNumber: Number(`${countryCode}${userData.mobile}`),
