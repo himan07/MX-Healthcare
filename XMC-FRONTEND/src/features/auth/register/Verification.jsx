@@ -105,8 +105,9 @@ const Verification = ({ setActiveStep }) => {
       <form onSubmit={handleSubmit(handleVerify)}>
         <Box sx={{ mt: 2 }}>
           <Typography variant="body1" sx={{ fontSize: "14px" }}>
-            We've sent an OTP to your email (himan9714@gmail.com) and phone
-            (+918127044098). please enter the OTP below to verify your account.
+            We've sent an OTP to your email ({userData.email}) and phone (
+            {userData.mobile}). please enter the OTP below to verify your
+            account.
           </Typography>
           <Box sx={{ mt: 1 }}>
             <Typography variant="body1" sx={{ fontSize: "15px" }}>
