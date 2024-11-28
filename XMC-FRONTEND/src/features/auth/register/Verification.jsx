@@ -81,14 +81,17 @@ const Verification = ({ setActiveStep }) => {
   const handleResendVerification = async (e) => {
     e.preventDefault();
     try {
-      if (signUp.status === "needs_verification") {
-        await signUp.prepareEmailAddressVerification({
-          strategy: "email_code",
+      const userEmail = sessionStorage.getItem("userEmail");
+      if (signUp.status === "missing_requirements") {
+        const userData = JSON.parse(localStorage.getItem("Data"));
+        await signUp.create({
+          emailAddress: userEmail || userData.email,
+          password: userData.password,
         });
-        console.log("Verification email resent successfully.");
-      } else {
-        console.error("Cannot resend verification. Current status:", signUp.status);
       }
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
     } catch (error) {
       console.error(
         "Error resending verification email:",
@@ -96,7 +99,6 @@ const Verification = ({ setActiveStep }) => {
       );
     }
   };
-  
 
   return (
     <Grid container>
