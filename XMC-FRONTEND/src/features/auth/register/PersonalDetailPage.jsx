@@ -81,19 +81,11 @@ const PersonalDetails = ({ setActiveStep }) => {
       return;
     }
 
-    localStorage.setItem("phonenumber", phoneNumber)
 
     const formData = {
       email: data.email,
-      mobileNumber: phoneNumber,
-      msDn:data.mobile,
-      name: `${data.firstName} ${data.lastName}`,
-      gender: data.gender,
-      zipcode: Number(data.zipcode),
-      dateOfBirth: data.dateOfBirth,
-      profession: data.professions,
-      password:data.password,
-      privacyPolicy: data.termsAgreement,
+      msDn: data.mobile,
+      password: data.password,
     };
 
     try {
@@ -114,6 +106,9 @@ const PersonalDetails = ({ setActiveStep }) => {
       );
     } finally {
       setLoading(false);
+      localStorage.setItem("phonenumber", phoneNumber);
+      localStorage.setItem("Data", JSON.stringify(data));
+      localStorage.setItem("countryCode", countryCode)
     }
   };
 

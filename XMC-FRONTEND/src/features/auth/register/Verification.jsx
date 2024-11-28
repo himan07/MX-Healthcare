@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useSignUp, useSignIn } from "@clerk/clerk-react";
+import { useSignUp } from "@clerk/clerk-react";
 import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
 import axios from "axios";
 
@@ -11,8 +11,12 @@ const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const email = sessionStorage.getItem("userEmail");
   const phonenumber = localStorage.getItem("phonenumber");
+
+  const userData = JSON.parse(localStorage.getItem("Data"));
+  const countryCode = localStorage.getItem("countryCode");
+
+  console.log("userData", userData);
 
   const {
     register,
@@ -29,13 +33,44 @@ const Verification = ({ setActiveStep }) => {
     if (!isLoaded) return;
 
     setLoading(true);
+
     try {
-      await signUp.attemptEmailAddressVerification({
-        code: data.emailOtp,
-      });
-      verifyMobileOtp(Number(phonenumber), Number(data.phoneOtp));
-      setActiveStep((prevStep) => prevStep + 1);
-      navigate("/register/professional-details");
+      const mobileVerificationSuccess = await verifyMobileOtp(
+        Number(phonenumber),
+        Number(data.phoneOtp)
+      );
+
+      if (mobileVerificationSuccess) {
+        const personalInfo = {
+          email: userData.email,
+          mobileNumber: Number(`${countryCode}${userData.mobile}`),
+          name: `${userData.firstName} ${userData.lastName}`,
+          gender: userData.gender,
+          zipcode: Number(userData.zipcode),
+          dateOfBirth: userData.dateOfBirth,
+          profession: userData.professions,
+          privacyPolicy: userData.termsAgreement,
+        };
+
+        await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
+
+        const response = await axios.post(
+          "http://127.0.0.1:3000/create-personalInfo",
+          personalInfo
+        );
+
+        if (response.status === 201) {
+          setActiveStep((prevStep) => prevStep + 1);
+          navigate("/register/professional-details");
+        } else {
+          console.error(
+            "Failed to save personal information:",
+            response.statusText
+          );
+        }
+      } else {
+        console.error("Mobile verification failed");
+      }
     } catch (err) {
       console.error("Verification failed:", err);
     } finally {
@@ -46,21 +81,14 @@ const Verification = ({ setActiveStep }) => {
   const handleResendVerification = async (e) => {
     e.preventDefault();
     try {
-      const url = `https://select-swift-42.clerk.accounts.dev/v1/me/email_addresses/${email}/prepare_verification`;
-
-      const response = await axios.post(
-        url,
-        new URLSearchParams({
+      if (signUp.status === "needs_verification") {
+        await signUp.prepareEmailAddressVerification({
           strategy: "email_code",
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-
-      console.log("Verification email resent successfully:", response.data);
+        });
+        console.log("Verification email resent successfully.");
+      } else {
+        console.error("Cannot resend verification. Current status:", signUp.status);
+      }
     } catch (error) {
       console.error(
         "Error resending verification email:",
@@ -68,6 +96,7 @@ const Verification = ({ setActiveStep }) => {
       );
     }
   };
+  
 
   return (
     <Grid container>
