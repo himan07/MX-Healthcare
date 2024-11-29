@@ -49,7 +49,7 @@ const PersonalDetails = ({ setActiveStep }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibility, setVisibility] = useState(false);
   const navigate = useNavigate();
-  const { signUp, setSession, isLoaded } = useSignUp();
+  const { signUp, isLoaded } = useSignUp();
 
   const countries = [
     { value: "+91", label: "🇮🇳 +91" },
