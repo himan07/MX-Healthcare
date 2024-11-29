@@ -22,10 +22,6 @@ const ProfessionalDetails = ({ setActiveStep }) => {
     console.log("Personal ID uploaded:", file.name);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-    navigate(-1);
-  };
 
   const handleSave = () => {
     setActiveStep((prevStep) => prevStep + 1);

@@ -32,7 +32,6 @@ const Verification = ({ setActiveStep }) => {
 
   const handleVerify = async (data) => {
     if (!isLoaded) return;
-
     setLoading(true);
 
     try {
@@ -41,7 +40,8 @@ const Verification = ({ setActiveStep }) => {
         Number(data.phoneOtp)
       );
 
-      if (mobileVerification === true) {
+      
+      if (mobileVerification?.data === 101) {
         const personalInfo = {
           email: userData.email,
           mobileNumber: Number(`${countryCode}${userData.mobile}`),
@@ -70,7 +70,8 @@ const Verification = ({ setActiveStep }) => {
           );
         }
       } else {
-        console.error("Mobile verification failed");
+        const errorMessage = mobileVerification?.data?.message || "Invalid OTP";
+        console.error("Mobile verification failed:", errorMessage);
       }
     } catch (err) {
       console.error("Verification failed:", err);
@@ -149,7 +150,7 @@ const Verification = ({ setActiveStep }) => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              gap: { xs: 2, sm: 2.5, md: 3 }, 
+              gap: { xs: 2, sm: 2.5, md: 3 },
             }}
           >
             <InputField
