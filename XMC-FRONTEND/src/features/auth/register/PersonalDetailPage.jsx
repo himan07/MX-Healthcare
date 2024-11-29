@@ -161,6 +161,7 @@ const PersonalDetails = ({ setActiveStep }) => {
             <InputField
               placeholder="Enter your mobile number"
               register={{ ...register("mobile", mobileValidation(watch)) }}
+              type="number"
             />
           </Box>
           <Box sx={{ width: "100%" }}>

@@ -17,9 +17,9 @@ const InputField = ({ register, errors, onKeyDown, ...props }) => (
         borderRadius: "10px",
         backgroundColor: "#e9e9e9",
         border: "none",
-        height: "40px", // Set a specific height for the input (you can adjust this)
+        height: "40px",
         display: "flex",
-        alignItems: "center", // Vertically center the label and input text
+        alignItems: "center", 
         "&:hover": {
           backgroundColor: "#dcdcdc",
         },
