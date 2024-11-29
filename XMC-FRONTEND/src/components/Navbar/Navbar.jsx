@@ -1,7 +1,14 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/login");
+  };
+
   return (
     <>
       <AppBar
@@ -23,7 +30,7 @@ const Navbar = () => {
           >
             XCEL MED CONNECT
           </Typography>
-          <Box>
+          <Box onClick={handleClick}>
             <Typography
               color="primary"
               sx={{
