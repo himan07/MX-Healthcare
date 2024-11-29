@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader/FileUploader";
+import "../../../assets/styles/authLayout.css"
 
 const ProfessionalDetails = ({ setActiveStep }) => {
   const navigate = useNavigate();
@@ -31,20 +32,26 @@ const ProfessionalDetails = ({ setActiveStep }) => {
     localStorage.clear("activeStep");
   };
 
-  const dynamicHeight = window.innerHeight - 260;
-
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: `${dynamicHeight}px`,
+        minHeight: "calc(100vh - 260px)",
+        margin: "20px auto",
         padding: "20px",
-        
+        maxWidth: "100%",
+        boxSizing: "border-box"
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: "100%",
+          margin: "auto"
+        }}
+      >
         <Typography
           variant="subtitle1"
           sx={{ fontWeight: "bold", marginBottom: 1 }}
@@ -79,24 +86,24 @@ const ProfessionalDetails = ({ setActiveStep }) => {
           ID, our representative will reach out to you for verification.
         </Typography>
 
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: "#ccc",
-              color: "#555",
-              "&:hover": { borderColor: "#999", backgroundColor: "#f9f9f9" },
-            }}
-            onClick={handleBack}
-          >
-            Back
-          </Button>
+        <Box sx={{ 
+          mt: 4,
+        }}>
           <Button
             variant="contained"
+            size="lg"
+            fullWidth
             disabled={!fileUploaded.medicalLicense}
             sx={{
               backgroundColor: "rgba(46, 104, 174, 1)",
               color: "#fff",
+              "&:hover": {
+                backgroundColor: "rgba(46, 104, 174, 0.9)",
+              },
+              "&:disabled": {
+                backgroundColor: "rgba(0, 0, 0, 0.12)",
+                color: "rgba(0, 0, 0, 0.26)",
+              }
             }}
             onClick={handleSave}
           >

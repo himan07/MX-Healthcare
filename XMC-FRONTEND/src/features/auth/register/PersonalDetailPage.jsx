@@ -81,7 +81,6 @@ const PersonalDetails = ({ setActiveStep }) => {
       return;
     }
 
-
     const formData = {
       email: data.email,
       msDn: data.mobile,
@@ -108,22 +107,48 @@ const PersonalDetails = ({ setActiveStep }) => {
       setLoading(false);
       localStorage.setItem("phonenumber", phoneNumber);
       localStorage.setItem("Data", JSON.stringify(data));
-      localStorage.setItem("countryCode", countryCode)
+      localStorage.setItem("countryCode", countryCode);
     }
   };
 
   return (
-    <Grid container justifyContent="flex-end" mt={2}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box sx={{ maxWidth: "100%", width: "100%" }}>
+    <Grid
+      container
+      justifyContent="flex-end"
+      sx={{
+        padding: {
+          xs: "20px 10px",
+          sm: "25px 15px",
+          md: "30px 20px",
+        },
+      }}
+    >
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: { xs: 2, sm: 2.5, md: 3 },
+          }}
+        >
           <InputField
             placeholder="Email"
             register={{
               ...register("email", emailValidation(watch)),
             }}
             errors={errors.email}
+            sx={{ mb: 0 }}
           />
-          <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: { xs: 1, sm: 2, md: 3 },
+              width: "100%",
+            }}
+          >
             <SelectComponent
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
@@ -305,15 +330,18 @@ const PersonalDetails = ({ setActiveStep }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              mt: 4,
+              mt: { xs: 3, sm: 4, md: 4 },
+              mb: { xs: 2, sm: 2, md: 2 },
             }}
           >
             <Button
               variant="contained"
               sx={{
                 textTransform: "capitalize",
-                width: "70%",
+                width: { xs: "90%", sm: "80%", md: "70%" },
                 backgroundColor: "rgba(46, 104, 174, 1)",
+                py: { xs: 1.2, sm: 1.5 },
+                fontSize: { xs: "0.9rem", sm: "1rem" },
               }}
               type="submit"
               disabled={loading}

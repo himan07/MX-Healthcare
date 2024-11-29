@@ -12,8 +12,25 @@ const useStyles = makeStyles({
     borderRadius: "10px",
     maxWidth: "100%",
     width: "30%",
-    overflowY: "scroll",
-    margin: "40px 50px",
+    overflowY: "auto",
+    margin: "0 50px",
+    minHeight: "fit-content",
+    "@media (max-width: 1200px)": {
+      width: "40%",
+    },
+    "@media (max-width: 900px)": {
+      width: "60%",
+      margin: "0 30px",
+    },
+    "@media (max-width: 600px)": {
+      width: "85%",
+      margin: "0 20px",
+    },
+  },
+  container: {
+    minHeight: "100vh",
+    padding: "5vh 0",
+    boxSizing: "border-box",
   },
 });
 
@@ -45,6 +62,7 @@ const AuthLayout = ({ children }) => {
       container
       justifyContent={justifyContent}
       alignItems={alignItems}
+      className={classes.container}
     >
       <Box className={classes.root}>
         <Steps steps={steps} activeStep={activeStep} />

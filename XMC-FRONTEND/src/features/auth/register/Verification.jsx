@@ -103,9 +103,32 @@ const Verification = ({ setActiveStep }) => {
   };
 
   return (
-    <Grid container>
-      <form onSubmit={handleSubmit(handleVerify)}>
-        <Box sx={{ mt: 2 }}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      sx={{
+        padding: {
+          xs: "20px 10px",
+          sm: "25px 15px",
+          md: "30px 20px",
+        },
+      }}
+    >
+      <form onSubmit={handleSubmit(handleVerify)} style={{ width: "100%" }}>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: { xs: 2, sm: 2.5, md: 3 },
+            padding: { xs: 2, sm: 3, md: 4 },
+            backgroundColor: "#fff",
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            margin: "auto",
+          }}
+        >
           <Typography variant="body1" sx={{ fontSize: "14px" }}>
             We've sent an OTP to your email ({userData.email}) and phone (
             {userData.mobile}). please enter the OTP below to verify your
@@ -118,11 +141,17 @@ const Verification = ({ setActiveStep }) => {
                 className="terms-text"
                 onClick={(e) => handleResendVerification(e)}
               >
-                Didn't recieve the code? Resend
+                Didn't receive the code? Resend
               </a>
             </Typography>
           </Box>
-          <Box sx={{ mt: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: { xs: 2, sm: 2.5, md: 3 }, 
+            }}
+          >
             <InputField
               placeholder="Email OTP"
               register={{
@@ -152,7 +181,7 @@ const Verification = ({ setActiveStep }) => {
               <Button
                 variant="contained"
                 fullWidth
-                style={{
+                sx={{
                   backgroundColor: "#000000",
                   textTransform: "capitalize",
                 }}
@@ -163,7 +192,7 @@ const Verification = ({ setActiveStep }) => {
               <Button
                 variant="contained"
                 fullWidth
-                style={{
+                sx={{
                   backgroundColor: "rgba(46, 104, 174, 1)",
                   textTransform: "capitalize",
                 }}

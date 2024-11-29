@@ -38,7 +38,6 @@ const SelectComponent = ({
           fontSize: "0.875rem",
           border: "none",
           padding: "0 12px",
-          mt: 2,
           "&:hover": {
             backgroundColor: "#dcdcdc",
             border: "none",
