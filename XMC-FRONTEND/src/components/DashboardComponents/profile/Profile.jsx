@@ -35,7 +35,6 @@ const ProfileContainer = ({ progress, question, questionsRemaining }) => {
         border: "1px solid #e0e0e0",
         borderRadius: 2,
         mb: 1,
-        mt:1,
       }}
     >
       <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>

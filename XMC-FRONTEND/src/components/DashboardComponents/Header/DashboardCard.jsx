@@ -4,7 +4,7 @@ import currencyIcon from "../../../assets/images/CurrencyCircleDollar.svg";
 import Sealcheck from "../../../assets/images/SealCheck.svg";
 
 const DashboardCard = ({ balance, studiesCompleted }) => (
-  <Grid container spacing={2} sx={{ marginBottom: 2 }}>
+  <Grid container spacing={2} sx={{ marginBottom: 1 }}>
     <Grid item xs={12} md={6}>
       <Card sx={{ border: "1px solid e0e0e0", borderRadius: 2, pt: 0.5 }}>
         <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>

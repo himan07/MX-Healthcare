@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography, Box } from "@mui/material";
 import "../../assets/styles/Dashboard.css";
 import ProfileContainer from "../../components/DashboardComponents/profile/Profile";
 import TopicCard from "../../components/DashboardComponents/TopicCard";
@@ -13,38 +13,48 @@ const Dashboard = () => {
   ];
 
   return (
-    <Container
-      maxWidth="lg"
+    <Box
       sx={{
-        mt:4,
-        mb:4,
-        alignItems: "center", 
-        minHeight: "100vh",
+        py: { xs: 4, sm: 5, md: 6 },
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Hello, John!
-      </Typography>
-      <Grid
-        maxWidth="md"
+      <Container
+        maxWidth="lg"
         sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          marginLeft: 0,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3
         }}
       >
-        <DashboardCard balance="$15.2" studiesCompleted={2} />
-      </Grid>
-      <ProfileContainer progress={25} />
+        <Typography variant="h4">
+          Hello, John!
+        </Typography>
+        
+        <Grid
+          maxWidth="md"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            marginLeft: 0,
+          }}
+        >
+          <DashboardCard balance="$15.2" studiesCompleted={2} />
+        </Grid>
+        
+        <ProfileContainer progress={25} />
 
-      <Grid container spacing={2} sx={{ marginTop: 2 }}>
-        {topics.map((topic, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <TopicCard {...topic} />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+        <Grid container spacing={2}>
+          {topics.map((topic, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <TopicCard {...topic} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
