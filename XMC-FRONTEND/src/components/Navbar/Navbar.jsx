@@ -53,12 +53,14 @@ const Navbar = () => {
     }
   }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       setIsLoggingOut(true);
       await signOut({
         sessionId: "*",
       });
+
       const isDataCleared = clearBrowserData();
 
       if (!isDataCleared) {
@@ -73,6 +75,7 @@ const Navbar = () => {
     } finally {
       setIsLoggingOut(false);
       handleClose();
+      navigate("/login");
     }
   };
 
@@ -106,13 +109,17 @@ const Navbar = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClickOpen}
               >
-                <AccountCircleIcon />
+                <AccountCircleIcon
+                  style={{ color: "rgba(42, 106, 157, 1)", fontSize: "2rem" }}
+                />
               </IconButton>
             ) : (
               <IconButton
                 color="primary"
                 sx={{
                   cursor: "pointer",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
                   background: "rgba(57, 96, 143, 1))",
                   "&:hover": {
                     opacity: 0.8,
