@@ -1,10 +1,13 @@
 import React from "react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import AuthLayout from "../layouts/AuthLayout";
 import PersonalDetails from "../features/auth/register/PersonalDetailPage";
 import Verification from "../features/auth/register/Verification";
 import ProfessionalDetails from "../features/auth/register/ProfessionalDetails";
+import Dashboard from "../pages/DashboardPages/Dashboard";
+import Login from "../features/auth/login/Login";
 
-const registerRoutes = [
+export const RegisterRoutes = [
   {
     path: "/",
     element: (
@@ -29,6 +32,24 @@ const registerRoutes = [
       </AuthLayout>
     ),
   },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 ];
 
-export default registerRoutes;
+export const AuthRoutes = [
+  {
+    path: "/dashboard/*",
+    element: (
+      <>
+        <SignedIn>
+          <Dashboard />
+        </SignedIn>
+        <SignedOut>
+          <Login />
+        </SignedOut>
+      </>
+    ),
+  },
+];

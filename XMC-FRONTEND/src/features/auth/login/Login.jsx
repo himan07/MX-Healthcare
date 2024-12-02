@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -21,13 +21,19 @@ const Login = () => {
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success"
+    severity: "success",
   });
   const navigate = useNavigate();
-  const { signIn, setActive } = useSignIn();
+  const { signIn, isLoaded, setActive } = useSignIn();
+
+  useEffect(() => {
+    if (isLoaded && signIn?.status === "complete") {
+      navigate("/dashboard");
+    }
+  }, [isLoaded, signIn?.status, navigate]);
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbar({ ...snackbar, open: false });
@@ -45,27 +51,38 @@ const Login = () => {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
+
         setSnackbar({
           open: true,
           message: "Successfully logged in!",
-          severity: "success"
+          severity: "success",
         });
+
         setTimeout(() => {
           navigate("/dashboard");
         }, 1000);
-      } else {
-        setSnackbar({
-          open: true,
-          message: "Something went wrong. Please try again.",
-          severity: "error"
-        });
       }
     } catch (error) {
       console.error("Error signing in:", error);
+
+      if (error.message?.includes("single session mode")) {
+        setSnackbar({
+          open: true,
+          message: "You're already signed in. Redirecting to dashboard...",
+          severity: "info",
+        });
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1500);
+        return;
+      }
+
       setSnackbar({
         open: true,
-        message: error.errors?.[0]?.message || "An error occurred during sign in",
-        severity: "error"
+        message:
+          error.errors?.[0]?.message || "An error occurred during sign in",
+        severity: "error",
       });
     } finally {
       setLoading(false);
@@ -103,7 +120,12 @@ const Login = () => {
 
           <Card sx={{ boxShadow: 0, padding: 2, width: "50%" }}>
             <CardContent>
-              <Typography variant="h5" component="h2" align="center" gutterBottom>
+              <Typography
+                variant="h5"
+                component="h2"
+                align="center"
+                gutterBottom
+              >
                 Log Into Your Account
               </Typography>
 
@@ -199,7 +221,9 @@ const Login = () => {
                       cursor: "pointer",
                     }}
                   >
-                    <span style={{ color: "black" }}>Don't have an account?</span>{" "}
+                    <span style={{ color: "black" }}>
+                      Don't have an account?
+                    </span>{" "}
                     <span style={{ textDecoration: "underline" }}>
                       click here to create your account.
                     </span>
@@ -211,27 +235,27 @@ const Login = () => {
         </Box>
       </Box>
 
-      <Snackbar 
-        open={snackbar.open} 
+      <Snackbar
+        open={snackbar.open}
         autoHideDuration={2500}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ 
-          vertical: 'top', 
-          horizontal: 'right' 
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
         }}
         sx={{
-          marginTop: '50px'
+          marginTop: "50px",
         }}
       >
-        <Alert 
-          onClose={handleCloseSnackbar} 
+        <Alert
+          onClose={handleCloseSnackbar}
           severity={snackbar.severity}
           variant="filled"
-          sx={{ 
-            width: '100%',
-            '& .MuiAlert-action': { 
-              alignItems: 'center'
-            }
+          sx={{
+            width: "100%",
+            "& .MuiAlert-action": {
+              alignItems: "center",
+            },
           }}
         >
           {snackbar.message}
