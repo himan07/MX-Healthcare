@@ -7,29 +7,8 @@ import {
 } from "react-router-dom";
 import { RegisterRoutes, AuthRoutes } from "./routes/routes";
 import Navbar from "./components/Navbar/Navbar";
-import { useAuth } from "@clerk/clerk-react";
 
 const AppContent = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const currentPath = window.location.pathname;
-    const registerPaths = ["/", "/register/verification", "/register/professional-details"];
-    
-    if (isLoaded) {
-      if (!isSignedIn && !registerPaths.includes(currentPath)) {
-        navigate("/login");
-      } else if (isSignedIn && currentPath === '/login') {
-        navigate('/dashboard');
-      }
-    }
-  }, [isLoaded, isSignedIn, navigate]);
-
-  if (!isLoaded) {
-    return false;
-  }
-
   return (
     <>
       <Navbar />
@@ -44,6 +23,7 @@ const AppContent = () => {
     </>
   );
 };
+
 
 const App = () => {
   return (

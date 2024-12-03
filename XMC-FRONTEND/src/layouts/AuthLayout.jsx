@@ -52,7 +52,7 @@ const AuthLayout = ({ children }) => {
     }
   }, [activeStep]);
 
-  const justifyContent = location.pathname === "/" ? "flex-end" : "center";
+  const justifyContent = location.pathname === "/register/personal-details" ? "flex-end" : "center";
 
   const alignItems =
     location.pathname === "/register/verification" ? "center" : "flex-start";
