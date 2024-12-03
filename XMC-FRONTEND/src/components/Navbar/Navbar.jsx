@@ -96,27 +96,27 @@ const Navbar = () => {
               flexGrow: 1,
               color: "rgba(42, 106, 157, 1)",
               fontWeight: "bold",
-              cursor:"pointer",
+              cursor: "pointer",
             }}
-            onClick={()=> navigate('/')}
+            onClick={() => navigate("/")}
           >
             XCEL MED CONNECT
           </Typography>
           <IconButton
-                color="primary"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  background: "rgba(57, 96, 143, 1))",
-                  "&:hover": {
-                    opacity: 0.8,
-                  },
-                }}
-                onClick={()=>navigate('/register/personal-details')}
-              >
-                SignUp
-              </IconButton>
+            color="primary"
+            sx={{
+              cursor: "pointer",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              background: "rgba(57, 96, 143, 1))",
+              "&:hover": {
+                opacity: 0.8,
+              },
+            }}
+            onClick={() => navigate("/register/personal-details")}
+          >
+            SignUp
+          </IconButton>
           <Box>
             {isLoaded && isSignedIn ? (
               <IconButton

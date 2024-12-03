@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -9,18 +9,18 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
+} from "@mui/material";
 
-function LandingPage() {
+const LandingPage = () => {
   const theme = useTheme();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box
         sx={{
-          backgroundColor: '#f8f9fa',
+          backgroundColor: "#f8f9fa",
           py: 12,
-          backgroundImage: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+          backgroundImage: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
         }}
       >
         <Container>
@@ -61,7 +61,7 @@ function LandingPage() {
                 src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80"
                 alt="Healthcare professionals"
                 sx={{
-                  width: '100%',
+                  width: "100%",
                   borderRadius: 4,
                   boxShadow: 3,
                 }}
@@ -83,43 +83,43 @@ function LandingPage() {
         <Grid container spacing={4} mt={4}>
           {[
             {
-              title: 'Advance Research',
+              title: "Advance Research",
               description:
-                'Your responses contribute to groundbreaking medical research and improvements in healthcare.',
+                "Your responses contribute to groundbreaking medical research and improvements in healthcare.",
               image:
-                'https://images.unsplash.com/photo-1581093458791-4a2b7c818b6b?auto=format&fit=crop&q=80',
+                "https://images.unsplash.com/photo-1581093458791-4a2b7c818b6b?auto=format&fit=crop&q=80",
             },
             {
-              title: 'Improve Care',
+              title: "Improve Care",
               description:
-                'Help healthcare providers understand patient needs and enhance the quality of care.',
+                "Help healthcare providers understand patient needs and enhance the quality of care.",
               image:
-                'https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&q=80',
+                "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&q=80",
             },
             {
-              title: 'Shape the Future',
+              title: "Shape the Future",
               description:
-                'Be part of innovations that will define the future of healthcare delivery.',
+                "Be part of innovations that will define the future of healthcare delivery.",
               image:
-                'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&q=80',
+                "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&q=80",
             },
           ].map((feature, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Card
                 sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    transition: 'transform 0.3s ease-in-out',
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  "&:hover": {
+                    transform: "translateY(-4px)",
+                    transition: "transform 0.3s ease-in-out",
                   },
                 }}
               >
                 <Box
                   sx={{
                     height: 200,
-                    overflow: 'hidden',
+                    overflow: "hidden",
                   }}
                 >
                   <Box
@@ -127,9 +127,9 @@ function LandingPage() {
                     src={feature.image}
                     alt={feature.title}
                     sx={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                   />
                 </Box>
@@ -147,7 +147,13 @@ function LandingPage() {
         </Grid>
       </Container>
 
-      <Box sx={{ backgroundColor: theme.palette.primary.main, color: 'white', py: 8 }}>
+      <Box
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          py: 8,
+        }}
+      >
         <Container>
           <Stack alignItems="center" spacing={3}>
             <Typography variant="h3" textAlign="center" fontWeight="bold">
@@ -160,10 +166,10 @@ function LandingPage() {
               variant="contained"
               size="large"
               sx={{
-                backgroundColor: 'white',
+                backgroundColor: "white",
                 color: theme.palette.primary.main,
-                '&:hover': {
-                  backgroundColor: 'white',
+                "&:hover": {
+                  backgroundColor: "white",
                   opacity: 0.9,
                 },
                 borderRadius: 2,
@@ -178,6 +184,6 @@ function LandingPage() {
       </Box>
     </Box>
   );
-}
+};
 
 export default LandingPage;
