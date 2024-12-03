@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -10,9 +10,9 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import logo from "../../../assets/images/XcelMed1.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSignIn } from "@clerk/clerk-react";
+import logo from "../../../assets/images/XcelMed1.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,216 +23,194 @@ const Login = () => {
     message: "",
     severity: "success",
   });
+
   const navigate = useNavigate();
+  
   const { signIn, isLoaded, setActive } = useSignIn();
 
-  useEffect(() => {
-    if (isLoaded && signIn?.status === "complete") {
-      navigate("/dashboard");
-    }
-  }, [isLoaded, signIn?.status, navigate]);
+  const handleCloseSnackbar = useCallback((event, reason) => {
+    if (reason === "clickaway") return;
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  }, []);
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbar({ ...snackbar, open: false });
-  };
+  const showSnackbar = useCallback((message, severity) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity,
+    });
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      const result = await signIn.create({
-        identifier: email,
-        password,
-      });
-
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-
-        setSnackbar({
-          open: true,
-          message: "Successfully logged in!",
-          severity: "success",
-        });
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Error signing in:", error);
-
-      if (error.message?.includes("single session mode")) {
-        setSnackbar({
-          open: true,
-          message: "You're already signed in. Redirecting to dashboard...",
-          severity: "info",
-        });
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1500);
+      if (!email.trim() || !password.trim()) {
+        showSnackbar("Email and password are required", "error");
         return;
       }
+      setLoading(true);
 
-      setSnackbar({
-        open: true,
-        message:
+      try {
+        const result = await signIn?.create({
+          identifier: email,
+          password,
+        });
+
+        showSnackbar("Successfully logged in!", "success");
+        if (result?.status === "complete" && result.createdSessionId) {
+          await setActive?.({ session: result.createdSessionId });
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Error signing in:", error);
+        showSnackbar(
           error.errors?.[0]?.message || "An error occurred during sign in",
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+          "error"
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [email, password, navigate, setActive, signIn, showSnackbar]
+  );
+
+  if (!isLoaded) {
+    return <CircularProgress style={{ display: "block", margin: "auto" }} />;
+  }
 
   return (
-    <>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        padding="20px"
-        minHeight="85vh"
-        width="80%"
-        margin="auto"
-      >
-        <Box display="flex" width="100%" height="80%" boxShadow={3}>
-          <Box
-            width="50%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            bgcolor="#02003d"
-          >
-            <img
-              src={logo}
-              alt="image is not found"
-              style={{
-                height: "70%",
-                width: "80%",
-              }}
-            />
-          </Box>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      padding="20px"
+      minHeight="85vh"
+      width="80%"
+      margin="auto"
+    >
+      <Box display="flex" width="100%" height="80%" boxShadow={3}>
+        <Box
+          width="50%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgcolor="#02003d"
+        >
+          <img
+            src={logo}
+            alt="XcelMed Logo"
+            style={{
+              height: "70%",
+              width: "80%",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
 
-          <Card sx={{ boxShadow: 0, padding: 2, width: "50%" }}>
-            <CardContent>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                gutterBottom
+        <Card sx={{ boxShadow: 0, padding: 2, width: "50%" }}>
+          <CardContent>
+            <Typography variant="h5" component="h2" align="center" gutterBottom>
+              Log Into Your Account
+            </Typography>
+
+            <Box
+              component="form"
+              noValidate
+              autoComplete="off"
+              mt={2}
+              onSubmit={handleSubmit}
+            >
+              <TextField
+                label="Email"
+                size="large"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{
+                  mb: 2,
+                  mt: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#02003d",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#02003d",
+                  },
+                }}
+              />
+
+              <TextField
+                label="Password"
+                size="large"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                sx={{
+                  mt: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#02003d",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#02003d",
+                  },
+                }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ marginTop: 6, p: 1.5 }}
+                style={{ backgroundColor: "#02003d" }}
+                size="large"
+                type="submit"
+                disabled={loading}
               >
-                Log Into Your Account
-              </Typography>
+                {loading ? (
+                  <CircularProgress size={24} style={{ color: "#fff" }} />
+                ) : (
+                  "Login"
+                )}
+              </Button>
 
-              <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-                mt={2}
-                onSubmit={handleSubmit}
+              <NavLink
+                to="/register/personal-details"
+                style={{ textDecoration: "none" }}
               >
-                <TextField
-                  label="Email"
-                  size="large"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  sx={{
-                    mb: 2,
-                    mt: 3,
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#02003d",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#02003d",
-                      "&.Mui-focused": {
-                        color: "none",
-                      },
-                    },
-                  }}
-                />
-
-                <TextField
-                  label="Password"
-                  size="large"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  sx={{
-                    mt: 3,
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#02003d",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#02003d",
-                      "&.Mui-focused": {
-                        color: "none",
-                      },
-                    },
-                  }}
-                />
                 <Typography
                   variant="body1"
-                  style={{ color: "red", fontSize: "14px" }}
+                  sx={{
+                    color: "blue",
+                    p: 3,
+                    mt: 2,
+                    textAlign: "center",
+                    fontSize: "17px",
+                    cursor: "pointer",
+                  }}
                 >
-                  {snackbar.message}
+                  <span style={{ color: "black" }}>Don't have an account?</span>{" "}
+                  <span style={{ textDecoration: "underline" }}>
+                    Click here to create your account.
+                  </span>
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{ marginTop: 6, p: 1.5 }}
-                  style={{ backgroundColor: "#02003d" }}
-                  size="large"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <CircularProgress size={24} style={{ color: "#fff" }} />
-                  ) : (
-                    "Login"
-                  )}
-                </Button>
-                <NavLink to="/" style={{ textDecoration: "none" }}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: "blue",
-                      p: 3,
-                      mt: 2,
-                      textAlign: "center",
-                      fontSize: "17px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <span style={{ color: "black" }}>
-                      Don't have an account?
-                    </span>{" "}
-                    <span style={{ textDecoration: "underline" }}>
-                      click here to create your account.
-                    </span>
-                  </Typography>
-                </NavLink>
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
+              </NavLink>
+            </Box>
+          </CardContent>
+        </Card>
       </Box>
 
       <Snackbar
@@ -244,7 +222,7 @@ const Login = () => {
           horizontal: "right",
         }}
         sx={{
-          marginTop: "50px",
+          marginTop: "40px",
         }}
       >
         <Alert
@@ -261,7 +239,7 @@ const Login = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 };
 

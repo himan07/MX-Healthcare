@@ -7,54 +7,66 @@ import ProfessionalDetails from "../features/auth/register/ProfessionalDetails";
 import Dashboard from "../pages/DashboardPages/Dashboard";
 import Login from "../features/auth/login/Login";
 import LandingPage from "../pages/landingPage/LandingPage";
+import PublicRoute from "../routes/PublicRoute"
+import ProtectedRoute from "./ProtectedRoute";
 
 export const RegisterRoutes = [
   {
     path: "/",
-    element: <LandingPage />,
+    element: (
+      <PublicRoute>
+        <LandingPage />
+      </PublicRoute>
+    ),
   },
   {
     path: "/register/personal-details",
     element: (
-      <AuthLayout>
-        <PersonalDetails />
-      </AuthLayout>
+      <PublicRoute>
+        <AuthLayout>
+          <PersonalDetails />
+        </AuthLayout>
+      </PublicRoute>
     ),
   },
   {
     path: "/register/verification",
     element: (
-      <AuthLayout>
-        <Verification />
-      </AuthLayout>
+      <PublicRoute>
+        <AuthLayout>
+          <Verification />
+        </AuthLayout>
+      </PublicRoute>
     ),
   },
   {
     path: "/register/professional-details",
     element: (
-      <AuthLayout>
-        <ProfessionalDetails />
-      </AuthLayout>
+      <PublicRoute>
+        <AuthLayout>
+          <ProfessionalDetails />
+        </AuthLayout>
+      </PublicRoute>
     ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
 ];
+
 
 export const AuthRoutes = [
   {
     path: "/dashboard/*",
     element: (
-      <>
-        <SignedIn>
-          <Dashboard />
-        </SignedIn>
-        <SignedOut>
-          <Login />
-        </SignedOut>
-      </>
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
     ),
   },
 ];

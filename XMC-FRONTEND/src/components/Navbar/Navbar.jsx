@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -24,12 +25,9 @@ const Navbar = () => {
   const handleClickOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleClick = () => {
-    navigate("/login");
   };
 
   const clearBrowserData = useCallback(() => {
@@ -62,10 +60,13 @@ const Navbar = () => {
       });
 
       const isDataCleared = clearBrowserData();
-
       if (!isDataCleared) {
         throw new Error("Failed to clear browser data");
       }
+
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 0);
     } catch (error) {
       console.error("Logout failed:", {
         message: error.message,
@@ -75,7 +76,6 @@ const Navbar = () => {
     } finally {
       setIsLoggingOut(false);
       handleClose();
-      navigate("/login");
     }
   };
 
@@ -102,21 +102,25 @@ const Navbar = () => {
           >
             XCEL MED CONNECT
           </Typography>
-          <IconButton
-            color="primary"
-            sx={{
-              cursor: "pointer",
-              fontSize: "1rem",
-              fontWeight: "bold",
-              background: "rgba(57, 96, 143, 1))",
-              "&:hover": {
-                opacity: 0.8,
-              },
-            }}
-            onClick={() => navigate("/register/personal-details")}
-          >
-            SignUp
-          </IconButton>
+
+          {isLoaded && !isSignedIn && (
+            <IconButton
+              color="primary"
+              sx={{
+                cursor: "pointer",
+                color: "rgba(57, 96, 143, 1)",
+                fontSize: "1rem",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "rgba(57, 96, 143, 0.1)",
+                },
+              }}
+              onClick={() => navigate("/register/personal-details")}
+            >
+              SignUp
+            </IconButton>
+          )}
+
           <Box>
             {isLoaded && isSignedIn ? (
               <IconButton
@@ -135,65 +139,72 @@ const Navbar = () => {
                 color="primary"
                 sx={{
                   cursor: "pointer",
+                  color: "rgba(57, 96, 143, 1)",
                   fontSize: "1rem",
                   fontWeight: "bold",
-                  background: "rgba(57, 96, 143, 1))",
                   "&:hover": {
-                    opacity: 0.8,
+                    backgroundColor: "rgba(57, 96, 143, 0.1)",
                   },
                 }}
-                onClick={handleClick}
+                onClick={() => navigate("/login")}
               >
                 Login
               </IconButton>
             )}
           </Box>
         </Toolbar>
-        <Box>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
+
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+          PaperProps={{
+            sx: {
+              width: "180px",
+              borderRadius: "8px",
+              mt: 1.5,
+            },
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/profile");
             }}
-            PaperProps={{
-              sx: {
-                width: "180px",
-                borderRadius: "8px",
-                mt: 1.5,
+          >
+            Profile
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/account-settings");
+            }}
+          >
+            Account Settings
+          </MenuItem>
+          <MenuItem
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            sx={{
+              display: "flex",
+              gap: 1,
+              "&.Mui-disabled": {
+                opacity: 0.7,
               },
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Account Settings</MenuItem>
-            <MenuItem
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              sx={{
-                display: "flex",
-                gap: 1,
-                "&.Mui-disabled": {
-                  opacity: 0.7,
-                },
-              }}
-            >
-              <Box
-                sx={{ display: "flex", alignItems: "center", width: "100%" }}
-              >
-                Logout
-                {isLoggingOut && (
-                  <CircularProgress
-                    size={20}
-                    thickness={5}
-                    sx={{ ml: "auto" }}
-                  />
-                )}
-              </Box>
-            </MenuItem>
-          </Menu>
-        </Box>
+            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+              Logout
+              {isLoggingOut && (
+                <CircularProgress size={20} thickness={5} sx={{ ml: "auto" }} />
+              )}
+            </Box>
+          </MenuItem>
+        </Menu>
       </AppBar>
       <Toolbar />
     </>
