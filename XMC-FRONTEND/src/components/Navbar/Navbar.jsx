@@ -9,13 +9,18 @@ import {
   MenuItem,
   CircularProgress,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const display = location.pathname === "/register/personal-details" ? "none" : "block";
+  const login  = location.pathname==="/login"?"none":"block"
+
+
   const { isLoaded, isSignedIn } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -110,11 +115,13 @@ const Navbar = () => {
                 cursor: "pointer",
                 color: "rgba(57, 96, 143, 1)",
                 fontSize: "1rem",
+                display:display,
                 fontWeight: "bold",
                 "&:hover": {
-                  backgroundColor: "rgba(57, 96, 143, 0.1)",
+                  backgroundColor: "none !important",
                 },
               }}
+            
               onClick={() => navigate("/register/personal-details")}
             >
               SignUp
@@ -142,10 +149,13 @@ const Navbar = () => {
                   color: "rgba(57, 96, 143, 1)",
                   fontSize: "1rem",
                   fontWeight: "bold",
+                  display:login,
                   "&:hover": {
-                    backgroundColor: "rgba(57, 96, 143, 0.1)",
+                    backgroundColor: "none !important",
+                    
                   },
                 }}
+
                 onClick={() => navigate("/login")}
               >
                 Login
