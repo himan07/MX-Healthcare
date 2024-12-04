@@ -12,6 +12,16 @@ exports.createPersonalInfo = async (req, res) => {
       });
     }
 
+    const mobileRecord = await personalInfoModal.findOne({
+      mobile: req.body.mobile,
+    });
+    if (mobileRecord && mobileRecord.email !== req.body.email) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Mobile number already associated with another email",
+      });
+    }
+
     let uuid;
 
     if (!emailExists) {

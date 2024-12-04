@@ -40,7 +40,6 @@ const Verification = ({ setActiveStep }) => {
         Number(data.phoneOtp)
       );
 
-      
       if (mobileVerification?.data === 101) {
         const personalInfo = {
           email: userData.email,
@@ -53,16 +52,15 @@ const Verification = ({ setActiveStep }) => {
           privacyPolicy: userData.termsAgreement,
         };
 
-        await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
-
         const response = await axios.post(
           "http://127.0.0.1:3000/create-personalInfo",
           personalInfo
         );
 
         if (response.status === 201) {
-          setActiveStep((prevStep) => prevStep + 1);
+          await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
           navigate("/register/professional-details");
+          setActiveStep((prevStep) => prevStep + 1);
         } else {
           console.error(
             "Failed to save personal information:",
