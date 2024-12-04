@@ -17,9 +17,16 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const display = location.pathname === "/register/personal-details" ? "none" : "block";
-  const login  = location.pathname==="/login"?"none":"block"
-
+  const display =
+    location.pathname === "/register/personal-details"
+      ? "none"
+      : location.pathname === "/register/verification"
+      ? "none"
+      : location.pathname === "/register/professional-details"
+      ? "none"
+      : "block";
+      
+  const login = location.pathname === "/login" ? "none" : "block";
 
   const { isLoaded, isSignedIn } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -115,13 +122,12 @@ const Navbar = () => {
                 cursor: "pointer",
                 color: "rgba(57, 96, 143, 1)",
                 fontSize: "1rem",
-                display:display,
+                display: display,
                 fontWeight: "bold",
                 "&:hover": {
                   backgroundColor: "none !important",
                 },
               }}
-            
               onClick={() => navigate("/register/personal-details")}
             >
               SignUp
@@ -149,13 +155,11 @@ const Navbar = () => {
                   color: "rgba(57, 96, 143, 1)",
                   fontSize: "1rem",
                   fontWeight: "bold",
-                  display:login,
+                  display: login,
                   "&:hover": {
                     backgroundColor: "none !important",
-                    
                   },
                 }}
-
                 onClick={() => navigate("/login")}
               >
                 Login
