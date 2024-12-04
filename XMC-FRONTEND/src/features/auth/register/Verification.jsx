@@ -125,6 +125,10 @@ const Verification = ({ setActiveStep }) => {
         strategy: "email_code",
       });
       await handleOtpSend(userData.mobile);
+      showSnackbar(
+        "An OTP has been successfully sent to your registered mobile number and email address. Please check and proceed with verification.",
+        "success"
+      );
     } catch (error) {
       console.error(
         "Error resending verification email:",
@@ -249,6 +253,9 @@ const Verification = ({ setActiveStep }) => {
         }}
         sx={{
           marginTop: "40px",
+          maxWidth:"500px",
+          width:"400px",
+          mr:0,
         }}
       >
         <Alert
