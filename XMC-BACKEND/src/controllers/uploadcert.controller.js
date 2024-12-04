@@ -27,7 +27,11 @@ exports.uploadCertificate = (req, res) => {
         });
       }
 
-      if (!req.files || !req.files.medicalLicense || req.files.medicalLicense.length === 0) {
+      if (
+        !req.files ||
+        !req.files.medicalLicense ||
+        req.files.medicalLicense.length === 0
+      ) {
         return res.status(400).json({
           status: "fail",
           message: "Medical license is required",
@@ -45,24 +49,36 @@ exports.uploadCertificate = (req, res) => {
         });
       }
 
+      if (email === "null") {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "No account is available. Please create an account to access this service.",
+        });
+      }
+
       const fileNames = {};
       const medicalLicenseFile = req.files.medicalLicense[0];
       fileNames.medicalLicense = `${medicalLicenseFile.originalname}`;
       await uploadToMinio(medicalLicenseFile, fileNames.medicalLicense);
 
-      const medicalLicenseUrl = `${req.protocol}://${req.get("host")}/${fileNames.medicalLicense}`;
+      const medicalLicenseUrl = `${req.protocol}://${req.get("host")}/${
+        fileNames.medicalLicense
+      }`;
 
       let personalIdUrl = null;
       if (req.files.personalId && req.files.personalId.length > 0) {
         const personalIdFile = req.files.personalId[0];
         fileNames.personalId = `${personalIdFile.originalname}`;
         await uploadToMinio(personalIdFile, fileNames.personalId);
-        personalIdUrl = `${req.protocol}://${req.get("host")}/${fileNames.personalId}`;
+        personalIdUrl = `${req.protocol}://${req.get("host")}/${
+          fileNames.personalId
+        }`;
       }
 
       const newImage = await Image.create({
-        medicalLicenseUrl,
-        personalIdUrl,
+        medicalLicense: medicalLicenseUrl,
+        personalId: personalIdUrl,
         email,
       });
 
