@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
 const certificateSchema = new mongoose.Schema({
-  imageUrl: {
+  medicalLicense: {
     type: String,
     required: true,
+  },
+  personalId: {
+    type: String,
+    required: false,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
   },
 });
 

@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader/FileUploader";
-import "../../../assets/styles/authLayout.css"
+import "../../../assets/styles/authLayout.css";
+import axios from "axios";
 
 const ProfessionalDetails = ({ setActiveStep }) => {
+  const email = sessionStorage.getItem("userEmail");
   const navigate = useNavigate();
+
+  const [medicalLiscense, setMedicalLiscense] = useState("");
+  const [personalId, setPersonalId] = useState("");
 
   const [fileUploaded, setFileUploaded] = useState({
     medicalLicense: false,
@@ -14,18 +19,33 @@ const ProfessionalDetails = ({ setActiveStep }) => {
 
   const handleMedicalLicenseUpload = (file) => {
     setFileUploaded((prev) => ({ ...prev, medicalLicense: true }));
-    console.log("Medical License uploaded:", file.name);
+    setMedicalLiscense(file);
   };
 
   const handlePersonalIDUpload = (file) => {
     setFileUploaded((prev) => ({ ...prev, personalID: true }));
-    console.log("Personal ID uploaded:", file.name);
+    setPersonalId(file);
   };
 
-
   const handleSave = () => {
-    setActiveStep((prevStep) => prevStep + 1);
-    localStorage.clear("activeStep");
+    const formData = new FormData();
+    formData.append("medicalLicense", medicalLiscense);
+    if (personalId) {
+      formData.append("personalId", personalId);
+    }
+    formData.append("email", email);
+    try {
+      const response = axios.post(
+        "http://127.0.0.1:3000/api/uploadImage",
+        formData
+      );
+      if (response.status === 201) {
+        setActiveStep((prevStep) => prevStep + 1);
+        localStorage.clear("activeStep");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -38,14 +58,14 @@ const ProfessionalDetails = ({ setActiveStep }) => {
         margin: "20px auto",
         padding: "20px",
         maxWidth: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
       }}
     >
       <Box
         sx={{
           width: "100%",
           maxWidth: "100%",
-          margin: "auto"
+          margin: "auto",
         }}
       >
         <Typography
@@ -82,9 +102,11 @@ const ProfessionalDetails = ({ setActiveStep }) => {
           ID, our representative will reach out to you for verification.
         </Typography>
 
-        <Box sx={{ 
-          mt: 4,
-        }}>
+        <Box
+          sx={{
+            mt: 4,
+          }}
+        >
           <Button
             variant="contained"
             size="lg"
@@ -99,7 +121,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
               "&:disabled": {
                 backgroundColor: "rgba(0, 0, 0, 0.12)",
                 color: "rgba(0, 0, 0, 0.26)",
-              }
+              },
             }}
             onClick={handleSave}
           >

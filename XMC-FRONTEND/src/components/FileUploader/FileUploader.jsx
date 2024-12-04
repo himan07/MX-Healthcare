@@ -17,7 +17,6 @@ const FileUploader = ({ label, onFileUpload, fileType = ".pdf,image/png,image/jp
       if (onFileUpload) {
         onFileUpload(selectedFile);
       }
-      alert("File has been uploaded successfully!");
     }
   };
 
