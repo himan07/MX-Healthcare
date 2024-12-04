@@ -1,5 +1,4 @@
 import React from "react";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import AuthLayout from "../layouts/AuthLayout";
 import PersonalDetails from "../features/auth/register/PersonalDetailPage";
 import Verification from "../features/auth/register/Verification";
