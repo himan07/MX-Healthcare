@@ -6,8 +6,8 @@ import FileUploader from "../../../components/FileUploader/FileUploader";
 import "../../../assets/styles/authLayout.css";
 
 const ProfessionalDetails = ({ setActiveStep }) => {
-  const email = sessionStorage.getItem("userEmail");
   const navigate = useNavigate();
+  const email = sessionStorage.getItem("userEmail");
 
   const [medicalLicense, setMedicalLicense] = useState("");
   const [personalId, setPersonalId] = useState("");
@@ -35,16 +35,16 @@ const ProfessionalDetails = ({ setActiveStep }) => {
       formData.append("personalId", personalId);
     }
     formData.append("email", email);
-  
+
     setLoading(true);
-  
+
     setTimeout(async () => {
       try {
         const response = await axios.post(
           "http://127.0.0.1:3000/api/uploadImage",
           formData
         );
-  
+
         if (response.status === 201) {
           setActiveStep((prevStep) => prevStep + 1);
           localStorage.clear("activeStep");
@@ -59,9 +59,6 @@ const ProfessionalDetails = ({ setActiveStep }) => {
       }
     }, 1000);
   };
-  
-  
-  
 
   return (
     <Box
@@ -140,7 +137,11 @@ const ProfessionalDetails = ({ setActiveStep }) => {
             }}
             onClick={handleSave}
           >
-            {loading ? <CircularProgress size={24} style={{ color: "#fff"}}/> : "Save"}
+            {loading ? (
+              <CircularProgress size={24} style={{ color: "#fff" }} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </Box>
       </Box>

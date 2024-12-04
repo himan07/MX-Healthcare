@@ -6,7 +6,7 @@ import ProfessionalDetails from "../features/auth/register/ProfessionalDetails";
 import Dashboard from "../pages/DashboardPages/Dashboard";
 import Login from "../features/auth/login/Login";
 import LandingPage from "../pages/landingPage/LandingPage";
-import PublicRoute from "../routes/PublicRoute"
+import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 
 export const RegisterRoutes = [
@@ -58,10 +58,9 @@ export const RegisterRoutes = [
   },
 ];
 
-
 export const AuthRoutes = [
   {
-    path: "/dashboard/*",
+    path: "/dashboard",
     element: (
       <ProtectedRoute>
         <Dashboard />
