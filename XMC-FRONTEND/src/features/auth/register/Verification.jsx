@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -11,13 +19,29 @@ import { handleOtpSend } from "../../../utils/RegisterFn";
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const navigate = useNavigate();
   const phonenumber = localStorage.getItem("phonenumber");
 
   const userData = JSON.parse(localStorage.getItem("Data"));
   const countryCode = localStorage.getItem("countryCode");
 
-  console.log("userData", userData);
+  const handleCloseSnackbar = useCallback((event, reason) => {
+    if (reason === "clickaway") return;
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  }, []);
+
+  const showSnackbar = useCallback((message, severity) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity,
+    });
+  }, []);
 
   const {
     register,
@@ -59,6 +83,10 @@ const Verification = ({ setActiveStep }) => {
 
         if (response.status === 201) {
           await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
+          showSnackbar(
+            "Your mobile number and email address have been successfully verified. Thank you!",
+            "success"
+          );
           navigate("/register/professional-details");
           setActiveStep((prevStep) => prevStep + 1);
         } else {
@@ -69,10 +97,14 @@ const Verification = ({ setActiveStep }) => {
         }
       } else {
         const errorMessage = mobileVerification?.data?.message || "Invalid OTP";
-        console.error("Mobile verification failed:", errorMessage);
+        showSnackbar(errorMessage, "error");
       }
     } catch (err) {
       console.error("Verification failed:", err);
+      showSnackbar(
+        err.errors?.[0]?.message || "An error occurred during Verification",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -207,6 +239,32 @@ const Verification = ({ setActiveStep }) => {
           </Box>
         </Box>
       </form>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={2500}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        sx={{
+          marginTop: "40px",
+        }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{
+            width: "100%",
+            "& .MuiAlert-action": {
+              alignItems: "center",
+            },
+          }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
