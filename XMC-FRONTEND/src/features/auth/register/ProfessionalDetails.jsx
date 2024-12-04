@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import axios from "axios";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader/FileUploader";
 import "../../../assets/styles/authLayout.css";
-import axios from "axios";
 
 const ProfessionalDetails = ({ setActiveStep }) => {
   const email = sessionStorage.getItem("userEmail");
   const navigate = useNavigate();
 
-  const [medicalLiscense, setMedicalLiscense] = useState("");
+  const [medicalLicense, setMedicalLicense] = useState("");
   const [personalId, setPersonalId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [fileUploaded, setFileUploaded] = useState({
     medicalLicense: false,
@@ -19,7 +20,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
 
   const handleMedicalLicenseUpload = (file) => {
     setFileUploaded((prev) => ({ ...prev, medicalLicense: true }));
-    setMedicalLiscense(file);
+    setMedicalLicense(file);
   };
 
   const handlePersonalIDUpload = (file) => {
@@ -27,26 +28,40 @@ const ProfessionalDetails = ({ setActiveStep }) => {
     setPersonalId(file);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const formData = new FormData();
-    formData.append("medicalLicense", medicalLiscense);
+    formData.append("medicalLicense", medicalLicense);
     if (personalId) {
       formData.append("personalId", personalId);
     }
     formData.append("email", email);
-    try {
-      const response = axios.post(
-        "http://127.0.0.1:3000/api/uploadImage",
-        formData
-      );
-      if (response.status === 201) {
-        setActiveStep((prevStep) => prevStep + 1);
-        localStorage.clear("activeStep");
+  
+    setLoading(true);
+  
+    setTimeout(async () => {
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:3000/api/uploadImage",
+          formData
+        );
+  
+        if (response.status === 201) {
+          setActiveStep((prevStep) => prevStep + 1);
+          localStorage.clear("activeStep");
+          setTimeout(() => {
+            setLoading(false);
+            navigate("/dashboard");
+          }, 1000);
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    }, 1000);
   };
+  
+  
+  
 
   return (
     <Box
@@ -125,7 +140,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
             }}
             onClick={handleSave}
           >
-            Save
+            {loading ? <CircularProgress size={24} style={{ color: "#fff"}}/> : "Save"}
           </Button>
         </Box>
       </Box>
