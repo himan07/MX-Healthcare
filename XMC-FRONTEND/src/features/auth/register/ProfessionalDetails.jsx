@@ -12,6 +12,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
   const [medicalLicense, setMedicalLicense] = useState("");
   const [personalId, setPersonalId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const [fileUploaded, setFileUploaded] = useState({
     medicalLicense: false,
@@ -29,6 +30,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
   };
 
   const handleSave = async () => {
+    localStorage.setItem("isRegistered", isRegistered)
     const formData = new FormData();
     formData.append("medicalLicense", medicalLicense);
     if (personalId) {
@@ -50,6 +52,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
           localStorage.clear("activeStep");
           setTimeout(() => {
             setLoading(false);
+            setIsRegistered(true)
             navigate("/dashboard");
           }, 1000);
         }

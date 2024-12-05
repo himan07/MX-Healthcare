@@ -4,12 +4,19 @@ import { useAuth } from "@clerk/clerk-react";
 
 const PublicRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useAuth();
+  const isRegistered = localStorage.getItem("isRegistered")
 
   if (!isLoaded) {
-    return null; 
+    return null;
   }
 
-  return isSignedIn ? <Navigate to="/dashboard" /> : children;
+  return isSignedIn && !isRegistered ? (
+    <Navigate to="/login" />
+  ) : isSignedIn || isRegistered ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    children
+  );
 };
 
 export default PublicRoute;
