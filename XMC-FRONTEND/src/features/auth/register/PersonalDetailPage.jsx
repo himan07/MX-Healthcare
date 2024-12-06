@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Autocomplete,
   Box,
@@ -44,7 +44,7 @@ const StyledPaper = styled(Paper)({
 });
 
 const PersonalDetails = ({ setActiveStep }) => {
-  const [countryCode, setCountryCode] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibility, setVisibility] = useState(false);
@@ -96,8 +96,9 @@ const PersonalDetails = ({ setActiveStep }) => {
         isLoaded,
         navigate,
         signUp,
-        countryCode
+        countryCode,
       );
+      
     } catch (error) {
       console.error(
         "Error during registration process:",

@@ -19,14 +19,16 @@ import { handleOtpSend } from "../../../utils/RegisterFn";
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  const navigate = useNavigate();
-  const phonenumber = localStorage.getItem("phonenumber");
 
+  const navigate = useNavigate();
+  
+  const phonenumber = localStorage.getItem("phonenumber");
   const userData = JSON.parse(localStorage.getItem("Data"));
   const countryCode = localStorage.getItem("countryCode");
 
@@ -85,7 +87,6 @@ const Verification = ({ setActiveStep }) => {
           await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
           showSnackbar(
             "Your mobile number and email address have been successfully verified. Thank you!",
-            "success"
           );
           navigate("/register/professional-details");
           setActiveStep((prevStep) => prevStep + 1);
@@ -102,7 +103,7 @@ const Verification = ({ setActiveStep }) => {
     } catch (err) {
       console.error("Verification failed:", err);
       showSnackbar(
-        err.errors?.[0]?.message || "An error occurred during Verification",
+        err.errors?.[0]?.message || err,
         "error"
       );
     } finally {
@@ -242,36 +243,36 @@ const Verification = ({ setActiveStep }) => {
             </Box>
           </Box>
         </Box>
-      </form>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={2500}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        sx={{
-          marginTop: "40px",
-          maxWidth:"500px",
-          width:"400px",
-          mr:0,
-        }}
-      >
-        <Alert
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2500}
           onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          variant="filled"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
           sx={{
-            width: "100%",
-            "& .MuiAlert-action": {
-              alignItems: "center",
-            },
+            marginTop: "40px",
+            maxWidth: "500px",
+            width: "400px",
+            mr: -3,
           }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbar.severity}
+            variant="filled"
+            sx={{
+              width: "100%",
+              "& .MuiAlert-action": {
+                alignItems: "right",
+              },
+            }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </form>
     </Grid>
   );
 };
