@@ -77,6 +77,10 @@ const Verification = ({ setActiveStep }) => {
           profession: userData.professions,
           privacyPolicy: userData.termsAgreement,
         };
+        
+        showSnackbar(
+          "Your mobile number and email address have been successfully verified. Thank you!","success"
+        );
 
         const response = await axios.post(
           "http://127.0.0.1:3000/create-personalInfo",
@@ -85,9 +89,7 @@ const Verification = ({ setActiveStep }) => {
 
         if (response.status === 201) {
           await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
-          showSnackbar(
-            "Your mobile number and email address have been successfully verified. Thank you!",
-          );
+       
           navigate("/register/professional-details");
           setActiveStep((prevStep) => prevStep + 1);
         } else {

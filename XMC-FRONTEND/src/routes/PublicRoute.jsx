@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 
 const PublicRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const trackStep = localStorage.getItem("activeStep");
   const email = sessionStorage.getItem("userEmail");
 
@@ -13,6 +14,19 @@ const PublicRoute = ({ children }) => {
       if (isSignedIn) {
         navigate("/dashboard");
       } else {
+        const currentPath = location.pathname;
+        const allowedPaths = [
+          "/",
+          "/register/personal-details",
+          "/register/verification",
+          "/register/professional-details",
+          "/login",
+        ];
+
+        if (allowedPaths.includes(currentPath)) {
+          return;
+        }
+
         switch (trackStep) {
           case "0":
             navigate("/");
@@ -21,7 +35,7 @@ const PublicRoute = ({ children }) => {
             navigate("/register/personal-details");
             break;
           case "2":
-            if (trackStep === "2" && email) navigate("/register/verification");
+            if (email) navigate("/register/verification");
             break;
           case "3":
             navigate("/register/professional-details");
@@ -31,13 +45,13 @@ const PublicRoute = ({ children }) => {
         }
       }
     }
-  }, [isLoaded, isSignedIn, trackStep, email, navigate]);
+  }, [isLoaded, isSignedIn, trackStep, email, navigate, location]);
 
   if (!isLoaded) {
     return null;
   }
 
-  return children;
+  return isSignedIn ? null : children;
 };
 
 export default PublicRoute;
