@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Autocomplete,
   Box,
@@ -48,8 +48,8 @@ const PersonalDetails = ({ setActiveStep }) => {
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibility, setVisibility] = useState(false);
-  const navigate = useNavigate();
   const { signUp, isLoaded } = useSignUp();
+  const navigate = useNavigate();
 
   const countries = [
     { value: "+91", label: "🇮🇳 +91" },
@@ -76,10 +76,6 @@ const PersonalDetails = ({ setActiveStep }) => {
 
   const onSubmit = async (data) => {
     const phoneNumber = Number(`${countryCode}${data.mobile}`);
-    if (!phoneNumber) {
-      console.error("Phone number is required");
-      return;
-    }
 
     const formData = {
       email: data.email,
@@ -97,8 +93,8 @@ const PersonalDetails = ({ setActiveStep }) => {
         navigate,
         signUp,
         countryCode,
+        user
       );
-      
     } catch (error) {
       console.error(
         "Error during registration process:",
@@ -109,9 +105,10 @@ const PersonalDetails = ({ setActiveStep }) => {
       localStorage.setItem("phonenumber", phoneNumber);
       localStorage.setItem("Data", JSON.stringify(data));
       localStorage.setItem("countryCode", countryCode);
-      localStorage.setItem("password", data.password)
+      localStorage.setItem("password", data.password);
     }
   };
+
 
   return (
     <Grid

@@ -46,10 +46,9 @@ const handleRegister = async (
   setActiveStep,
   isLoaded,
   navigate,
-  signUp
+  signUp,
 ) => {
   if (!isLoaded) return;
-
   setLoading(true);
 
   try {
@@ -59,8 +58,8 @@ const handleRegister = async (
       password: formData.password,
     });
 
-
     await signUp.prepareEmailAddressVerification(user.email);
+    
 
     const otpSent = await handleOtpSend(phoneNumber);
 

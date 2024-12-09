@@ -8,6 +8,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+
 import axios from "axios";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
@@ -89,25 +90,24 @@ const Verification = ({ setActiveStep }) => {
         personalInfo
       );
 
-      if (response.status !== 201) {
-        showSnackbar("Failed to save personal information.", "error");
-        return;
+      if (response.status === 201) {
+        await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
+
+        showSnackbar(
+          "Your mobile number and email address have been successfully verified. Thank you!",
+          "success"
+        );
+
+        setActiveStep((prevStep) => prevStep + 1);
+        navigate("/register/professional-details");
       }
-
-      await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
-
-      showSnackbar(
-        "Your mobile number and email address have been successfully verified. Thank you!",
-        "success"
-      );
-      setActiveStep((prevStep) => prevStep + 1);
-      navigate("/register/professional-details");
     } catch (err) {
       showSnackbar(
         err.response?.data?.message ||
           "Something went wrong. Please try again.",
         "error"
       );
+
     } finally {
       setLoading(false);
     }
@@ -124,14 +124,17 @@ const Verification = ({ setActiveStep }) => {
           password: userData.password,
         });
       }
+
       await signUp.prepareEmailAddressVerification({
         strategy: "email_code",
       });
+
       await handleOtpSend(userData.mobile);
       showSnackbar(
         "An OTP has been successfully sent to your registered mobile number and email address. Please check and proceed with verification.",
         "success"
       );
+      
     } catch (error) {
       console.error(
         "Error resending verification email:",
