@@ -8,25 +8,27 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+
+import axios from "axios";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSignUp } from "@clerk/clerk-react";
 import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
-import axios from "axios";
 import { handleOtpSend } from "../../../utils/RegisterFn";
 
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  const navigate = useNavigate();
-  const phonenumber = localStorage.getItem("phonenumber");
 
+  const phonenumber = localStorage.getItem("phonenumber");
   const userData = JSON.parse(localStorage.getItem("Data"));
   const countryCode = localStorage.getItem("countryCode");
 
@@ -53,9 +55,9 @@ const Verification = ({ setActiveStep }) => {
     setActiveStep((prevStep) => prevStep - 1);
     navigate(-1);
   };
-
   const handleVerify = async (data) => {
     if (!isLoaded) return;
+
     setLoading(true);
 
     try {
@@ -64,47 +66,48 @@ const Verification = ({ setActiveStep }) => {
         Number(data.phoneOtp)
       );
 
-      if (mobileVerification?.data === 101) {
-        const personalInfo = {
-          email: userData.email,
-          mobileNumber: Number(`${countryCode}${userData.mobile}`),
-          name: `${userData.firstName} ${userData.lastName}`,
-          gender: userData.gender,
-          zipcode: Number(userData.zipcode),
-          dateOfBirth: userData.dateOfBirth,
-          profession: userData.professions,
-          privacyPolicy: userData.termsAgreement,
-        };
+      if (mobileVerification?.data !== 101) {
+        showSnackbar(
+          mobileVerification?.data?.message || "Invalid OTP",
+          "error"
+        );
+        return;
+      }
 
-        const response = await axios.post(
-          "http://127.0.0.1:3000/create-personalInfo",
-          personalInfo
+      const personalInfo = {
+        email: userData.email,
+        mobileNumber: Number(`${countryCode}${userData.mobile}`),
+        name: `${userData.firstName} ${userData.lastName}`,
+        gender: userData.gender,
+        zipcode: Number(userData.zipcode),
+        dateOfBirth: userData.dateOfBirth,
+        profession: userData.professions,
+        privacyPolicy: userData.termsAgreement,
+      };
+
+      const response = await axios.post(
+        "http://127.0.0.1:3000/create-personalInfo",
+        personalInfo
+      );
+
+      if (response.status === 201) {
+        await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
+
+        showSnackbar(
+          "Your mobile number and email address have been successfully verified. Thank you!",
+          "success"
         );
 
-        if (response.status === 201) {
-          await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
-          showSnackbar(
-            "Your mobile number and email address have been successfully verified. Thank you!",
-            "success"
-          );
-          navigate("/register/professional-details");
-          setActiveStep((prevStep) => prevStep + 1);
-        } else {
-          console.error(
-            "Failed to save personal information:",
-            response.statusText
-          );
-        }
-      } else {
-        const errorMessage = mobileVerification?.data?.message || "Invalid OTP";
-        showSnackbar(errorMessage, "error");
+        setActiveStep((prevStep) => prevStep + 1);
+        navigate("/register/professional-details");
       }
     } catch (err) {
-      console.error("Verification failed:", err);
       showSnackbar(
-        err.errors?.[0]?.message || "An error occurred during Verification",
+        err.response?.data?.message ||
+          "Something went wrong. Please try again.",
         "error"
       );
+
     } finally {
       setLoading(false);
     }
@@ -121,14 +124,17 @@ const Verification = ({ setActiveStep }) => {
           password: userData.password,
         });
       }
+
       await signUp.prepareEmailAddressVerification({
         strategy: "email_code",
       });
+
       await handleOtpSend(userData.mobile);
       showSnackbar(
         "An OTP has been successfully sent to your registered mobile number and email address. Please check and proceed with verification.",
         "success"
       );
+      
     } catch (error) {
       console.error(
         "Error resending verification email:",
@@ -242,36 +248,36 @@ const Verification = ({ setActiveStep }) => {
             </Box>
           </Box>
         </Box>
-      </form>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={2500}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        sx={{
-          marginTop: "40px",
-          maxWidth:"500px",
-          width:"400px",
-          mr:0,
-        }}
-      >
-        <Alert
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2500}
           onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          variant="filled"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
           sx={{
-            width: "100%",
-            "& .MuiAlert-action": {
-              alignItems: "center",
-            },
+            marginTop: "40px",
+            maxWidth: "500px",
+            width: "400px",
+            mr: -3,
           }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbar.severity}
+            variant="filled"
+            sx={{
+              width: "100%",
+              "& .MuiAlert-action": {
+                alignItems: "right",
+              },
+            }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </form>
     </Grid>
   );
 };

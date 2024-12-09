@@ -46,27 +46,25 @@ const handleRegister = async (
   setActiveStep,
   isLoaded,
   navigate,
-  signUp
+  signUp,
 ) => {
   if (!isLoaded) return;
-
   setLoading(true);
 
   try {
     const phoneNumber = formData.msDn;
-
     const user = await signUp.create({
       emailAddress: formData.email,
       password: formData.password,
     });
 
-    sessionStorage.setItem("userEmail", user.emailAddress);
-
     await signUp.prepareEmailAddressVerification(user.email);
+    
 
     const otpSent = await handleOtpSend(phoneNumber);
 
     if (otpSent) {
+      sessionStorage.setItem("userEmail", user.emailAddress);
       setActiveStep((prevStep) => prevStep + 1);
       navigate("/register/verification");
     }

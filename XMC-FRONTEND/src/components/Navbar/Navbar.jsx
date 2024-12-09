@@ -17,6 +17,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  
   const display =
     location.pathname === "/register/personal-details"
       ? "none"
@@ -25,7 +26,7 @@ const Navbar = () => {
       : location.pathname === "/register/professional-details"
       ? "none"
       : "block";
-      
+
   const login = location.pathname === "/login" ? "none" : "block";
 
   const { isLoaded, isSignedIn } = useAuth();
@@ -91,6 +92,10 @@ const Navbar = () => {
     }
   };
 
+  const handleRedirectToSignup = () => {
+    navigate("/register/personal-details");
+  };
+
   return (
     <>
       <AppBar
@@ -128,7 +133,7 @@ const Navbar = () => {
                   backgroundColor: "none !important",
                 },
               }}
-              onClick={() => navigate("/register/personal-details")}
+              onClick={handleRedirectToSignup}
             >
               SignUp
             </IconButton>

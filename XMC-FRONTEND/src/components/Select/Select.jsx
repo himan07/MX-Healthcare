@@ -28,6 +28,7 @@ const SelectComponent = ({
       <Select
         value={value}
         onChange={onChange}
+        notched="true"
         displayEmpty
         input={<InputBase />}
         {...(register && register(name))}

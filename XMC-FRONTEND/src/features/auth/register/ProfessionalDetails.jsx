@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Button, Typography, CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader/FileUploader";
 import "../../../assets/styles/authLayout.css";
+import { useSignIn } from "@clerk/clerk-react";
 
 const ProfessionalDetails = ({ setActiveStep }) => {
-  const navigate = useNavigate();
   const email = sessionStorage.getItem("userEmail");
+  const password = localStorage.getItem('password')
+  const { signIn, isLoaded, setActive } = useSignIn();
 
   const [medicalLicense, setMedicalLicense] = useState("");
   const [personalId, setPersonalId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
-
   const [fileUploaded, setFileUploaded] = useState({
     medicalLicense: false,
     personalID: false,
@@ -30,7 +29,6 @@ const ProfessionalDetails = ({ setActiveStep }) => {
   };
 
   const handleSave = async () => {
-    localStorage.setItem("isRegistered", isRegistered)
     const formData = new FormData();
     formData.append("medicalLicense", medicalLicense);
     if (personalId) {
@@ -40,27 +38,29 @@ const ProfessionalDetails = ({ setActiveStep }) => {
 
     setLoading(true);
 
-    setTimeout(async () => {
-      try {
-        const response = await axios.post(
-          "http://127.0.0.1:3000/api/uploadImage",
-          formData
-        );
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:3000/api/uploadImage",
+        formData
+      );
 
-        if (response.status === 201) {
-          setActiveStep((prevStep) => prevStep + 1);
-          localStorage.clear("activeStep");
+      if (response.status === 201) {
+        const result = await signIn?.create({
+          identifier: email,
+          password,
+        });
+        if (result?.status === "complete" && result.createdSessionId) {
+          await setActive?.({ session: result.createdSessionId });
           setTimeout(() => {
-            setLoading(false);
-            setIsRegistered(true)
             navigate("/dashboard");
           }, 1000);
         }
-      } catch (error) {
-        console.log(error);
         setLoading(false);
       }
-    }, 1000);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,13 +76,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
         boxSizing: "border-box",
       }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: "100%",
-          margin: "auto",
-        }}
-      >
+      <Box sx={{ width: "100%", maxWidth: "100%", margin: "auto" }}>
         <Typography
           variant="subtitle1"
           sx={{ fontWeight: "bold", marginBottom: 1 }}
@@ -117,11 +111,7 @@ const ProfessionalDetails = ({ setActiveStep }) => {
           ID, our representative will reach out to you for verification.
         </Typography>
 
-        <Box
-          sx={{
-            mt: 4,
-          }}
-        >
+        <Box sx={{ mt: 4 }}>
           <Button
             variant="contained"
             size="lg"

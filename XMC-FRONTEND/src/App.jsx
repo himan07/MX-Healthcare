@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate,
 } from "react-router-dom";
 import { RegisterRoutes, AuthRoutes } from "./routes/routes";
 import Navbar from "./components/Navbar/Navbar";
@@ -23,7 +22,6 @@ const AppContent = () => {
     </>
   );
 };
-
 
 const App = () => {
   return (
