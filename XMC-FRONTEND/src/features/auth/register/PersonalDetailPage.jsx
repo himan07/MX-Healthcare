@@ -109,6 +109,7 @@ const PersonalDetails = ({ setActiveStep }) => {
       localStorage.setItem("phonenumber", phoneNumber);
       localStorage.setItem("Data", JSON.stringify(data));
       localStorage.setItem("countryCode", countryCode);
+      localStorage.setItem("password", data.password)
     }
   };
 

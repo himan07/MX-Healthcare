@@ -8,17 +8,18 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import axios from "axios";
 import InputField from "../../../components/InputField/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSignUp } from "@clerk/clerk-react";
 import { verifyMobileOtp } from "../../../utils/verifyMobileOtp";
-import axios from "axios";
 import { handleOtpSend } from "../../../utils/RegisterFn";
 
 const Verification = ({ setActiveStep }) => {
   const { signUp, isLoaded } = useSignUp();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -26,8 +27,6 @@ const Verification = ({ setActiveStep }) => {
     severity: "success",
   });
 
-  const navigate = useNavigate();
-  
   const phonenumber = localStorage.getItem("phonenumber");
   const userData = JSON.parse(localStorage.getItem("Data"));
   const countryCode = localStorage.getItem("countryCode");
@@ -55,9 +54,9 @@ const Verification = ({ setActiveStep }) => {
     setActiveStep((prevStep) => prevStep - 1);
     navigate(-1);
   };
-
   const handleVerify = async (data) => {
     if (!isLoaded) return;
+
     setLoading(true);
 
     try {
@@ -66,46 +65,47 @@ const Verification = ({ setActiveStep }) => {
         Number(data.phoneOtp)
       );
 
-      if (mobileVerification?.data === 101) {
-        const personalInfo = {
-          email: userData.email,
-          mobileNumber: Number(`${countryCode}${userData.mobile}`),
-          name: `${userData.firstName} ${userData.lastName}`,
-          gender: userData.gender,
-          zipcode: Number(userData.zipcode),
-          dateOfBirth: userData.dateOfBirth,
-          profession: userData.professions,
-          privacyPolicy: userData.termsAgreement,
-        };
-        
+      if (mobileVerification?.data !== 101) {
         showSnackbar(
-          "Your mobile number and email address have been successfully verified. Thank you!","success"
+          mobileVerification?.data?.message || "Invalid OTP",
+          "error"
         );
-
-        const response = await axios.post(
-          "http://127.0.0.1:3000/create-personalInfo",
-          personalInfo
-        );
-
-        if (response.status === 201) {
-          await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
-       
-          navigate("/register/professional-details");
-          setActiveStep((prevStep) => prevStep + 1);
-        } else {
-          console.error(
-            "Failed to save personal information:",
-            response.statusText
-          );
-        }
-      } else {
-        const errorMessage = mobileVerification?.data?.message || "Invalid OTP";
-        showSnackbar(errorMessage, "error");
+        return;
       }
-    } catch (err) {
-      console.error("Verification failed:", err);
+
+      const personalInfo = {
+        email: userData.email,
+        mobileNumber: Number(`${countryCode}${userData.mobile}`),
+        name: `${userData.firstName} ${userData.lastName}`,
+        gender: userData.gender,
+        zipcode: Number(userData.zipcode),
+        dateOfBirth: userData.dateOfBirth,
+        profession: userData.professions,
+        privacyPolicy: userData.termsAgreement,
+      };
+
+      const response = await axios.post(
+        "http://127.0.0.1:3000/create-personalInfo",
+        personalInfo
+      );
+
+      if (response.status !== 201) {
+        showSnackbar("Failed to save personal information.", "error");
+        return;
+      }
+
+      await signUp.attemptEmailAddressVerification({ code: data.emailOtp });
+
       showSnackbar(
-        err.errors?.[0]?.message || err,
+        "Your mobile number and email address have been successfully verified. Thank you!",
+        "success"
+      );
+      setActiveStep((prevStep) => prevStep + 1);
+      navigate("/register/professional-details");
+    } catch (err) {
+      showSnackbar(
+        err.response?.data?.message ||
+          "Something went wrong. Please try again.",
         "error"
       );
     } finally {

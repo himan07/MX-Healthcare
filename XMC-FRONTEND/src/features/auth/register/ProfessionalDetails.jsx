@@ -3,9 +3,12 @@ import axios from "axios";
 import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import FileUploader from "../../../components/FileUploader/FileUploader";
 import "../../../assets/styles/authLayout.css";
+import { useSignIn } from "@clerk/clerk-react";
 
 const ProfessionalDetails = ({ setActiveStep }) => {
   const email = sessionStorage.getItem("userEmail");
+  const password = localStorage.getItem('password')
+  const { signIn, isLoaded, setActive } = useSignIn();
 
   const [medicalLicense, setMedicalLicense] = useState("");
   const [personalId, setPersonalId] = useState("");
@@ -42,10 +45,17 @@ const ProfessionalDetails = ({ setActiveStep }) => {
       );
 
       if (response.status === 201) {
-        setActiveStep((prevStep) => prevStep + 1);
-        localStorage.setItem("isRegistered", true);
+        const result = await signIn?.create({
+          identifier: email,
+          password,
+        });
+        if (result?.status === "complete" && result.createdSessionId) {
+          await setActive?.({ session: result.createdSessionId });
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1000);
+        }
         setLoading(false);
-        window.location.href = "/dashboard";
       }
     } catch (error) {
       console.log(error);
