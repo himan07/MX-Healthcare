@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { RegisterRoutes, AuthRoutes } from "./routes/routes";
 import Navbar from "./components/Navbar/Navbar";
+import ProfilePage from "./pages/DashboardPages/ProfilePage";
 
 const AppContent = () => {
   return (
@@ -18,6 +19,7 @@ const AppContent = () => {
         {AuthRoutes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </>
   );
